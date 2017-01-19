@@ -403,7 +403,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": true,
-											"text": "+Blue()",
+											"text": "+RGB Blue()",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -432,7 +432,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": true,
-											"text": "+Red()",
+											"text": "+RGB Red()",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -461,7 +461,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": true,
-											"text": "+Green()",
+											"text": "+RGB Green()",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -490,7 +490,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": true,
-											"text": "+Yellow()",
+											"text": "+RGB Yellow()",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1200,7 +1200,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZomp21kpyIY0="
 							},
-							"name": "Blue",
+							"name": "RGB Blue",
 							"visibility": "public",
 							"isStatic": true,
 							"isLeaf": false,
@@ -1214,7 +1214,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZomp21kpyIY0="
 							},
-							"name": "Red",
+							"name": "RGB Red",
 							"visibility": "public",
 							"isStatic": true,
 							"isLeaf": false,
@@ -1228,7 +1228,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZomp21kpyIY0="
 							},
-							"name": "Green",
+							"name": "RGB Green",
 							"visibility": "public",
 							"isStatic": true,
 							"isLeaf": false,
@@ -1242,7 +1242,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFZomp21kpyIY0="
 							},
-							"name": "Yellow",
+							"name": "RGB Yellow",
 							"visibility": "public",
 							"isStatic": true,
 							"isLeaf": false,
