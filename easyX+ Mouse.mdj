@@ -286,7 +286,7 @@
 											"width": 329.875,
 											"height": 13,
 											"autoResize": false,
-											"underline": false,
+											"underline": true,
 											"text": "+bool isButtonDown(ButtonType type)",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
@@ -1739,7 +1739,7 @@
 							},
 							"name": "bool isButtonDown",
 							"visibility": "public",
-							"isStatic": false,
+							"isStatic": true,
 							"isLeaf": false,
 							"parameters": [
 								{
