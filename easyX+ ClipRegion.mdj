@@ -229,7 +229,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ClipRegion(Rectangle rectangle)",
+											"text": "+ClipRegion(Region rectangle)",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -287,7 +287,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+exclude(Rectangle rectangle)",
+											"text": "+exclude(Region rectangle)",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -316,7 +316,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+void intersect(Rectangle rectangle)",
+											"text": "+void intersect(Region rectangle)",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -542,7 +542,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFZr6C/Q5fSQnY="
 									},
-									"name": "Rectangle rectangle",
+									"name": "Region rectangle",
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
@@ -587,11 +587,10 @@
 									"_parent": {
 										"$ref": "AAAAAAFZr6FBnpfimeU="
 									},
-									"name": "Rectangle rectangle",
+									"name": "Region rectangle",
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
-									"type": "",
 									"isReadOnly": false,
 									"isOrdered": false,
 									"isUnique": false,
@@ -619,7 +618,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFZr6Hx1pfs958="
 									},
-									"name": "Rectangle rectangle",
+									"name": "Region rectangle",
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
