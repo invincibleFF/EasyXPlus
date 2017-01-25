@@ -11,23 +11,30 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	Window::Window() : Window(INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT)
+	Window::Window()
 	{
+		realCtor(INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(unsigned posX, unsigned posY) : Window(posX, posY, INIT_WIDTH, INIT_HEIGHT)
+	Window::Window(unsigned posX, unsigned posY)
 	{
+		realCtor(posX, posY, INIT_WIDTH, INIT_HEIGHT);
 	}
 
 	Window::Window(unsigned posX, unsigned posY, unsigned width, unsigned height)
 	{
-		registerWindowClass();
-		createWindow(posX, posY, width, height);
-		ShowWindow(windowHandle, SW_SHOW);
-		UpdateWindow(windowHandle); 
+		realCtor(posX, posY, width, height);
 	}
 
 	///////////////////////////////////////
+
+	void Window::realCtor(unsigned posX, unsigned posY, unsigned width, unsigned height)
+	{
+		registerWindowClass();
+		createWindow(posX, posY, width, height);
+		ShowWindow(windowHandle, SW_SHOW); SetBkColor(GetDC(windowHandle), RGB(255, 255, 255));
+		UpdateWindow(windowHandle);
+	}
 
 	void Window::registerWindowClass()
 	{

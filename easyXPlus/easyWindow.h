@@ -8,9 +8,9 @@ namespace easyXPlus
 	class Window
 	{
 	public:
-		explicit Window();
-		explicit Window(unsigned posX, unsigned posY);
-		explicit Window(unsigned posX, unsigned posY, unsigned width, unsigned height);
+		Window();
+		Window(unsigned posX, unsigned posY);
+		Window(unsigned posX, unsigned posY, unsigned width, unsigned height);
 
 		//	forbit copy constructor
 		Window operator = (Window& window) = delete;
@@ -23,6 +23,8 @@ namespace easyXPlus
 		void setAsDefault();
 
 	private:
+		void realCtor(unsigned posX, unsigned posY, unsigned width, unsigned height);
+
 		void registerWindowClass();
 		void createWindow(unsigned posX, unsigned posY, unsigned width, unsigned height);
 
