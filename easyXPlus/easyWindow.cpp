@@ -1,13 +1,19 @@
 #include "easyWindow.h"
 #include "easyExcept.h"
 
-extern LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+/////////////////////////////////////////////////////////////////////////////////////////
+//	prototypes and variables in easyBase.h module
+
+extern COLORREF g_bkColor;
+
+ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool Window::registered = false;
+	HWND Window::defaultWindowHandle = NULL;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,8 +38,8 @@ namespace easyXPlus
 	{
 		registerWindowClass();
 		createWindow(posX, posY, width, height);
-		ShowWindow(windowHandle, SW_SHOW); SetBkColor(GetDC(windowHandle), RGB(255, 255, 255));
-		UpdateWindow(windowHandle);
+		ShowWindow(windowHandle, SW_SHOW);
+		UpdateWindow(windowHandle); 
 	}
 
 	void Window::registerWindowClass()
@@ -73,7 +79,96 @@ namespace easyXPlus
 
 	void Window::setBkColor(const Colorable& color)
 	{
-		::SetBkColor(GetDC(windowHandle), RGB(23,34,45));
+		g_bkColor = color.toColorref();
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	COLORREF Window::getBkColor() const
+	{
+		return GetBkColor(GetDC(windowHandle));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::resize(unsigned width, unsigned height)
+	{
+		RECT oldWindowRect;
+		if ( 0 == GetWindowRect(windowHandle, &oldWindowRect))
+			goto call_error;
+
+		if (0 == MoveWindow(
+					windowHandle,
+					oldWindowRect.left, oldWindowRect.top,
+					width, height,
+					FALSE))
+			goto call_error;
+		return;
+
+	call_error:
+		throw easyXPlus::EasyExcept("resize error!");
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::reposition(unsigned posX, unsigned posY)
+	{
+		RECT windowRect;
+		if (0 == GetWindowRect(windowHandle, &windowRect))
+			goto call_error;
+
+		if (0 == MoveWindow(
+			windowHandle,
+			posX, posY,
+			windowRect.right - windowRect.left,
+			windowRect.bottom - windowRect.top,
+			FALSE))
+
+			goto call_error;
+		return;
+
+	call_error:
+		throw easyXPlus::EasyExcept("reposition error!");
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::setAsDefault()
+	{
+		defaultWindowHandle = windowHandle;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	int Window::getPosX() const
+	{
+		return getWindowRect().left;
+	}
+
+	int Window::getPosY() const
+	{
+		return getWindowRect().top;
+	}
+
+	unsigned Window::getWidth() const
+	{
+		RECT rect = getWindowRect();
+		return rect.right - rect.left;
+	}
+
+	unsigned Window::getHeight() const
+	{
+		RECT rect = getWindowRect();
+		return rect.bottom - rect.top;
+	}
+
+	RECT Window::getWindowRect() const
+	{
+		RECT windowRect;
+		if (0 == GetWindowRect(windowHandle, &windowRect))
+			throw EasyExcept("Get Window Region error!");
+
+		return windowRect;
 	}
 
 	////////////////////////////////////////  END  //////////////////////////////////////

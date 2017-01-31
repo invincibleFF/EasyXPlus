@@ -9,7 +9,7 @@ namespace easyXPlus
 	class Colorable
 	{
 	public:
-		virtual COLORREF toColorref() = 0;
+		virtual COLORREF toColorref() const = 0;
 	};
 }
 

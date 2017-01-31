@@ -1,2 +1,8 @@
 # back up files
 ~*
+
+# Debug directory
+**/Debug
+
+# Precompiled header directory
+**/ipch

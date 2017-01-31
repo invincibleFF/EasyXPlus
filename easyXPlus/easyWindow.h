@@ -16,7 +16,12 @@ namespace easyXPlus
 		Window operator = (Window& window) = delete;
 
 		void setBkColor(const Colorable& color);
-		const Colorable& getBkColor();
+		COLORREF getBkColor() const;
+
+		int getPosX() const;
+		int getPosY() const;
+		unsigned getWidth() const;
+		unsigned getHeight() const;
 
 		void resize(unsigned width, unsigned height);
 		void reposition(unsigned posX, unsigned posY);
@@ -27,9 +32,11 @@ namespace easyXPlus
 
 		void registerWindowClass();
 		void createWindow(unsigned posX, unsigned posY, unsigned width, unsigned height);
+		RECT getWindowRect() const;
 
-	private:
+	protected:
 		static bool registered;
+		static HWND defaultWindowHandle;
 
 		static const int INIT_POS_X = 0;
 		static const int INIT_POS_Y = 0;
@@ -37,7 +44,6 @@ namespace easyXPlus
 		static const int INIT_HEIGHT = 640;
 
 		HWND windowHandle;
-		
 	};
 }
 
