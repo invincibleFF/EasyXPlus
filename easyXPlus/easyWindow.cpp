@@ -22,19 +22,19 @@ namespace easyXPlus
 		realCtor(INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(unsigned posX, unsigned posY)
+	Window::Window(int posX, int posY)
 	{
 		realCtor(posX, posY, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(unsigned posX, unsigned posY, unsigned width, unsigned height)
+	Window::Window(int posX, int posY, unsigned width, unsigned height)
 	{
 		realCtor(posX, posY, width, height);
 	}
 
 	///////////////////////////////////////
 
-	void Window::realCtor(unsigned posX, unsigned posY, unsigned width, unsigned height)
+	void Window::realCtor(int posX, int posY, unsigned width, unsigned height)
 	{
 		registerWindowClass();
 		createWindow(posX, posY, width, height);
@@ -77,16 +77,24 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::setBkColor(const Colorable& color)
+	void Window::clear(const Colorable& color)
 	{
-		g_bkColor = color.toColorref();
-	}
+		HBRUSH brushHandle = CreateSolidBrush(color.toColorref());
+		if (brushHandle == NULL)
+			goto error;
 
-	/////////////////////////////////////////////////////////////////////////////////////
+		RECT clientRect;
+		if (0 == GetClientRect(windowHandle, &clientRect))
+			goto error;
+		
+		if (!FillRect(GetDC(windowHandle), &clientRect, brushHandle))
+			goto error;
 
-	COLORREF Window::getBkColor() const
-	{
-		return GetBkColor(GetDC(windowHandle));
+		DeleteObject((HGDIOBJ)brushHandle);
+		return;
+
+	error:
+		throw EasyExcept("Window clear error!");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -111,7 +119,7 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::reposition(unsigned posX, unsigned posY)
+	void Window::reposition(int posX, int posY)
 	{
 		RECT windowRect;
 		if (0 == GetWindowRect(windowHandle, &windowRect))

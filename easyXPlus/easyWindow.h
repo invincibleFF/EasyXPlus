@@ -9,14 +9,11 @@ namespace easyXPlus
 	{
 	public:
 		Window();
-		Window(unsigned posX, unsigned posY);
-		Window(unsigned posX, unsigned posY, unsigned width, unsigned height);
+		Window(int posX, int posY);
+		Window(int posX, int posY, unsigned width, unsigned height);
 
 		//	forbit copy constructor
 		Window operator = (Window& window) = delete;
-
-		void setBkColor(const Colorable& color);
-		COLORREF getBkColor() const;
 
 		int getPosX() const;
 		int getPosY() const;
@@ -24,11 +21,13 @@ namespace easyXPlus
 		unsigned getHeight() const;
 
 		void resize(unsigned width, unsigned height);
-		void reposition(unsigned posX, unsigned posY);
+		void reposition(int posX, int posY);
 		void setAsDefault();
 
+		void clear(const Colorable& color);
+
 	private:
-		void realCtor(unsigned posX, unsigned posY, unsigned width, unsigned height);
+		void realCtor(int posX, int posY, unsigned width, unsigned height);
 
 		void registerWindowClass();
 		void createWindow(unsigned posX, unsigned posY, unsigned width, unsigned height);
