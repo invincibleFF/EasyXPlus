@@ -1,5 +1,7 @@
 #include "easyWindow.h"
-#include <cassert>
+#include "easyExcept.h"
+
+#include "SU.h"
 
 using namespace easyXPlus;
 using namespace std;
@@ -85,10 +87,13 @@ public:
 void Clear_ByDefault_ClearToColorGiven()
 {
 	Window window(120, 400, 90, 90);
+	FakeWindow fakeWindow(window);
 
-	window.clear(FakeColor());
+	fakeWindow.clear(FakeColor());
 
-	Sleep(1000);
+	assert(	FakeColor().toColorref()
+				==
+			GetPixel(GetDC(fakeWindow.getWindowHandle()), 0, 0));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -105,6 +110,14 @@ void Resize_ByDefault_ResizeToGivenSize()
 	assert(height == window.getHeight());
 }
 
+void Resize_NullHandle_ThrowException()
+{
+	FakeWindow fake(Window{});
+	fake.setWindowHandle(NULL);
+
+	SU_THROW(fake.resize(12, 34), EasyExcept);
+}
+
 /////////////////////////////////////////////////////////////////
 //					Tests for reposition
 
@@ -117,6 +130,14 @@ void Reposition_ByDefault_RepositionToGivenPos()
 
 	assert (posX == window.getPosX());
 	assert ( posY == window.getPosY() );
+}
+
+void Reposiion_NullHandle_ThrowException()
+{
+	FakeWindow fakeWindow(Window{12,12, 120, 120});
+	fakeWindow.setWindowHandle(NULL);
+
+	SU_THROW( fakeWindow.reposition(34, 34), EasyExcept);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -132,7 +153,7 @@ void SetAsDefault_ByDefault_SetDefultWindowHandleToThis()
 	assert(fake.getWindowHandle() == fake.getDefaultWindowHandle());
 }
 
-
+//////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, wchar_t* argv[])
 {
@@ -142,8 +163,13 @@ int main(int argc, wchar_t* argv[])
 	Ctor_ByDefault_NullDefaultHandleAndFalseRegisteredFlag();
 
 	Clear_ByDefault_ClearToColorGiven();
+
 	Resize_ByDefault_ResizeToGivenSize();
+	Resize_NullHandle_ThrowException();
+
 	Reposition_ByDefault_RepositionToGivenPos();
+	Reposiion_NullHandle_ThrowException();
+
 	SetAsDefault_ByDefault_SetDefultWindowHandleToThis();
 
 	return 0;
