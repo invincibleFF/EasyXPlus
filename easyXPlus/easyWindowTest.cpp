@@ -155,6 +155,10 @@ void SetAsDefault_ByDefault_SetDefultWindowHandleToThis()
 
 //////////////////////////////////////////////////////////////////////////////
 
+//	tests in other units
+void Ctor_ByDefault_ConstructColorValue();
+void Getters_ByDefault_GetRGBValue();
+
 int main(int argc, wchar_t* argv[])
 {
 	Ctor_WithZeroParams_CreateWindowWithInitParams();
@@ -171,6 +175,14 @@ int main(int argc, wchar_t* argv[])
 	Reposiion_NullHandle_ThrowException();
 
 	SetAsDefault_ByDefault_SetDefultWindowHandleToThis();
+
+	///////////////			Colorable		//////////////////
+
+	Ctor_ByDefault_ConstructColorValue();
+	Getters_ByDefault_GetRGBValue();
+
+	Window window(100, 100, 60, 60);
+	window.clear(Rgb::AliceBlue());
 
 	return 0;
 }

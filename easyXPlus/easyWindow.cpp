@@ -4,9 +4,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 //	prototypes and variables in easyBase.h module
 
-extern COLORREF g_bkColor;
 
- LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 namespace easyXPlus
 {
