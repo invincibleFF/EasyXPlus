@@ -153,11 +153,31 @@ void SetAsDefault_ByDefault_SetDefultWindowHandleToThis()
 	assert(fake.getWindowHandle() == fake.getDefaultWindowHandle());
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//						Tests for Window::getDefaultWindowHandle
+
+void GetDefaultWindowHandle_NotSet_ThrowExcept()
+{
+	Window window;
+	FakeWindow fakeWindow(window);
+
+	fakeWindow.resetDefaultWindowHandle();
+
+	SU_THROW(Window::getDefaultWindowHandle(), EasyExcept);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 //	tests in other units
 void Ctor_ByDefault_ConstructColorValue();
 void Getters_ByDefault_GetRGBValue();
+
+void PointArray_GetPoint_InvalidIndex_ThrowExcept();
+void PointArray_InsertPoint_InvalidIndex_ThrowExcept();
+
+void Geometry_SetDotColor_ByDefault_GetWhatSet();
+void Geometry_SetFillColor_ByDefault_GetWhatSet();
+void Geometry_SetLineColor_ByDefault_GetWhatSet();
 
 int main(int argc, wchar_t* argv[])
 {
@@ -175,11 +195,21 @@ int main(int argc, wchar_t* argv[])
 	Reposiion_NullHandle_ThrowException();
 
 	SetAsDefault_ByDefault_SetDefultWindowHandleToThis();
+	GetDefaultWindowHandle_NotSet_ThrowExcept();
 
 	///////////////			Colorable		//////////////////
 
 	Ctor_ByDefault_ConstructColorValue();
 	Getters_ByDefault_GetRGBValue();
+
+	///////////////			Geometry		//////////////////
+
+	PointArray_GetPoint_InvalidIndex_ThrowExcept();
+	PointArray_InsertPoint_InvalidIndex_ThrowExcept();
+
+	Geometry_SetFillColor_ByDefault_GetWhatSet();
+	Geometry_SetLineColor_ByDefault_GetWhatSet();
+	Geometry_SetDotColor_ByDefault_GetWhatSet();
 
 	return 0;
 }

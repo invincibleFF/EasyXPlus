@@ -8,6 +8,8 @@ namespace easyXPlus
 	class Window
 	{
 	public:
+		static HWND getDefaultWindowHandle();
+
 		Window();
 		Window(int posX, int posY);
 		Window(int posX, int posY, unsigned width, unsigned height);

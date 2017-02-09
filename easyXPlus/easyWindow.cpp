@@ -11,6 +11,16 @@ namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 
+	HWND Window::getDefaultWindowHandle()
+	{
+		if (defaultWindowHandle == NULL)
+			throw EasyExcept("No default window set!");
+
+		return defaultWindowHandle;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	bool Window::registered = false;
 	HWND Window::defaultWindowHandle = NULL;
 
