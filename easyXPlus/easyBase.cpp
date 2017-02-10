@@ -5,11 +5,6 @@ int main(int argc, wchar_t* argv[]);
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	return DefWindowProcW(hwnd, uMsg, wParam, lParam);
-}
-
 int WINAPI wWinMain(
 	HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
