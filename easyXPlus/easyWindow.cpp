@@ -4,25 +4,22 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 //	prototypes and variables in easyBase.h module
 
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
 namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	HWND Window::getDefaultWindowHandle()
+	HDC Window::getDefaultDC()
 	{
-		if (defaultWindowHandle == NULL)
+		if (defaultPair.second == NULL)
 			throw EasyExcept("No default window set!");
 
-		return defaultWindowHandle;
+		return defaultPair.second;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool Window::registered = false;
-	HWND Window::defaultWindowHandle = NULL;
+	std::pair<HWND, HDC> Window::defaultPair = { 0, 0 };
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,6 +36,17 @@ namespace easyXPlus
 	Window::Window(int posX, int posY, unsigned width, unsigned height)
 	{
 		realCtor(posX, posY, width, height);
+	}
+
+	Window::~Window()
+	{
+		if (defaultPair.first == windowHandle)
+		{
+			if (0 == ReleaseDC(windowHandle, defaultPair.second))
+				throw EasyExcept("System call error!");
+
+			defaultPair = std::make_pair<HWND, HDC>(0, 0);
+		}
 	}
 
 	///////////////////////////////////////
@@ -58,7 +66,7 @@ namespace easyXPlus
 			WNDCLASSW wndclass = { 0 };
 			wndclass.lpszClassName = L"easyXPlus::WindowClassName";
 			wndclass.hInstance = GetModuleHandleW(NULL);			//	current .exe's module handle
-			wndclass.lpfnWndProc = WindowProc;						//	default window procedure
+			wndclass.lpfnWndProc = DefWindowProc;					//	default window procedure
 			wndclass.hCursor = LoadCursorW(NULL, IDC_ARROW);		//	default arrow cursor
 			wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_DROPSHADOW;//	default window style
 			wndclass.hbrBackground = (HBRUSH)(1 + COLOR_BACKGROUND);
@@ -152,7 +160,11 @@ namespace easyXPlus
 
 	void Window::setAsDefault()
 	{
-		defaultWindowHandle = windowHandle;
+		defaultPair.first = windowHandle;
+		defaultPair.second = GetDC(windowHandle);
+
+		if (defaultPair.second == NULL)
+			throw EasyExcept("System call error!");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

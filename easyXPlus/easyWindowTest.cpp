@@ -21,9 +21,9 @@ public:
 	const bool getRegisteredFlag() const { return registered; }
 	const HWND getWindowHandle() const { return windowHandle; }
 
-	const HWND getDefaultWindowHandle() const { return defaultWindowHandle; }
+	const HWND getDefaultWindowHandle() const { return defaultPair.first; }
 
-	void resetDefaultWindowHandle() { defaultWindowHandle = NULL; }
+	void resetDefaultWindowHandle() { defaultPair.first = NULL; }
 	void setWindowHandle(HWND hwnd)	{ windowHandle = hwnd; }
 };
 
@@ -113,9 +113,13 @@ void Resize_ByDefault_ResizeToGivenSize()
 void Resize_NullHandle_ThrowException()
 {
 	FakeWindow fake(Window{});
+	HWND oldHandle = fake.getWindowHandle();
 	fake.setWindowHandle(NULL);
 
 	SU_THROW(fake.resize(12, 34), EasyExcept);
+
+	//	to make destructer pass
+	fake.setWindowHandle(oldHandle);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -135,9 +139,12 @@ void Reposition_ByDefault_RepositionToGivenPos()
 void Reposiion_NullHandle_ThrowException()
 {
 	FakeWindow fakeWindow(Window{12,12, 120, 120});
+	HWND oldHandle = fakeWindow.getWindowHandle();
 	fakeWindow.setWindowHandle(NULL);
 
 	SU_THROW( fakeWindow.reposition(34, 34), EasyExcept);
+
+	fakeWindow.setWindowHandle(oldHandle);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -145,25 +152,23 @@ void Reposiion_NullHandle_ThrowException()
 
 void SetAsDefault_ByDefault_SetDefultWindowHandleToThis()
 {
-	Window window;
+	FakeWindow fake(Window{});
+	fake.setAsDefault();
 
-	window.setAsDefault();
-	
-	FakeWindow fake(window);
 	assert(fake.getWindowHandle() == fake.getDefaultWindowHandle());
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //						Tests for Window::getDefaultWindowHandle
 
-void GetDefaultWindowHandle_NotSet_ThrowExcept()
+void GetDefaultDC_NotSet_ThrowExcept()
 {
 	Window window;
 	FakeWindow fakeWindow(window);
 
 	fakeWindow.resetDefaultWindowHandle();
 
-	SU_THROW(Window::getDefaultWindowHandle(), EasyExcept);
+	SU_THROW(Window::getDefaultDC(), EasyExcept);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -178,6 +183,7 @@ void PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 void Geometry_SetDotColor_ByDefault_GetWhatSet();
 void Geometry_SetFillColor_ByDefault_GetWhatSet();
 void Geometry_SetLineColor_ByDefault_GetWhatSet();
+void Geometry_Drawers_ByDefault_SeeWindowOutput();
 
 int main(int argc, wchar_t* argv[])
 {
@@ -195,7 +201,7 @@ int main(int argc, wchar_t* argv[])
 	Reposiion_NullHandle_ThrowException();
 
 	SetAsDefault_ByDefault_SetDefultWindowHandleToThis();
-	GetDefaultWindowHandle_NotSet_ThrowExcept();
+	GetDefaultDC_NotSet_ThrowExcept();
 
 	///////////////			Colorable		//////////////////
 
@@ -207,9 +213,10 @@ int main(int argc, wchar_t* argv[])
 	PointArray_GetPoint_InvalidIndex_ThrowExcept();
 	PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
-	Geometry_SetFillColor_ByDefault_GetWhatSet();
+	Geometry_SetFillColor_ByDefault_DrawDoWithThisColor();
 	Geometry_SetLineColor_ByDefault_GetWhatSet();
 	Geometry_SetDotColor_ByDefault_GetWhatSet();
+	Geometry_Drawers_ByDefault_SeeWindowOutput();
 
 	return 0;
 }

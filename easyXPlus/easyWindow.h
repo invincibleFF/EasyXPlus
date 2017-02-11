@@ -2,17 +2,24 @@
 #define EASY_WINDOW_H
 
 #include "easyColor.h"
+#include <utility>
 
 namespace easyXPlus
 {
+	//	TODO:
+	//			When a window call setAsDefault() and then is is destructed, the 
+	//	defaultWindowHandle variable value is still reserved. But the system may
+	//	assign this handle to a different window.
 	class Window
 	{
 	public:
-		static HWND getDefaultWindowHandle();
+		static HDC getDefaultDC();
 
 		Window();
 		Window(int posX, int posY);
 		Window(int posX, int posY, unsigned width, unsigned height);
+
+		virtual ~Window();
 
 		//	forbit copy constructor
 		Window operator = (Window& window) = delete;
@@ -37,8 +44,8 @@ namespace easyXPlus
 
 	protected:
 		static bool registered;
-		static HWND defaultWindowHandle;
-
+		static std::pair<HWND, HDC> defaultPair;
+		
 		static const int INIT_POS_X = 0;
 		static const int INIT_POS_Y = 0;
 		static const int INIT_WIDTH = 480;
