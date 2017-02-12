@@ -25,9 +25,7 @@ namespace easyXPlus
 	class RectRegion
 	{
 	public:
-		RectRegion(Point leftTopPoint, Point rightBottomPoint)
-			: leftTop(leftTopPoint), rightBottom(rightBottomPoint)
-		{}
+		RectRegion(Point leftTopPoint, Point rightBottomPoint);
 
 		Point getLeftTop() const	{ return leftTop; }
 		Point getRightBottom() const	{ return rightBottom; }
@@ -81,11 +79,19 @@ namespace easyXPlus
 
 		static COLORREF getPointColor(Point point);
 
+		//	Dot
+
 		static void drawDot(Point point);
+
+		//	Lines
+
 		static void drawLine(Point from, Point to);
 		static void drawArc(RectRegion bound, Point start, Point end);
 		static void drawBeziers(PointArray points);
 		static void drawPolyline(PointArray points);
+
+		//	Filled shapes
+
 		static void drawChord(RectRegion bound, Point start, Point end);
 		static void drawEllipse(RectRegion bound);
 		static void drawRectangle(RectRegion rectRegion);

@@ -9,6 +9,19 @@ using namespace easyXPlus;
 namespace easyXPlus
 {
 	////////////////////////////////////////////////////////////////////////////////
+	//									RectRegion
+
+	RectRegion::RectRegion(Point leftTopPoint, Point rightBottomPoint)
+		: leftTop(leftTopPoint), rightBottom(rightBottomPoint)
+	{
+		//	invalid rectangular-region
+		if (leftTop.getX() >= rightBottom.getX() ||
+			leftTop.getY() >= rightBottom.getY())
+
+			throw EasyExcept("Invalid RectRegion!");
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 	//									PointArray
 
 	PointArray::PointArray(std::initializer_list<Point> points)
@@ -87,7 +100,7 @@ namespace easyXPlus
 	//	static variables
 
 	COLORREF Geometry::dotColor = Rgb::White().toColorref();
-	COLORREF Geometry::lineColor = Rgb::White().toColorref();
+	COLORREF Geometry::lineColor = Rgb::Black().toColorref();
 	COLORREF Geometry::fillColor = Rgb::White().toColorref();
 
 	std::vector<HPEN>	Geometry::penHandles;
@@ -191,7 +204,8 @@ namespace easyXPlus
 		if (0 == MoveToEx(hdc, from.getX(), from.getY(), NULL))
 			throw EasyExcept("System call error!");
 
-		if (0 == LineTo(hdc, to.getX(), to.getY()))
+		//	in GDI, the last pixel is not drew
+		if (0 == LineTo(hdc, to.getX() + 1, to.getY() + 1))
 			throw EasyExcept("System call error!");
 	}
 
