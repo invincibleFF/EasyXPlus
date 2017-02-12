@@ -2,7 +2,8 @@
 #define EASY_WINDOW_H
 
 #include "easyColor.h"
-#include <utility>
+#include <string>
+#include <utility>	//	for std::pair
 
 namespace easyXPlus
 {
@@ -15,9 +16,9 @@ namespace easyXPlus
 	public:
 		static HDC getDefaultDC();
 
-		Window();
-		Window(int posX, int posY);
-		Window(int posX, int posY, unsigned width, unsigned height);
+		Window(const std::wstring title = L"easyX+");
+		Window(const std::wstring title, int posX, int posY);
+		Window(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
 
 		virtual ~Window();
 
@@ -36,10 +37,10 @@ namespace easyXPlus
 		void clear(const Colorable& color);
 
 	private:
-		void realCtor(int posX, int posY, unsigned width, unsigned height);
+		void realCtor(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
 
 		void registerWindowClass();
-		void createWindow(unsigned posX, unsigned posY, unsigned width, unsigned height);
+		void createWindow(const std::wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height);
 		RECT getWindowRect() const;
 
 	protected:
@@ -52,6 +53,7 @@ namespace easyXPlus
 		static const int INIT_HEIGHT = 640;
 
 		HWND windowHandle;
+		HDC hdc = NULL;
 	};
 }
 

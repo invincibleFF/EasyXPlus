@@ -45,7 +45,7 @@ void Ctor_WithPosParams_CreateWindowWithThesePos()
 {
 	int posX = 234, posY = 245;
 
-	Window window(posX, posY);
+	Window window(L"window", posX, posY);
 
 	assert (posX == window.getPosX());
 	assert (posY == window.getPosY());
@@ -56,7 +56,7 @@ void Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH()
 	int posX = 67, posY = 89;
 	unsigned width = 12, height = 567;
 
-	Window window(posX, posY, width, height);
+	Window window(L"window", posX, posY, width, height);
 
 	assert (posX == window.getPosX());
 	assert (posY == window.getPosY());
@@ -86,7 +86,7 @@ public:
 
 void Clear_ByDefault_ClearToColorGiven()
 {
-	Window window(120, 400, 90, 90);
+	Window window(L"window", 120, 400, 90, 90);
 	FakeWindow fakeWindow(window);
 
 	fakeWindow.clear(FakeColor());
@@ -138,7 +138,7 @@ void Reposition_ByDefault_RepositionToGivenPos()
 
 void Reposiion_NullHandle_ThrowException()
 {
-	FakeWindow fakeWindow(Window{12,12, 120, 120});
+	FakeWindow fakeWindow(Window{ L"window", 12, 12, 120, 120 });
 	HWND oldHandle = fakeWindow.getWindowHandle();
 	fakeWindow.setWindowHandle(NULL);
 
@@ -181,8 +181,11 @@ void PointArray_GetPoint_InvalidIndex_ThrowExcept();
 void PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
 void Geometry_SetDotColor_ByDefault_GetWhatSet();
+void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor();
 void Geometry_SetFillColor_ByDefault_GetWhatSet();
+void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
 void Geometry_SetLineColor_ByDefault_GetWhatSet();
+void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 void Geometry_Drawers_ByDefault_SeeWindowOutput();
 
 int main(int argc, wchar_t* argv[])
@@ -213,10 +216,12 @@ int main(int argc, wchar_t* argv[])
 	PointArray_GetPoint_InvalidIndex_ThrowExcept();
 	PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
-	Geometry_SetFillColor_ByDefault_DrawDoWithThisColor();
+	Geometry_SetFillColor_ByDefault_GetWhatSet();
+	Geometry_SetDotColor_ByDefault_DrawDotWithThisColor();
 	Geometry_SetLineColor_ByDefault_GetWhatSet();
+	Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
 	Geometry_SetDotColor_ByDefault_GetWhatSet();
-	Geometry_Drawers_ByDefault_SeeWindowOutput();
+	Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 
 	return 0;
 }

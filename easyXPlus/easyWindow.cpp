@@ -4,6 +4,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 //	prototypes and variables in easyBase.h module
 
+using namespace std;
+
 namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -23,38 +25,39 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	Window::Window()
+	Window::Window(const wstring title)
 	{
-		realCtor(INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT);
+		realCtor(title, INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(int posX, int posY)
+	Window::Window(const wstring title, int posX, int posY)
 	{
-		realCtor(posX, posY, INIT_WIDTH, INIT_HEIGHT);
+		realCtor(title, posX, posY, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(int posX, int posY, unsigned width, unsigned height)
+	Window::Window(const wstring title, int posX, int posY, unsigned width, unsigned height)
 	{
-		realCtor(posX, posY, width, height);
+		realCtor(title, posX, posY, width, height);
 	}
 
 	Window::~Window()
 	{
-		if (defaultPair.first == windowHandle)
-		{
-			if (0 == ReleaseDC(windowHandle, defaultPair.second))
+		//	release dc if setAsDefault() called
+		if (hdc != NULL)
+			if (0 == ReleaseDC(windowHandle, hdc))
 				throw EasyExcept("System call error!");
 
+		//	reset default pair if current dc equals this->hdc
+		if (defaultPair.first == windowHandle)
 			defaultPair = std::make_pair<HWND, HDC>(0, 0);
-		}
 	}
 
 	///////////////////////////////////////
 
-	void Window::realCtor(int posX, int posY, unsigned width, unsigned height)
+	void Window::realCtor(const wstring title, int posX, int posY, unsigned width, unsigned height)
 	{
 		registerWindowClass();
-		createWindow(posX, posY, width, height);
+		createWindow(title.c_str(), posX, posY, width, height);
 		ShowWindow(windowHandle, SW_SHOW);
 		UpdateWindow(windowHandle); 
 	}
@@ -77,11 +80,11 @@ namespace easyXPlus
 		}
 	}
 
-	void Window::createWindow(unsigned posX, unsigned posY, unsigned width, unsigned height)
+	void Window::createWindow(const wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height)
 	{
 		windowHandle = CreateWindowW(
 			L"easyXPlus::WindowClassName",
-			L"easyXPlus",
+			title.c_str(),
 			WS_POPUP | WS_CAPTION,
 			posX, posY,
 			width, height,
@@ -160,11 +163,16 @@ namespace easyXPlus
 
 	void Window::setAsDefault()
 	{
-		defaultPair.first = windowHandle;
-		defaultPair.second = GetDC(windowHandle);
+		//	if first call, store HDC
+		if (hdc == NULL)
+		{
+			hdc = GetDC(windowHandle);
+			if (hdc == NULL)
+				throw EasyExcept("System call error!");
+		}
 
-		if (defaultPair.second == NULL)
-			throw EasyExcept("System call error!");
+		defaultPair.first = windowHandle;
+		defaultPair.second = hdc;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
