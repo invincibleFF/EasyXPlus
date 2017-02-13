@@ -169,6 +169,9 @@ namespace easyXPlus
 			hdc = GetDC(windowHandle);
 			if (hdc == NULL)
 				throw EasyExcept("System call error!");
+
+			if (0 == SetArcDirection(hdc, AD_CLOCKWISE))
+				throw EasyExcept("System call error!");
 		}
 
 		defaultPair.first = windowHandle;
