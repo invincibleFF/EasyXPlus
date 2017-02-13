@@ -223,8 +223,11 @@ namespace easyXPlus
 			start.getY(),
 			end.getX(),
 			end.getY());
-
 		if (ret == 0)	throw EasyExcept("System call error!");
+
+		//	Since the intersect point is hard to calculate and points in mathematics
+		//	cannot be strictly represented in displays, i choose to let the two-end
+		//	points go.
 	}
 
 	///////////////////////////////////////
@@ -242,6 +245,11 @@ namespace easyXPlus
 
 		delete[] pointArray;
 		if (ret == 0)	throw EasyExcept("System call error");
+
+		//	in GDI, the end point is not drew. Use drawLine() bacause drawDot()
+		//	uses different drawing color
+		const Point& lastPoint = points.getPoint(points.getSize() - 1);
+		Geometry::drawLine(lastPoint, lastPoint);
 	}
 
 	POINT* Geometry::convertToPOINTs(const PointArray& points)
@@ -268,6 +276,11 @@ namespace easyXPlus
 
 		delete[] pointArray;
 		if (ret == 0)	throw EasyExcept("System call error!");
+
+		//	in GDI, the last point is not drew. Use drawLine() bacause drawDot()
+		//	uses different drawing color
+		const Point& lastPoint = points.getPoint(points.getSize() - 1);
+		Geometry::drawLine(lastPoint, lastPoint);
 	}
 
 	/////////////////////////////////////////

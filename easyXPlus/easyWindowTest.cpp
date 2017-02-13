@@ -116,7 +116,7 @@ void Resize_NullHandle_ThrowException()
 	HWND oldHandle = fake.getWindowHandle();
 	fake.setWindowHandle(NULL);
 
-	SU_THROW(fake.resize(12, 34), EasyExcept);
+	SU_ASSERT_THROW(fake.resize(12, 34), EasyExcept);
 
 	//	to make destructer pass
 	fake.setWindowHandle(oldHandle);
@@ -142,7 +142,7 @@ void Reposiion_NullHandle_ThrowException()
 	HWND oldHandle = fakeWindow.getWindowHandle();
 	fakeWindow.setWindowHandle(NULL);
 
-	SU_THROW( fakeWindow.reposition(34, 34), EasyExcept);
+	SU_ASSERT_THROW( fakeWindow.reposition(34, 34), EasyExcept);
 
 	fakeWindow.setWindowHandle(oldHandle);
 }
@@ -168,7 +168,7 @@ void GetDefaultDC_NotSet_ThrowExcept()
 
 	fakeWindow.resetDefaultWindowHandle();
 
-	SU_THROW(Window::getDefaultDC(), EasyExcept);
+	SU_ASSERT_THROW(Window::getDefaultDC(), EasyExcept);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -176,6 +176,8 @@ void GetDefaultDC_NotSet_ThrowExcept()
 //	tests in other units
 void Ctor_ByDefault_ConstructColorValue();
 void Getters_ByDefault_GetRGBValue();
+
+void RectRegion_Ctor_InvalidRectRegion_ThrowExcept();
 
 void PointArray_GetPoint_InvalidIndex_ThrowExcept();
 void PointArray_InsertPoint_InvalidIndex_ThrowExcept();
@@ -187,6 +189,13 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
 void Geometry_SetLineColor_ByDefault_GetWhatSet();
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 void Geometry_Drawers_ByDefault_SeeWindowOutput();
+void Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
+void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
+void Geometry_DrawLine_TwoSameEnd_DrawOnePoint();
+void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse();
+void Geometry_DrawBezier_PointNumberInvlaid_ThrowExcept();
+void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints();
+void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints();
 
 int main(int argc, wchar_t* argv[])
 {
@@ -213,6 +222,8 @@ int main(int argc, wchar_t* argv[])
 
 	///////////////			Geometry		//////////////////
 
+	RectRegion_Ctor_InvalidRectRegion_ThrowExcept();
+
 	PointArray_GetPoint_InvalidIndex_ThrowExcept();
 	PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
@@ -222,6 +233,13 @@ int main(int argc, wchar_t* argv[])
 	Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
 	Geometry_SetDotColor_ByDefault_GetWhatSet();
 	Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
+	Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
+	Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
+	Geometry_DrawLine_TwoSameEnd_DrawOnePoint();
+	Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse();
+	Geometry_DrawBezier_PointNumberInvlaid_ThrowExcept();
+	Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints();
+	Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints();
 
 	return 0;
 }
