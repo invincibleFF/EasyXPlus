@@ -79,11 +79,11 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 	assert(Geometry::getPointColor(Point(30, 30)) == color.toColorref());
 }
 
-/*void Geometry_SetColors_DifferentWindow_KeepFormerSetColor()
+void Geometry_SetColors_DifferentWindow_LineAndFillKeepFormerSetColorDotNot()
 {
 	Window firstWindow, secondWindow;
 	Rgb firstDotColor(0, 1, 2), firstLineColor(3, 4, 5), firstFillColor(6, 7, 8);
-	Rgb secondDotColor(0, 1, 2), secondLineColor(3, 4, 5), secondFillColor(6, 7, 8);
+	Rgb secondDotColor(1, 1, 1), secondLineColor(3, 3, 3), secondFillColor(6, 6, 6);
 
 	firstWindow.setAsDefault();
 	Geometry::setDotColor(firstDotColor);
@@ -96,15 +96,21 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 	Geometry::setFillColor(secondFillColor);
 
 	firstWindow.setAsDefault();
-	assert( Geometry::getDotColor() == firstDotColor.toColorref() );
-	assert( Geometry::getLineColor() == firstLineColor.toColorref() );
-	assert(Geometry::getFillColor() == firstFillColor.toColorref() );
+	Geometry::drawDot(Point(1, 1));
+	Geometry::drawLine(Point(2, 2), Point(4, 4));
+	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
+	assert( Geometry::getPointColor(Point(1, 1)) == secondDotColor.toColorref() );
+	assert( Geometry::getPointColor(Point(3, 3)) == firstLineColor.toColorref() );
+	assert(Geometry::getPointColor(Point(6, 6)) == firstFillColor.toColorref() );
 
 	secondWindow.setAsDefault();
-	assert(Geometry::getDotColor() == secondDotColor.toColorref());
-	assert(Geometry::getLineColor() == secondLineColor.toColorref());
-	assert(Geometry::getFillColor() == secondFillColor.toColorref());
-}*/
+	Geometry::drawDot(Point(1, 1));
+	Geometry::drawLine(Point(2, 2), Point(4, 4));
+	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
+	assert(Geometry::getPointColor(Point(1, 1)) == secondDotColor.toColorref());
+	assert(Geometry::getPointColor(Point(3, 3)) == secondLineColor.toColorref());
+	assert(Geometry::getPointColor(Point(6, 6)) == secondFillColor.toColorref());
+}
 
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 {
