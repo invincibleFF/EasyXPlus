@@ -167,7 +167,7 @@ void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 	assert(Geometry::getPointColor(Point(0, 20)) == lineColor.toColorref());
 }
 
-void Geometry_DrawBezier_PointNumberInvlaid_ThrowExcept()
+void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept()
 {
 	Window window;
 	window.setAsDefault();
@@ -211,6 +211,19 @@ void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints()
 		Geometry::getPointColor(points.getPoint(3))
 		==
 		lineColor.toColorref());
+}
+
+void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept()
+{
+	Window window;
+	window.setAsDefault();
+
+	SU_ASSERT_THROW(
+		Geometry::drawPolyline(PointArray{}),
+		EasyExcept);
+	SU_ASSERT_THROW(
+		Geometry::drawPolyline(PointArray{Point(0, 0)}),
+		EasyExcept);
 }
 
 void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
