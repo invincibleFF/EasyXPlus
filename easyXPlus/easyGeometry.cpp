@@ -98,10 +98,7 @@ namespace easyXPlus
 	//								Geometry
 
 	//	static variables
-
 	COLORREF Geometry::dotColor = Rgb::White().toColorref();
-	COLORREF Geometry::lineColor = Rgb::Black().toColorref();
-	COLORREF Geometry::fillColor = Rgb::White().toColorref();
 
 	std::vector<HPEN>	Geometry::penHandles;
 	std::vector<HBRUSH>	Geometry::brushHandles;
@@ -115,10 +112,9 @@ namespace easyXPlus
 
 	/////////////////////////////////
 
-	void Geometry::setLineColor(const Colorable& color)	{
-		lineColor = color.toColorref();
-
-		HPEN penHandle = CreatePen(PS_SOLID, 0, lineColor);
+	void Geometry::setLineColor(const Colorable& color)
+	{
+		HPEN penHandle = CreatePen(PS_SOLID, 0, color.toColorref());
 		if (NULL == penHandle)
 			throw EasyExcept("System call error!");
 		else
@@ -135,9 +131,7 @@ namespace easyXPlus
 
 	void Geometry::setFillColor(const Colorable& color)
 	{
-		fillColor = color.toColorref();
-
-		HBRUSH brushHandle = CreateSolidBrush(fillColor);
+		HBRUSH brushHandle = CreateSolidBrush(color.toColorref());
 		if (NULL == brushHandle)
 			throw EasyExcept("System call error!");
 		else
@@ -148,27 +142,6 @@ namespace easyXPlus
 
 		if (NULL == objRet)
 			throw EasyExcept("System call error!");
-	}
-
-	//////////////////////////////////////
-
-	COLORREF Geometry::getLineColor()
-	{
-		return lineColor;
-	}
-
-	///////////////////////////////////////
-
-	COLORREF Geometry::getFillColor()
-	{
-		return fillColor;
-	}
-
-	///////////////////////////////////////
-
-	COLORREF Geometry::getDotColor()
-	{
-		return dotColor;
 	}
 
 	///////////////////////////////////////

@@ -182,11 +182,8 @@ void RectRegion_Ctor_InvalidRectRegion_ThrowExcept();
 void PointArray_GetPoint_InvalidIndex_ThrowExcept();
 void PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
-void Geometry_SetDotColor_ByDefault_GetWhatSet();
 void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor();
-void Geometry_SetFillColor_ByDefault_GetWhatSet();
 void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
-void Geometry_SetLineColor_ByDefault_GetWhatSet();
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 void Geometry_Drawers_ByDefault_SeeWindowOutput();
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
@@ -227,11 +224,8 @@ int main(int argc, wchar_t* argv[])
 	PointArray_GetPoint_InvalidIndex_ThrowExcept();
 	PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
-	Geometry_SetFillColor_ByDefault_GetWhatSet();
 	Geometry_SetDotColor_ByDefault_DrawDotWithThisColor();
-	Geometry_SetLineColor_ByDefault_GetWhatSet();
 	Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
-	Geometry_SetDotColor_ByDefault_GetWhatSet();
 	Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 	Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
 	Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();

@@ -42,17 +42,6 @@ void PointArray_InsertPoint_InvalidIndex_ThrowExcept()
 /////////////////////////////////////////////////////////////////////////////
 //							Tests for Geometry
 
-void Geometry_SetDotColor_ByDefault_GetWhatSet()
-{
-	Rgb color = Rgb::Blue();
-	Window window;
-	window.setAsDefault();
-
-	Geometry::setDotColor(color);
-
-	assert(Geometry::getDotColor() == color.toColorref());
-}
-
 void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 {
 	Rgb color = Rgb(23, 45, 89);
@@ -66,17 +55,6 @@ void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 	assert(Geometry::getPointColor(point) == color.toColorref());
 }
 
-void Geometry_SetLineColor_ByDefault_GetWhatSet()
-{
-	Rgb color = Rgb::Blue();
-	Window window;
-	window.setAsDefault();
-
-	Geometry::setLineColor(color);
-
-	assert( Geometry::getLineColor() == color.toColorref() );
-}
-
 void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 {
 	Rgb color = Rgb(23, 34, 23);
@@ -87,17 +65,6 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 	Geometry::drawLine(Point(0, 0), Point(40, 40));
 
 	assert(Geometry::getPointColor(Point(20, 20)) == color.toColorref());
-}
-
-void Geometry_SetFillColor_ByDefault_GetWhatSet()
-{
-	Rgb color = Rgb::Blue();
-	Window window;
-	window.setAsDefault();
-
-	Geometry::setFillColor(color);
-
-	assert(Geometry::getFillColor() == color.toColorref());
 }
 
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
@@ -144,10 +111,12 @@ void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 	Window window;
 	window.setAsDefault();
 	Point dot(23, 23);
+	Rgb dotColor = Rgb::Coral();
+	Geometry::setDotColor(dotColor);
 
 	Geometry::drawDot(dot);
 
-	assert(Geometry::getPointColor(dot) == Geometry::getDotColor());
+	assert(Geometry::getPointColor(dot) == dotColor.toColorref());
 }
 
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()

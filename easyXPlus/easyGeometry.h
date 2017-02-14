@@ -70,9 +70,6 @@ namespace easyXPlus
 	class Geometry
 	{
 	public:
-		static COLORREF getDotColor();
-		static COLORREF getLineColor();
-		static COLORREF getFillColor();
 		static void setDotColor(const Colorable& color);
 		static void setLineColor(const Colorable& color);
 		static void setFillColor(const Colorable& color);
@@ -102,7 +99,7 @@ namespace easyXPlus
 	private:
 		static POINT* convertToPOINTs(const PointArray& points);
 
-		static COLORREF	dotColor, lineColor, fillColor;
+		static COLORREF dotColor;
 
 		//	handles need to be deleted
 		static std::vector<HPEN>	penHandles;
