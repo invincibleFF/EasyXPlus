@@ -191,10 +191,12 @@ void Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
 void Geometry_DrawLine_TwoSameEnd_DrawOnePoint();
 void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse();
+void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep();
 void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept();
 void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints();
 void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints();
 void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept();
+void Geometry_DrawChord_ByDefault_IncludeTheLineSegment();
 
 int main(int argc, wchar_t* argv[])
 {
@@ -234,10 +236,12 @@ int main(int argc, wchar_t* argv[])
 	Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
 	Geometry_DrawLine_TwoSameEnd_DrawOnePoint();
 	Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse();
+	Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep();
 	Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept();
 	Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints();
 	Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints();
 	Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept();
+	Geometry_DrawChord_ByDefault_IncludeTheLineSegment();
 
 	return 0;
 }

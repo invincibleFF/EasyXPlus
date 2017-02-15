@@ -13,6 +13,9 @@ namespace easyXPlus
 		Point(unsigned X, unsigned Y) : x(X), y(Y)
 		{}
 
+		bool operator == (const Point& rhs)const;
+		bool operator != (const Point& rhs)const;
+
 		unsigned getX() const	{ return x; }
 		unsigned getY() const	{ return y; }
 
@@ -27,8 +30,9 @@ namespace easyXPlus
 	public:
 		RectRegion(Point leftTopPoint, Point rightBottomPoint);
 
-		Point getLeftTop() const	{ return leftTop; }
+		Point getLeftTop() const		{ return leftTop; }
 		Point getRightBottom() const	{ return rightBottom; }
+		Point getCenter() const;
 
 	private:
 		Point leftTop, rightBottom;
@@ -101,6 +105,7 @@ namespace easyXPlus
 
 	private:
 		static POINT* convertToPOINTs(const PointArray& points);
+		static void checkTwoEndPoints(const RectRegion& bound, const Point& lhs, const Point& rhs);
 
 		static COLORREF dotColor;
 

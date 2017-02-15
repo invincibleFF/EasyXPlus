@@ -9,6 +9,20 @@ using namespace easyXPlus;
 namespace easyXPlus
 {
 	////////////////////////////////////////////////////////////////////////////////
+	//									Point
+
+	bool Point::operator == (const Point& another)const
+	{
+		return	this->getX() == another.getX() &&
+				this->getY() == another.getY();
+	}
+	
+	bool Point::operator != (const Point& another)const
+	{
+		return !((*this) == another);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 	//									RectRegion
 
 	RectRegion::RectRegion(Point leftTopPoint, Point rightBottomPoint)
@@ -19,6 +33,15 @@ namespace easyXPlus
 			leftTop.getY() >= rightBottom.getY())
 
 			throw EasyExcept("Invalid RectRegion!");
+	}
+
+	////////////////////////////////////
+
+	Point RectRegion::getCenter()const
+	{
+		return Point(
+			(leftTop.getX() + rightBottom.getX()) / 2,
+			(leftTop.getY() + rightBottom.getY())  / 2);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +209,8 @@ namespace easyXPlus
 
 	void Geometry::drawArc(RectRegion bound, Point start, Point end)
 	{
+		checkTwoEndPoints(bound, start, end);
+
 		BOOL ret = Arc(
 			Window::getDefaultDC(),
 			bound.getLeftTop().getX(),
@@ -201,6 +226,17 @@ namespace easyXPlus
 		//	Since the intersect point is hard to calculate and points in mathematics
 		//	cannot be strictly represented in displays, i choose to let the two-end
 		//	points go.
+	}
+
+	void Geometry::checkTwoEndPoints(const RectRegion& bound, const Point& start, const Point& end)
+	{
+		Point centerPoint = bound.getCenter();
+
+		//	one point is center, another not, invalid!!
+		if ( start != end &&
+		(centerPoint == start || centerPoint == end))
+
+		throw EasyExcept("Two points invalid!");
 	}
 
 	///////////////////////////////////////
@@ -260,6 +296,8 @@ namespace easyXPlus
 
 	void Geometry::drawChord(RectRegion bound, Point start, Point end)
 	{
+		checkTwoEndPoints(bound, start, end);
+
 		BOOL ret = Chord(
 			Window::getDefaultDC(),
 			bound.getLeftTop().getX(),
@@ -270,7 +308,6 @@ namespace easyXPlus
 			start.getY(),
 			end.getX(),
 			end.getY());
-
 		if (ret == 0)	throw EasyExcept("System call error!");
 	}
 
@@ -306,6 +343,16 @@ namespace easyXPlus
 
 	void Geometry::drawRoundRectangle(RectRegion rectRegion, Rectangle rectangle)
 	{
+		unsigned regionWidth = 
+			rectRegion.getRightBottom().getX() - rectRegion.getLeftTop().getX();
+		unsigned regionHeight =
+			rectRegion.getRightBottom().getY() - rectRegion.getLeftTop().getY();
+
+		if (rectangle.getWidth() > regionWidth ||
+			rectangle.getHeight() > regionHeight)
+
+			throw EasyExcept("Rectangle invalid!");
+
 		BOOL ret = RoundRect(
 			Window::getDefaultDC(),
 			rectRegion.getLeftTop().getX(),

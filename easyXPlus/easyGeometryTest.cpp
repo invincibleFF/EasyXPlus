@@ -153,6 +153,16 @@ void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
 	assert(Geometry::getPointColor(from) == lineColor.toColorref());
 }
 
+void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep()
+{
+	Window window;
+	window.setAsDefault();
+
+	SU_ASSERT_THROW(
+		Geometry::drawArc(RectRegion(Point(0, 0), Point(40, 40)), Point(20, 20), Point(23, 45)),
+		EasyExcept);
+}
+
 void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 {
 	Window window;
@@ -249,3 +259,5 @@ void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 		==
 		lineColor.toColorref());
 }
+
+#error "test chord"
