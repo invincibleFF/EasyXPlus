@@ -196,7 +196,10 @@ void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept();
 void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints();
 void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints();
 void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept();
-void Geometry_DrawChord_ByDefault_IncludeTheLineSegment();
+void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept();
+void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine();
+void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept();
+void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept();
 
 int main(int argc, wchar_t* argv[])
 {
@@ -241,7 +244,10 @@ int main(int argc, wchar_t* argv[])
 	Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints();
 	Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints();
 	Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept();
-	Geometry_DrawChord_ByDefault_IncludeTheLineSegment();
+	Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept();
+	Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine();
+	Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept();
+	Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept();
 
 	return 0;
 }

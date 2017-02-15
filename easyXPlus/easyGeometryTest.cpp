@@ -260,4 +260,56 @@ void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 		lineColor.toColorref());
 }
 
-#error "test chord"
+void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept()
+{
+	Window window;
+	window.setAsDefault();
+
+	SU_ASSERT_THROW(
+		Geometry::drawChord(RectRegion(Point(0, 0), Point(10, 10)), Point(5, 5), Point(1, 2)),
+		EasyExcept);
+}
+
+void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine()
+{
+	Window window;
+	window.setAsDefault();
+	Rgb lineColor = Rgb::Blue();
+	Geometry::setLineColor(lineColor);
+
+	Geometry::drawRectangle(RectRegion(Point(0, 0), Point(10, 10)));
+
+	assert(
+		Geometry::getPointColor(Point(0, 0)) == lineColor.toColorref());
+	assert(
+		Geometry::getPointColor(Point(0, 10)) == lineColor.toColorref());
+	assert(
+		Geometry::getPointColor(Point(10, 0)) == lineColor.toColorref());
+	assert(
+		Geometry::getPointColor(Point(10, 10)) == lineColor.toColorref());
+}
+
+void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept()
+{
+	Window window;
+	window.setAsDefault();
+
+	SU_ASSERT_THROW(
+		Geometry::drawPie(RectRegion(Point(0, 0), Point(10, 10)), Point(5, 5), Point(1, 2)),
+		EasyExcept);
+}
+
+void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
+{
+	Window window;
+	window.setAsDefault();
+
+	SU_ASSERT_THROW(
+		Geometry::drawPolygon(PointArray{ Point(0, 0) }),
+		EasyExcept);
+	SU_ASSERT_THROW(
+		Geometry::drawPolygon(PointArray{ Point(0, 0), Point(23, 34) }),
+		EasyExcept);
+}
+
+#error "test drawLine"

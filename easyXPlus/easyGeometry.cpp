@@ -201,6 +201,7 @@ namespace easyXPlus
 			throw EasyExcept("System call error!");
 
 		//	in GDI, the last pixel is not drew
+		//	TODO: call setpixel to draw this dot
 		if (0 == LineTo(hdc, to.getX() + 1, to.getY() + 1))
 			throw EasyExcept("System call error!");
 	}
@@ -335,8 +336,14 @@ namespace easyXPlus
 			rectRegion.getLeftTop().getY(),
 			rectRegion.getRightBottom().getX(),
 			rectRegion.getRightBottom().getY());
-
 		if (ret == 0)	throw EasyExcept("System call error!");
+
+		Geometry::drawLine(
+			Point(rectRegion.getLeftTop().getX(), rectRegion.getRightBottom().getY()),
+			Point(rectRegion.getRightBottom()));
+		Geometry::drawLine(
+			Point(rectRegion.getRightBottom().getX(), rectRegion.getLeftTop().getY()),
+			Point(rectRegion.getRightBottom()));
 	}
 
 	///////////////////////////////////////////
@@ -369,6 +376,8 @@ namespace easyXPlus
 
 	void Geometry::drawPie(RectRegion bound, Point start, Point end)
 	{
+		checkTwoEndPoints(bound, start, end);
+
 		BOOL ret = Pie(
 			Window::getDefaultDC(),
 			bound.getLeftTop().getX(),
@@ -379,7 +388,6 @@ namespace easyXPlus
 			start.getY(),
 			end.getX(),
 			end.getY());
-
 		if (ret == 0)	throw EasyExcept("System call error!");
 	}
 
@@ -387,7 +395,7 @@ namespace easyXPlus
 
 	void Geometry::drawPolygon(PointArray points)
 	{
-		if (points.getSize() < 2)
+		if (points.getSize() < 3)
 			throw EasyExcept("System call error!");
 
 		POINT* pointArray = convertToPOINTs(points);
