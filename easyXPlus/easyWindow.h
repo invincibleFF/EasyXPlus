@@ -14,7 +14,21 @@ namespace easyXPlus
 	class Window
 	{
 	public:
-		static HDC getDefaultDC();
+		struct Attribute
+		{
+			explicit Attribute(HWND handle = NULL)
+				:	windowHandle(handle), hdc(NULL),
+					lineColor(Rgb::Black().toColorref()),
+					fillColor(Rgb::White().toColorref())
+			{}
+
+			HWND windowHandle;
+			HDC hdc;
+			COLORREF lineColor;
+			COLORREF fillColor;
+		};
+
+		static Attribute* getDefaultAttribute();
 
 		Window(const std::wstring title = L"easyX+");
 		Window(const std::wstring title, int posX, int posY);
@@ -45,15 +59,14 @@ namespace easyXPlus
 
 	protected:
 		static bool registered;
-		static std::pair<HWND, HDC> defaultPair;
+		static Attribute* defaultAttributePtr;
 		
 		static const int INIT_POS_X = 0;
 		static const int INIT_POS_Y = 0;
 		static const int INIT_WIDTH = 480;
 		static const int INIT_HEIGHT = 640;
 
-		HWND windowHandle;
-		HDC hdc = NULL;
+		Attribute attribute;
 	};
 }
 

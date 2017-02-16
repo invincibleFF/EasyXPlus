@@ -19,12 +19,12 @@ public:
 	const int getInitWidth() const { return INIT_WIDTH; }
 	const int getInitHeight() const { return INIT_HEIGHT; }
 	const bool getRegisteredFlag() const { return registered; }
-	const HWND getWindowHandle() const { return windowHandle; }
+	const HWND getWindowHandle() const { return attribute.windowHandle; }
 
-	const HWND getDefaultWindowHandle() const { return defaultPair.first; }
+	const HWND getDefaultWindowHandle() const { return defaultAttributePtr->windowHandle; }
 
-	void resetDefaultWindowHandle() { defaultPair.first = NULL; }
-	void setWindowHandle(HWND hwnd)	{ windowHandle = hwnd; }
+	void resetDefaultWindowAttribute() { defaultAttributePtr = nullptr; }
+	void setWindowHandle(HWND hwnd)	{ attribute.windowHandle = hwnd; }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,15 +64,15 @@ void Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH()
 	assert (height == window.getHeight());
 }
 
-void Ctor_ByDefault_NullDefaultHandleAndFalseRegisteredFlag()
+void Ctor_ByDefault_NullDefaultAttributeAndFalseRegisteredFlag()
 {
-	FakeWindow(Window()).resetDefaultWindowHandle();
+	FakeWindow(Window()).resetDefaultWindowAttribute();
 
 	Window window;
 	FakeWindow fake(window);
 
 	assert (true == fake.getRegisteredFlag());
-	assert (NULL == (INT)fake.getDefaultWindowHandle());
+	SU_ASSERT_THROW (fake.getDefaultAttribute(), EasyExcept);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -82,6 +82,7 @@ class FakeColor : public Colorable
 {
 public:
 	COLORREF toColorref() const { return RGB(0, 255, 255); }
+	const Colorable& fromColorref(COLORREF colorValue)const { return *new FakeColor(); }
 };
 
 void Clear_ByDefault_ClearToColorGiven()
@@ -161,14 +162,14 @@ void SetAsDefault_ByDefault_SetDefultWindowHandleToThis()
 /////////////////////////////////////////////////////////////////////////////
 //						Tests for Window::getDefaultWindowHandle
 
-void GetDefaultDC_NotSet_ThrowExcept()
+void GetDefaultAttribute_NotSet_ThrowExcept()
 {
 	Window window;
 	FakeWindow fakeWindow(window);
 
-	fakeWindow.resetDefaultWindowHandle();
+	fakeWindow.resetDefaultWindowAttribute();
 
-	SU_ASSERT_THROW(Window::getDefaultDC(), EasyExcept);
+	SU_ASSERT_THROW(Window::getDefaultAttribute(), EasyExcept);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -188,6 +189,7 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 void Geometry_SetColors_DifferentWindow_LineAndFillKeepFormerSetColorDotNot();
 void Geometry_Drawers_ByDefault_SeeWindowOutput();
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
+void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange();
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
 void Geometry_DrawLine_TwoSameEnd_DrawOnePoint();
 void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse();
@@ -206,7 +208,7 @@ int main(int argc, wchar_t* argv[])
 	Ctor_WithZeroParams_CreateWindowWithInitParams();
 	Ctor_WithPosParams_CreateWindowWithThesePos();
 	Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH();
-	Ctor_ByDefault_NullDefaultHandleAndFalseRegisteredFlag();
+	Ctor_ByDefault_NullDefaultAttributeAndFalseRegisteredFlag();
 
 	Clear_ByDefault_ClearToColorGiven();
 
@@ -217,7 +219,7 @@ int main(int argc, wchar_t* argv[])
 	Reposiion_NullHandle_ThrowException();
 
 	SetAsDefault_ByDefault_SetDefultWindowHandleToThis();
-	GetDefaultDC_NotSet_ThrowExcept();
+	GetDefaultAttribute_NotSet_ThrowExcept();
 
 	///////////////			Colorable		//////////////////
 
@@ -236,6 +238,7 @@ int main(int argc, wchar_t* argv[])
 	Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 	Geometry_SetColors_DifferentWindow_LineAndFillKeepFormerSetColorDotNot();
 	Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
+	Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange();
 	Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
 	Geometry_DrawLine_TwoSameEnd_DrawOnePoint();
 	Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse();

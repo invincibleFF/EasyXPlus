@@ -125,11 +125,25 @@ void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 	assert(Geometry::getPointColor(dot) == dotColor.toColorref());
 }
 
+void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
+{
+	Window window;
+	window.setAsDefault();
+
+	Geometry::setDotColor(Rgb::Black());
+	Geometry::setLineColor(Rgb::Blue());
+	Geometry::setFillColor(Rgb::Coral());
+
+	Geometry::drawLine(Point(1, 1), Point(2, 2));
+
+	assert(Geometry::getDotColor() != Geometry::getLineColor());
+}
+
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
 {
 	Window window;
 	window.setAsDefault();
-	Point from(0, 0), to(20, 20), middle(10, 10);
+	Point from(0, 0), to(30, 20), middle(15, 10);
 	Rgb lineColor(12, 22, 43);
 	Geometry::setLineColor(lineColor);
 
@@ -312,4 +326,4 @@ void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
 		EasyExcept);
 }
 
-#error "test drawLine"
+#error "change the long test, test color module"

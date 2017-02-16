@@ -10,18 +10,18 @@ namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	HDC Window::getDefaultDC()
+	Window::Attribute* Window::getDefaultAttribute()
 	{
-		if (defaultPair.second == NULL)
+		if (defaultAttributePtr == nullptr)
 			throw EasyExcept("No default window set!");
 
-		return defaultPair.second;
+		return defaultAttributePtr;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool Window::registered = false;
-	std::pair<HWND, HDC> Window::defaultPair = { 0, 0 };
+	Window::Attribute* Window::defaultAttributePtr = nullptr;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,13 +43,13 @@ namespace easyXPlus
 	Window::~Window()
 	{
 		//	release dc if setAsDefault() called
-		if (hdc != NULL)
-			if (0 == ReleaseDC(windowHandle, hdc))
+		if (attribute.hdc != NULL)
+			if (0 == ReleaseDC(attribute.windowHandle, attribute.hdc))
 				throw EasyExcept("System call error!");
 
 		//	reset default pair if current dc equals this->hdc
-		if (defaultPair.first == windowHandle)
-			defaultPair = std::make_pair<HWND, HDC>(0, 0);
+		if (defaultAttributePtr ==  &attribute)
+			defaultAttributePtr = nullptr;
 	}
 
 	///////////////////////////////////////
@@ -58,8 +58,8 @@ namespace easyXPlus
 	{
 		registerWindowClass();
 		createWindow(title.c_str(), posX, posY, width, height);
-		ShowWindow(windowHandle, SW_SHOW);
-		UpdateWindow(windowHandle); 
+		ShowWindow(attribute.windowHandle, SW_SHOW);
+		UpdateWindow(attribute.windowHandle); 
 	}
 
 	void Window::registerWindowClass()
@@ -82,7 +82,7 @@ namespace easyXPlus
 
 	void Window::createWindow(const wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height)
 	{
-		windowHandle = CreateWindowW(
+		attribute.windowHandle = CreateWindowW(
 			L"easyXPlus::WindowClassName",
 			title.c_str(),
 			WS_POPUP | WS_CAPTION,
@@ -91,7 +91,7 @@ namespace easyXPlus
 			NULL, NULL,
 			NULL, NULL);
 
-		if (windowHandle == NULL)
+		if (attribute.windowHandle == NULL)
 			throw EasyExcept("Cannot create window!");
 	}
 
@@ -104,10 +104,10 @@ namespace easyXPlus
 			goto error;
 
 		RECT clientRect;
-		if (0 == GetClientRect(windowHandle, &clientRect))
+		if (0 == GetClientRect(attribute.windowHandle, &clientRect))
 			goto error;
 		
-		if (!FillRect(GetDC(windowHandle), &clientRect, brushHandle))
+		if (!FillRect(GetDC(attribute.windowHandle), &clientRect, brushHandle))
 			goto error;
 
 		DeleteObject((HGDIOBJ)brushHandle);
@@ -122,11 +122,11 @@ namespace easyXPlus
 	void Window::resize(unsigned width, unsigned height)
 	{
 		RECT oldWindowRect;
-		if ( 0 == GetWindowRect(windowHandle, &oldWindowRect))
+		if ( 0 == GetWindowRect(attribute.windowHandle, &oldWindowRect))
 			goto call_error;
 
 		if (0 == MoveWindow(
-					windowHandle,
+					attribute.windowHandle,
 					oldWindowRect.left, oldWindowRect.top,
 					width, height,
 					FALSE))
@@ -142,11 +142,11 @@ namespace easyXPlus
 	void Window::reposition(int posX, int posY)
 	{
 		RECT windowRect;
-		if (0 == GetWindowRect(windowHandle, &windowRect))
+		if (0 == GetWindowRect(attribute.windowHandle, &windowRect))
 			goto call_error;
 
 		if (0 == MoveWindow(
-			windowHandle,
+			attribute.windowHandle,
 			posX, posY,
 			windowRect.right - windowRect.left,
 			windowRect.bottom - windowRect.top,
@@ -164,18 +164,17 @@ namespace easyXPlus
 	void Window::setAsDefault()
 	{
 		//	if first call, store HDC
-		if (hdc == NULL)
+		if (attribute.hdc == NULL)
 		{
-			hdc = GetDC(windowHandle);
-			if (hdc == NULL)
+			attribute.hdc = GetDC(attribute.windowHandle);
+			if (attribute.hdc == NULL)
 				throw EasyExcept("System call error!");
 
-			if (0 == SetArcDirection(hdc, AD_CLOCKWISE))
+			if (0 == SetArcDirection(attribute.hdc, AD_CLOCKWISE))
 				throw EasyExcept("System call error!");
 		}
 
-		defaultPair.first = windowHandle;
-		defaultPair.second = hdc;
+		defaultAttributePtr = &attribute;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -205,7 +204,7 @@ namespace easyXPlus
 	RECT Window::getWindowRect() const
 	{
 		RECT windowRect;
-		if (0 == GetWindowRect(windowHandle, &windowRect))
+		if (0 == GetWindowRect(attribute.windowHandle, &windowRect))
 			throw EasyExcept("Get Window Region error!");
 
 		return windowRect;
