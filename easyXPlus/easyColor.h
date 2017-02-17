@@ -10,11 +10,11 @@ namespace easyXPlus
 	class Colorable
 	{
 	public:
-		virtual ~Colorable() = 0;
+		virtual ~Colorable()	{}
 		virtual COLORREF toColorref() const = 0;
 
 		//	NOTE:
-		//		Users have to delete the return object himself
+		//		Users should never use this function.
 		virtual Colorable* fromColorref(COLORREF colorValue) const = 0;
 	};
 

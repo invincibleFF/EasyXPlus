@@ -3,6 +3,7 @@
 
 #include "easyColor.h"
 #include <string>
+#include <memory>	//	for unique_ptr
 #include <utility>	//	for std::pair
 
 namespace easyXPlus
@@ -18,18 +19,18 @@ namespace easyXPlus
 		{
 			explicit Attribute(HWND handle = NULL)
 				:	windowHandle(handle), hdc(NULL), penHandle(NULL), brushHandle(NULL),
-					dotColor(Rgb::Red().toColorref()),
-					lineColor(Rgb::Black().toColorref()),
-					fillColor(Rgb::White().toColorref())
+					dotColor(new Rgb(Rgb::Red())),
+					lineColor(new Rgb(Rgb::Black())),
+					fillColor(new Rgb(Rgb::White()))
 			{}
 
 			HWND windowHandle;
 			HDC hdc;
 			HPEN penHandle;		//	created pen
 			HBRUSH brushHandle;	//	created brush
-			COLORREF dotColor;
-			COLORREF lineColor;
-			COLORREF fillColor;
+			Colorable* dotColor;
+			Colorable* lineColor;
+			Colorable* fillColor;
 		};
 
 		static Attribute* getDefaultAttribute();
@@ -56,10 +57,11 @@ namespace easyXPlus
 
 	private:
 		void realCtor(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
-
 		void registerWindowClass();
 		void createWindow(const std::wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height);
 		RECT getWindowRect() const;
+		void releaseGeometryResources();
+		void releaseColorResources();
 
 	protected:
 		static bool registered;

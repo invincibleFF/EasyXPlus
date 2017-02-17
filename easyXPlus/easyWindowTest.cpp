@@ -12,7 +12,12 @@ using namespace std;
 class FakeWindow : public Window
 {
 public:
-	FakeWindow(Window window) : Window(window)		{}
+	FakeWindow(Window& window) : Window(window)
+	{
+		attribute.dotColor = nullptr;
+		attribute.lineColor = nullptr;
+		attribute.fillColor = nullptr;
+	}
 
 	const int getInitPosX() const { return INIT_POS_X; }
 	const int getInitPosY() const { return INIT_POS_Y; }
@@ -82,7 +87,7 @@ class FakeColor : public Colorable
 {
 public:
 	COLORREF toColorref() const { return RGB(0, 255, 255); }
-	const Colorable& fromColorref(COLORREF colorValue)const { return *new FakeColor(); }
+	Colorable* fromColorref(COLORREF colorValue)const { return new FakeColor(); }
 };
 
 void Clear_ByDefault_ClearToColorGiven()

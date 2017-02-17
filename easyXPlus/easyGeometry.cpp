@@ -120,30 +120,31 @@ namespace easyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//								Geometry
 
-	COLORREF Geometry::getDotColor()
+	const Colorable& Geometry::getDotColor()
 	{
-		return Window::getDefaultAttribute()->dotColor;
+		return *Window::getDefaultAttribute()->dotColor;
 	}
 
 	/////////////////////////////////
 
-	COLORREF Geometry::getLineColor()
+	const Colorable& Geometry::getLineColor()
 	{
-		return Window::getDefaultAttribute()->lineColor;
+		return *Window::getDefaultAttribute()->lineColor;
 	}
 
 	/////////////////////////////////
 
-	COLORREF Geometry::getFillColor()
+	const Colorable& Geometry::getFillColor()
 	{
-		return Window::getDefaultAttribute()->fillColor;
+		return *Window::getDefaultAttribute()->fillColor;
 	}
 
 	/////////////////////////////////
 
 	void Geometry::setDotColor(const Colorable& color)
 	{
-		Window::getDefaultAttribute()->dotColor = color.toColorref();
+		delete Window::getDefaultAttribute()->dotColor;
+		Window::getDefaultAttribute()->dotColor = color.fromColorref(color.toColorref());
 	}
 
 	/////////////////////////////////
@@ -151,7 +152,7 @@ namespace easyXPlus
 	void Geometry::setLineColor(const Colorable& color)
 	{
 		Window::Attribute* windowAttribute = Window::getDefaultAttribute();
-		if (windowAttribute->lineColor == color.toColorref())
+		if (windowAttribute->lineColor->toColorref() == color.toColorref())
 			return;
 
 		HPEN newPen = CreatePen(PS_SOLID, 0, color.toColorref());
@@ -168,7 +169,9 @@ namespace easyXPlus
 			if (0 == DeleteObject((HGDIOBJ)windowAttribute->penHandle))
 				throw EasyExcept("System call error!");
 		windowAttribute->penHandle = newPen;
-		Window::getDefaultAttribute()->lineColor = color.toColorref();
+
+		delete windowAttribute->lineColor;
+		windowAttribute->lineColor = color.fromColorref(color.toColorref());
 	}
 
 	/////////////////////////////////////
@@ -176,7 +179,7 @@ namespace easyXPlus
 	void Geometry::setFillColor(const Colorable& color)
 	{
 		Window::Attribute* windowAttribute = Window::getDefaultAttribute();
-		if (windowAttribute->fillColor == color.toColorref())
+		if (windowAttribute->fillColor->toColorref() == color.toColorref())
 			return;
 
 		HBRUSH newBrush = CreateSolidBrush(color.toColorref());
@@ -193,7 +196,9 @@ namespace easyXPlus
 			if (0 == DeleteObject((HGDIOBJ)windowAttribute->brushHandle))
 				throw EasyExcept("System call error!");
 		windowAttribute->brushHandle = newBrush;
-		Window::getDefaultAttribute()->fillColor = color.toColorref();
+
+		delete windowAttribute->fillColor;
+		windowAttribute->fillColor = color.fromColorref(color.toColorref());
 	}
 
 	///////////////////////////////////////
@@ -213,10 +218,11 @@ namespace easyXPlus
 
 	void Geometry::drawDot(Point point)
 	{
+		Window::Attribute* windowAttribute = Window::getDefaultAttribute();
 		COLORREF colorRet = SetPixel(
-			Window::getDefaultAttribute()->hdc,
+			windowAttribute->hdc,
 			point.getX(), point.getY(),
-			Window::getDefaultAttribute()->dotColor);
+			windowAttribute->dotColor->toColorref());
 
 		if (colorRet == -1 || colorRet == ERROR_INVALID_PARAMETER)
 			throw EasyExcept("System call error!");
@@ -235,10 +241,10 @@ namespace easyXPlus
 			throw EasyExcept("System call error!");
 
 		//	in GDI, the last pixel is not drew
-		COLORREF oldDotColor = Geometry::getDotColor();
-		Geometry::setDotColor(Rgb::White().fromColorref(Geometry::getLineColor()));
+		COLORREF oldColorValue = Geometry::getDotColor().toColorref();
+		Geometry::setDotColor(Geometry::getLineColor());
 		Geometry::drawDot(to);
-		Geometry::setDotColor(Rgb::White().fromColorref(oldDotColor));
+		Geometry::setDotColor(Rgb(GetRValue(oldColorValue), GetGValue(oldColorValue), GetBValue(oldColorValue)));
 	}
 
 	///////////////////////////////////////

@@ -71,11 +71,11 @@ void Geometry_SetLineColor_SameColor_ColorNotChange()
 {
 	Window window;
 	window.setAsDefault();
-	COLORREF oldColorValue = Geometry::getLineColor();
+	const Colorable& oldColorValue = Geometry::getLineColor();
 
-	Geometry::setLineColor(Rgb::Black().fromColorref(Geometry::getLineColor()));
+	Geometry::setLineColor(Geometry::getLineColor());
 
-	assert(Geometry::getLineColor() == oldColorValue);
+	assert(Geometry::getLineColor().toColorref() == oldColorValue.toColorref());
 }
 
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
@@ -94,11 +94,11 @@ void Geometry_SetFillColor_SameColor_ColorNotChange()
 {
 	Window window;
 	window.setAsDefault();
-	COLORREF oldColorValue = Geometry::getFillColor();
+	const Colorable& oldColorValue = Geometry::getFillColor();
 
-	Geometry::setFillColor(Rgb::Black().fromColorref(Geometry::getFillColor()));
+	Geometry::setFillColor(Geometry::getFillColor());
 
-	assert(Geometry::getFillColor() == oldColorValue);
+	assert(Geometry::getFillColor().toColorref() == oldColorValue.toColorref());
 }
 
 void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
@@ -158,7 +158,7 @@ void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
 
 	Geometry::drawLine(Point(1, 1), Point(2, 2));
 
-	assert(Geometry::getDotColor() != Geometry::getLineColor());
+	assert(Geometry::getDotColor().toColorref() != Geometry::getLineColor().toColorref());
 }
 
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
