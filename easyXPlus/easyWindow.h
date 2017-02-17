@@ -14,25 +14,11 @@ namespace easyXPlus
 	//	assign this handle to a different window.
 	class Window
 	{
+	private:
+		friend class Geometry;
+		struct Attribute;
+
 	public:
-		struct Attribute
-		{
-			explicit Attribute(HWND handle = NULL)
-				:	windowHandle(handle), hdc(NULL), penHandle(NULL), brushHandle(NULL),
-					dotColor(new Rgb(Rgb::Red())),
-					lineColor(new Rgb(Rgb::Black())),
-					fillColor(new Rgb(Rgb::White()))
-			{}
-
-			HWND windowHandle;
-			HDC hdc;
-			HPEN penHandle;		//	created pen
-			HBRUSH brushHandle;	//	created brush
-			Colorable* dotColor;
-			Colorable* lineColor;
-			Colorable* fillColor;
-		};
-
 		static Attribute* getDefaultAttribute();
 
 		Window(const std::wstring title = L"easyX+");
@@ -61,7 +47,22 @@ namespace easyXPlus
 		void createWindow(const std::wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height);
 		RECT getWindowRect() const;
 		void releaseGeometryResources();
-		void releaseColorResources();
+
+	private:
+		struct Attribute
+		{
+			explicit Attribute(HWND handle = NULL)
+			:	windowHandle(handle), 
+				hdc(NULL), penHandle(NULL), brushHandle(NULL),
+				dotColor(Rgb::Red()), lineColor(Rgb::Black()), fillColor(Rgb::White())
+			{}
+
+			HWND windowHandle;
+			HDC hdc;			//	created dc
+			HPEN penHandle;		//	created pen
+			HBRUSH brushHandle;	//	created brush
+			Rgb dotColor, lineColor, fillColor;
+		};
 
 	protected:
 		static bool registered;

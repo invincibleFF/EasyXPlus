@@ -12,12 +12,7 @@ using namespace std;
 class FakeWindow : public Window
 {
 public:
-	FakeWindow(Window& window) : Window(window)
-	{
-		attribute.dotColor = nullptr;
-		attribute.lineColor = nullptr;
-		attribute.fillColor = nullptr;
-	}
+	FakeWindow(Window& window) : Window(window)		{}
 
 	const int getInitPosX() const { return INIT_POS_X; }
 	const int getInitPosY() const { return INIT_POS_Y; }

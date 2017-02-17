@@ -77,14 +77,14 @@ namespace easyXPlus
 	class Geometry
 	{
 	public:
-		static const Colorable& getDotColor();
-		static const Colorable& getLineColor();
-		static const Colorable& getFillColor();
+		static Rgb getDotColor();
+		static Rgb getLineColor();
+		static Rgb getFillColor();
 		static void setDotColor(const Colorable& color);
 		static void setLineColor(const Colorable& color);
 		static void setFillColor(const Colorable& color);
 
-		static COLORREF getPointColor(Point point);
+		static Rgb getPointColor(Point point);
 
 		//	Dot
 

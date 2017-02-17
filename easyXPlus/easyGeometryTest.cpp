@@ -52,7 +52,7 @@ void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 	Geometry::setDotColor(color);
 	Geometry::drawDot(point);
 
-	assert(Geometry::getPointColor(point) == color.toColorref());
+	assert(Geometry::getPointColor(point) == color);
 }
 
 void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
@@ -64,18 +64,18 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 	Geometry::setLineColor(color);
 	Geometry::drawLine(Point(0, 0), Point(40, 40));
 
-	assert(Geometry::getPointColor(Point(20, 20)) == color.toColorref());
+	assert(Geometry::getPointColor(Point(20, 20)) == color);
 }
 
 void Geometry_SetLineColor_SameColor_ColorNotChange()
 {
 	Window window;
 	window.setAsDefault();
-	const Colorable& oldColorValue = Geometry::getLineColor();
+	Rgb oldColorValue = Geometry::getLineColor();
 
 	Geometry::setLineColor(Geometry::getLineColor());
 
-	assert(Geometry::getLineColor().toColorref() == oldColorValue.toColorref());
+	assert(Geometry::getLineColor() == oldColorValue);
 }
 
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
@@ -87,7 +87,7 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 	Geometry::setFillColor(color);
 	Geometry::drawRectangle(RectRegion(Point(0, 0), Point(60, 60)));
 
-	assert(Geometry::getPointColor(Point(30, 30)) == color.toColorref());
+	assert(Geometry::getPointColor(Point(30, 30)) == color);
 }
 
 void Geometry_SetFillColor_SameColor_ColorNotChange()
@@ -121,17 +121,17 @@ void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
 	Geometry::drawDot(Point(1, 1));
 	Geometry::drawLine(Point(2, 2), Point(4, 4));
 	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
-	assert( Geometry::getPointColor(Point(1, 1)) == firstDotColor.toColorref() );
-	assert( Geometry::getPointColor(Point(3, 3)) == firstLineColor.toColorref() );
-	assert(Geometry::getPointColor(Point(6, 6)) == firstFillColor.toColorref() );
+	assert( Geometry::getPointColor(Point(1, 1)) == firstDotColor );
+	assert( Geometry::getPointColor(Point(3, 3)) == firstLineColor );
+	assert(Geometry::getPointColor(Point(6, 6)) == firstFillColor );
 
 	secondWindow.setAsDefault();
 	Geometry::drawDot(Point(1, 1));
 	Geometry::drawLine(Point(2, 2), Point(4, 4));
 	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
-	assert(Geometry::getPointColor(Point(1, 1)) == secondDotColor.toColorref());
-	assert(Geometry::getPointColor(Point(3, 3)) == secondLineColor.toColorref());
-	assert(Geometry::getPointColor(Point(6, 6)) == secondFillColor.toColorref());
+	assert(Geometry::getPointColor(Point(1, 1)) == secondDotColor);
+	assert(Geometry::getPointColor(Point(3, 3)) == secondLineColor);
+	assert(Geometry::getPointColor(Point(6, 6)) == secondFillColor);
 }
 
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
@@ -144,7 +144,7 @@ void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 
 	Geometry::drawDot(dot);
 
-	assert(Geometry::getPointColor(dot) == dotColor.toColorref());
+	assert(Geometry::getPointColor(dot) == dotColor);
 }
 
 void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
@@ -171,9 +171,9 @@ void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
 
 	Geometry::drawLine(from, to);
 
-	assert(Geometry::getPointColor(from) == lineColor.toColorref());
-	assert(Geometry::getPointColor(middle) == lineColor.toColorref());
-	assert(Geometry::getPointColor(to) == lineColor.toColorref());
+	assert(Geometry::getPointColor(from) == lineColor);
+	assert(Geometry::getPointColor(middle) == lineColor);
+	assert(Geometry::getPointColor(to) == lineColor);
 }
 
 void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
@@ -186,7 +186,7 @@ void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
 
 	Geometry::drawLine(from, to);
 
-	assert(Geometry::getPointColor(from) == lineColor.toColorref());
+	assert(Geometry::getPointColor(from) == lineColor);
 }
 
 void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep()
@@ -209,8 +209,8 @@ void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 	RectRegion bound(Point(0, 0), Point(40, 40));
 	Geometry::drawArc(bound, Point(0, 0), Point(0, 0));
 
-	assert(Geometry::getPointColor(Point(20, 0)) == lineColor.toColorref());
-	assert(Geometry::getPointColor(Point(0, 20)) == lineColor.toColorref());
+	assert(Geometry::getPointColor(Point(20, 0)) == lineColor);
+	assert(Geometry::getPointColor(Point(0, 20)) == lineColor);
 }
 
 void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept()
@@ -242,21 +242,13 @@ void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints()
 	Geometry::drawBeziers(points);
 
 	assert(
-		Geometry::getPointColor(points.getPoint(0))
-			==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(0)) == lineColor);
 	assert(
-		Geometry::getPointColor(points.getPoint(1))
-		==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(1)) == lineColor);
 	assert(
-		Geometry::getPointColor(points.getPoint(2))
-		==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(2)) == lineColor);
 	assert(
-		Geometry::getPointColor(points.getPoint(3))
-		==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(3)) == lineColor);
 }
 
 void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept()
@@ -283,17 +275,11 @@ void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 	Geometry::drawPolyline(points);
 
 	assert(
-		Geometry::getPointColor(points.getPoint(0))
-		==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(0)) == lineColor);
 	assert(
-		Geometry::getPointColor(points.getPoint(1))
-		==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(1)) == lineColor);
 	assert(
-		Geometry::getPointColor(points.getPoint(2))
-		==
-		lineColor.toColorref());
+		Geometry::getPointColor(points.getPoint(2)) == lineColor);
 }
 
 void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept()
@@ -316,13 +302,13 @@ void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine()
 	Geometry::drawRectangle(RectRegion(Point(0, 0), Point(10, 10)));
 
 	assert(
-		Geometry::getPointColor(Point(0, 0)) == lineColor.toColorref());
+		Geometry::getPointColor(Point(0, 0)) == lineColor);
 	assert(
-		Geometry::getPointColor(Point(0, 10)) == lineColor.toColorref());
+		Geometry::getPointColor(Point(0, 10)) == lineColor);
 	assert(
-		Geometry::getPointColor(Point(10, 0)) == lineColor.toColorref());
+		Geometry::getPointColor(Point(10, 0)) == lineColor);
 	assert(
-		Geometry::getPointColor(Point(10, 10)) == lineColor.toColorref());
+		Geometry::getPointColor(Point(10, 10)) == lineColor);
 }
 
 void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept()

@@ -12,10 +12,6 @@ namespace easyXPlus
 	public:
 		virtual ~Colorable()	{}
 		virtual COLORREF toColorref() const = 0;
-
-		//	NOTE:
-		//		Users should never use this function.
-		virtual Colorable* fromColorref(COLORREF colorValue) const = 0;
 	};
 
 	class Rgb : public Colorable
@@ -23,9 +19,12 @@ namespace easyXPlus
 	public:
 		virtual ~Rgb()			{}
 		virtual COLORREF toColorref() const;
-		virtual Colorable* fromColorref(COLORREF colorValue) const;
 
 		Rgb(unsigned char R, unsigned char G, unsigned char B);
+		explicit Rgb(COLORREF colorValue);
+
+		bool operator == (const Rgb otherColor)const;
+		bool operator != (const Rgb otherColor)const;
 
 		const unsigned char getR() const;
 		const unsigned char getG() const;

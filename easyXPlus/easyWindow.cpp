@@ -43,7 +43,6 @@ namespace easyXPlus
 	Window::~Window()
 	{
 		releaseGeometryResources();
-		releaseColorResources();
 
 		//	reset default pair if current dc equals this->hdc
 		if (defaultAttributePtr ==  &attribute)
@@ -62,14 +61,6 @@ namespace easyXPlus
 		if (attribute.brushHandle != NULL)
 			if (0 == DeleteObject((HGDIOBJ)attribute.brushHandle))
 				throw EasyExcept("System call error!");
-	}
-
-	void Window::releaseColorResources()
-	{
-		//	delete pointers with if guards to make tests run
-		if (attribute.dotColor)		delete attribute.dotColor;
-		if (attribute.lineColor)	delete attribute.lineColor;
-		if (attribute.fillColor)	delete attribute.fillColor;
 	}
 
 	///////////////////////////////////////

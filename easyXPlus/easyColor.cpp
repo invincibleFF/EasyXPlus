@@ -12,6 +12,13 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////
 
+	Rgb::Rgb(COLORREF colorValue)
+	{
+		this->colorValue = colorValue;
+	}
+
+	/////////////////////////////////////////////////////////////////////
+
 	COLORREF Rgb::toColorref() const
 	{
 		return colorValue;
@@ -19,12 +26,16 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////
 
-	Colorable* Rgb::fromColorref(COLORREF colorValue) const
+	bool Rgb::operator == (const Rgb otherColor) const
 	{
-		return new Rgb(
-			GetRValue(colorValue),
-			GetGValue(colorValue),
-			GetBValue(colorValue));
+		return this->colorValue == otherColor.colorValue;
+	}
+
+	/////////////////////////////////////////////////////////////////////
+
+	bool Rgb::operator != (const Rgb otherColor) const
+	{
+		return !(*this == otherColor);
 	}
 
 	/////////////////////////////////////////////////////////////////////
