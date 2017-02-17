@@ -18,12 +18,14 @@ namespace easyXPlus
 		{
 			explicit Attribute(HWND handle = NULL)
 				:	windowHandle(handle), hdc(NULL),
+					dotColor(Rgb::Red().toColorref()),
 					lineColor(Rgb::Black().toColorref()),
 					fillColor(Rgb::White().toColorref())
 			{}
 
 			HWND windowHandle;
 			HDC hdc;
+			COLORREF dotColor;
 			COLORREF lineColor;
 			COLORREF fillColor;
 		};

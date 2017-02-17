@@ -121,8 +121,6 @@ namespace easyXPlus
 	//								Geometry
 
 	//	static variables
-	COLORREF Geometry::dotColor = Rgb::White().toColorref();
-
 	std::vector<HPEN>	Geometry::penHandles;
 	std::vector<HBRUSH>	Geometry::brushHandles;
 
@@ -130,10 +128,7 @@ namespace easyXPlus
 
 	COLORREF Geometry::getDotColor()
 	{
-		//	test if setAsDefault() called
-		Window::getDefaultAttribute();
-
-		return dotColor;
+		return Window::getDefaultAttribute()->dotColor;
 	}
 
 	/////////////////////////////////
@@ -154,7 +149,7 @@ namespace easyXPlus
 
 	void Geometry::setDotColor(const Colorable& color)
 	{
-		dotColor = color.toColorref();
+		Window::getDefaultAttribute()->dotColor = color.toColorref();
 	}
 
 	/////////////////////////////////
@@ -213,7 +208,9 @@ namespace easyXPlus
 	void Geometry::drawDot(Point point)
 	{
 		COLORREF colorRet = SetPixel(
-			Window::getDefaultAttribute()->hdc, point.getX(), point.getY(), dotColor);
+			Window::getDefaultAttribute()->hdc,
+			point.getX(), point.getY(),
+			Window::getDefaultAttribute()->dotColor);
 
 		if (colorRet == -1 || colorRet == ERROR_INVALID_PARAMETER)
 			throw EasyExcept("System call error!");

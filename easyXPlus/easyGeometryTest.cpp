@@ -79,7 +79,7 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 	assert(Geometry::getPointColor(Point(30, 30)) == color.toColorref());
 }
 
-void Geometry_SetColors_DifferentWindow_LineAndFillKeepFormerSetColorDotNot()
+void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
 {
 	Window firstWindow, secondWindow;
 	Rgb firstDotColor(0, 1, 2), firstLineColor(3, 4, 5), firstFillColor(6, 7, 8);
@@ -99,7 +99,7 @@ void Geometry_SetColors_DifferentWindow_LineAndFillKeepFormerSetColorDotNot()
 	Geometry::drawDot(Point(1, 1));
 	Geometry::drawLine(Point(2, 2), Point(4, 4));
 	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
-	assert( Geometry::getPointColor(Point(1, 1)) == secondDotColor.toColorref() );
+	assert( Geometry::getPointColor(Point(1, 1)) == firstDotColor.toColorref() );
 	assert( Geometry::getPointColor(Point(3, 3)) == firstLineColor.toColorref() );
 	assert(Geometry::getPointColor(Point(6, 6)) == firstFillColor.toColorref() );
 
@@ -326,4 +326,4 @@ void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
 		EasyExcept);
 }
 
-#error "change the long test, test color module"
+//#error "change the long test, test color module"
