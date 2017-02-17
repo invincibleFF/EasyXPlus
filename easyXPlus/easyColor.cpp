@@ -19,6 +19,16 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////
 
+	Colorable* Rgb::fromColorref(COLORREF colorValue) const
+	{
+		return new Rgb(
+			GetRValue(colorValue),
+			GetGValue(colorValue),
+			GetBValue(colorValue));
+	}
+
+	/////////////////////////////////////////////////////////////////////
+
 	const unsigned char Rgb::getR() const
 	{
 		return GetRValue(colorValue);

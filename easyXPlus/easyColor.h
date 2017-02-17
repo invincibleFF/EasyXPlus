@@ -2,6 +2,7 @@
 #define EASY_COLOR_H
 
 #include <windows.h>
+#include <vector>
 
 namespace easyXPlus
 {
@@ -9,13 +10,20 @@ namespace easyXPlus
 	class Colorable
 	{
 	public:
+		virtual ~Colorable() = 0;
 		virtual COLORREF toColorref() const = 0;
+
+		//	NOTE:
+		//		Users have to delete the return object himself
+		virtual Colorable* fromColorref(COLORREF colorValue) const = 0;
 	};
 
 	class Rgb : public Colorable
 	{
 	public:
+		virtual ~Rgb()			{}
 		virtual COLORREF toColorref() const;
+		virtual Colorable* fromColorref(COLORREF colorValue) const;
 
 		Rgb(unsigned char R, unsigned char G, unsigned char B);
 
