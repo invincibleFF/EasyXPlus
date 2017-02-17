@@ -17,7 +17,7 @@ namespace easyXPlus
 		struct Attribute
 		{
 			explicit Attribute(HWND handle = NULL)
-				:	windowHandle(handle), hdc(NULL),
+				:	windowHandle(handle), hdc(NULL), penHandle(NULL), brushHandle(NULL),
 					dotColor(Rgb::Red().toColorref()),
 					lineColor(Rgb::Black().toColorref()),
 					fillColor(Rgb::White().toColorref())
@@ -25,6 +25,8 @@ namespace easyXPlus
 
 			HWND windowHandle;
 			HDC hdc;
+			HPEN penHandle;		//	created pen
+			HBRUSH brushHandle;	//	created brush
 			COLORREF dotColor;
 			COLORREF lineColor;
 			COLORREF fillColor;

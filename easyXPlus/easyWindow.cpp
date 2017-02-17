@@ -46,6 +46,12 @@ namespace easyXPlus
 		if (attribute.hdc != NULL)
 			if (0 == ReleaseDC(attribute.windowHandle, attribute.hdc))
 				throw EasyExcept("System call error!");
+		if (attribute.penHandle != NULL)
+			if (0 == DeleteObject((HGDIOBJ)attribute.penHandle))
+				throw EasyExcept("System call error!");
+		if (attribute.brushHandle != NULL)
+			if (0 == DeleteObject((HGDIOBJ)attribute.brushHandle))
+				throw EasyExcept("System call error!");
 
 		//	reset default pair if current dc equals this->hdc
 		if (defaultAttributePtr ==  &attribute)

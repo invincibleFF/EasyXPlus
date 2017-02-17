@@ -120,12 +120,6 @@ namespace easyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//								Geometry
 
-	//	static variables
-	std::vector<HPEN>	Geometry::penHandles;
-	std::vector<HBRUSH>	Geometry::brushHandles;
-
-	/////////////////////////////////
-
 	COLORREF Geometry::getDotColor()
 	{
 		return Window::getDefaultAttribute()->dotColor;
@@ -156,18 +150,24 @@ namespace easyXPlus
 
 	void Geometry::setLineColor(const Colorable& color)
 	{
-		HPEN penHandle = CreatePen(PS_SOLID, 0, color.toColorref());
-		if (NULL == penHandle)
+		Window::Attribute* windowAttribute = Window::getDefaultAttribute();
+		if (windowAttribute->lineColor == color.toColorref())
+			return;
+
+		HPEN newPen = CreatePen(PS_SOLID, 0, color.toColorref());
+		if (NULL == newPen)
 			throw EasyExcept("System call error!");
-		else
-			penHandles.push_back(penHandle);
 
 		HGDIOBJ objRet = SelectObject(
-			Window::getDefaultAttribute()->hdc, (HGDIOBJ)penHandle);
-
+			windowAttribute->hdc, (HGDIOBJ)newPen);
 		if (NULL == objRet)
 			throw EasyExcept("System call error!");
 
+		//	if created already, delete it
+		if (windowAttribute->penHandle != NULL)
+			if (0 == DeleteObject((HGDIOBJ)windowAttribute->penHandle))
+				throw EasyExcept("System call error!");
+		windowAttribute->penHandle = newPen;
 		Window::getDefaultAttribute()->lineColor = color.toColorref();
 	}
 
@@ -175,18 +175,24 @@ namespace easyXPlus
 
 	void Geometry::setFillColor(const Colorable& color)
 	{
-		HBRUSH brushHandle = CreateSolidBrush(color.toColorref());
-		if (NULL == brushHandle)
+		Window::Attribute* windowAttribute = Window::getDefaultAttribute();
+		if (windowAttribute->fillColor == color.toColorref())
+			return;
+
+		HBRUSH newBrush = CreateSolidBrush(color.toColorref());
+		if (NULL == newBrush)
 			throw EasyExcept("System call error!");
-		else
-			brushHandles.push_back(brushHandle);
 
 		HGDIOBJ objRet = SelectObject(
-			Window::getDefaultAttribute()->hdc, (HGDIOBJ)brushHandle);
-
+			Window::getDefaultAttribute()->hdc, (HGDIOBJ)newBrush);
 		if (NULL == objRet)
 			throw EasyExcept("System call error!");
 
+		//	if created, delete it
+		if (windowAttribute->brushHandle != NULL)
+			if (0 == DeleteObject((HGDIOBJ)windowAttribute->brushHandle))
+				throw EasyExcept("System call error!");
+		windowAttribute->brushHandle = newBrush;
 		Window::getDefaultAttribute()->fillColor = color.toColorref();
 	}
 

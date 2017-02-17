@@ -67,6 +67,17 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 	assert(Geometry::getPointColor(Point(20, 20)) == color.toColorref());
 }
 
+void Geometry_SetLineColor_SameColor_ColorNotChange()
+{
+	Window window;
+	window.setAsDefault();
+	COLORREF oldColorValue = Geometry::getLineColor();
+
+	Geometry::setLineColor(Rgb::Black().fromColorref(Geometry::getLineColor()));
+
+	assert(Geometry::getLineColor() == oldColorValue);
+}
+
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 {
 	Rgb color = Rgb(11, 22, 33);
@@ -77,6 +88,17 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 	Geometry::drawRectangle(RectRegion(Point(0, 0), Point(60, 60)));
 
 	assert(Geometry::getPointColor(Point(30, 30)) == color.toColorref());
+}
+
+void Geometry_SetFillColor_SameColor_ColorNotChange()
+{
+	Window window;
+	window.setAsDefault();
+	COLORREF oldColorValue = Geometry::getFillColor();
+
+	Geometry::setFillColor(Rgb::Black().fromColorref(Geometry::getFillColor()));
+
+	assert(Geometry::getFillColor() == oldColorValue);
 }
 
 void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
@@ -326,4 +348,4 @@ void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
 		EasyExcept);
 }
 
-//#error "change the long test, test color module"
+//#error "test color module, change attribute name"

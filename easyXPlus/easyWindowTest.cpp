@@ -185,7 +185,9 @@ void PointArray_InsertPoint_InvalidIndex_ThrowExcept();
 
 void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor();
 void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
+void Geometry_SetLineColor_SameColor_ColorNotChange();
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
+void Geometry_SetFillColor_SameColor_ColorNotChange();
 void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings();
 void Geometry_Drawers_ByDefault_SeeWindowOutput();
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
@@ -235,7 +237,9 @@ int main(int argc, wchar_t* argv[])
 
 	Geometry_SetDotColor_ByDefault_DrawDotWithThisColor();
 	Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
+	Geometry_SetLineColor_SameColor_ColorNotChange();
 	Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
+	Geometry_SetFillColor_SameColor_ColorNotChange();
 	Geometry_SetColors_DifferentWindow_KeepFormerColorSettings();
 	Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
 	Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange();

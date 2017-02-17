@@ -109,10 +109,6 @@ namespace easyXPlus
 	private:
 		static POINT* convertToPOINTs(const PointArray& points);
 		static void checkTwoEndPoints(const RectRegion& bound, const Point& lhs, const Point& rhs);
-
-		//	handles need to be deleted
-		static std::vector<HPEN>	penHandles;
-		static std::vector<HBRUSH>	brushHandles;
 	};
 }
 
