@@ -3,8 +3,6 @@
 
 #include "easyColor.h"
 #include <string>
-#include <memory>	//	for unique_ptr
-#include <utility>	//	for std::pair
 
 namespace easyXPlus
 {

@@ -120,21 +120,21 @@ namespace easyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//								Geometry
 
-	Rgb Geometry::getDotColor()
+	Rgb Geometry::getCurrentDotColor()
 	{
 		return Window::getDefaultAttribute()->dotColor;
 	}
 
 	/////////////////////////////////
 
-	Rgb Geometry::getLineColor()
+	Rgb Geometry::getCurrentLineColor()
 	{
 		return Window::getDefaultAttribute()->lineColor;
 	}
 
 	/////////////////////////////////
 
-	Rgb Geometry::getFillColor()
+	Rgb Geometry::getCurrentFillColor()
 	{
 		return Window::getDefaultAttribute()->fillColor;
 	}
@@ -236,8 +236,8 @@ namespace easyXPlus
 			throw EasyExcept("System call error!");
 
 		//	in GDI, the last pixel is not drew
-		COLORREF oldColorValue = Geometry::getDotColor().toColorref();
-		Geometry::setDotColor(Geometry::getLineColor());
+		COLORREF oldColorValue = Geometry::getCurrentDotColor().toColorref();
+		Geometry::setDotColor(Geometry::getCurrentLineColor());
 		Geometry::drawDot(to);
 		Geometry::setDotColor(Rgb(GetRValue(oldColorValue), GetGValue(oldColorValue), GetBValue(oldColorValue)));
 	}
