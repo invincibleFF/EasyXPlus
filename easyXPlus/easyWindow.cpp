@@ -10,18 +10,18 @@ namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	Window::Attribute* Window::getDefaultAttribute()
+	Window::GeometryAttribute* Window::getDefaultGeometryAttribute()
 	{
-		if (defaultAttributePtr == nullptr)
+		if (defaultGeometryAttribute == nullptr)
 			throw EasyExcept("No default window set!");
 
-		return defaultAttributePtr;
+		return defaultGeometryAttribute;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool Window::registered = false;
-	Window::Attribute* Window::defaultAttributePtr = nullptr;
+	Window::GeometryAttribute* Window::defaultGeometryAttribute = nullptr;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,21 +45,21 @@ namespace easyXPlus
 		releaseGeometryResources();
 
 		//	reset default pair if current dc equals this->hdc
-		if (defaultAttributePtr ==  &attribute)
-			defaultAttributePtr = nullptr;
+		if (defaultGeometryAttribute ==  &geometryAttribute)
+			defaultGeometryAttribute = nullptr;
 	}
 
 	void Window::releaseGeometryResources()
 	{
 		//	release dc if setAsDefault() called
-		if (attribute.hdc != NULL)
-			if (0 == ReleaseDC(attribute.windowHandle, attribute.hdc))
+		if (geometryAttribute.hdc != NULL)
+			if (0 == ReleaseDC(geometryAttribute.windowHandle, geometryAttribute.hdc))
 				throw EasyExcept("System call error!");
-		if (attribute.penHandle != NULL)
-			if (0 == DeleteObject((HGDIOBJ)attribute.penHandle))
+		if (geometryAttribute.pen != NULL)
+			if (0 == DeleteObject((HGDIOBJ)geometryAttribute.pen))
 				throw EasyExcept("System call error!");
-		if (attribute.brushHandle != NULL)
-			if (0 == DeleteObject((HGDIOBJ)attribute.brushHandle))
+		if (geometryAttribute.brush != NULL)
+			if (0 == DeleteObject((HGDIOBJ)geometryAttribute.brush))
 				throw EasyExcept("System call error!");
 	}
 
@@ -69,8 +69,8 @@ namespace easyXPlus
 	{
 		registerWindowClass();
 		createWindow(title.c_str(), posX, posY, width, height);
-		ShowWindow(attribute.windowHandle, SW_SHOW);
-		UpdateWindow(attribute.windowHandle); 
+		ShowWindow(geometryAttribute.windowHandle, SW_SHOW);
+		UpdateWindow(geometryAttribute.windowHandle); 
 	}
 
 	void Window::registerWindowClass()
@@ -93,7 +93,7 @@ namespace easyXPlus
 
 	void Window::createWindow(const wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height)
 	{
-		attribute.windowHandle = CreateWindowW(
+		geometryAttribute.windowHandle = CreateWindowW(
 			L"easyXPlus::WindowClassName",
 			title.c_str(),
 			WS_POPUP | WS_CAPTION,
@@ -102,7 +102,7 @@ namespace easyXPlus
 			NULL, NULL,
 			NULL, NULL);
 
-		if (attribute.windowHandle == NULL)
+		if (geometryAttribute.windowHandle == NULL)
 			throw EasyExcept("Cannot create window!");
 	}
 
@@ -110,18 +110,18 @@ namespace easyXPlus
 
 	void Window::clear(const Colorable& color)
 	{
-		HBRUSH brushHandle = CreateSolidBrush(color.toColorref());
-		if (brushHandle == NULL)
+		HBRUSH brush = CreateSolidBrush(color.toColorref());
+		if (brush == NULL)
 			goto error;
 
 		RECT clientRect;
-		if (0 == GetClientRect(attribute.windowHandle, &clientRect))
+		if (0 == GetClientRect(geometryAttribute.windowHandle, &clientRect))
 			goto error;
 		
-		if (!FillRect(GetDC(attribute.windowHandle), &clientRect, brushHandle))
+		if (!FillRect(GetDC(geometryAttribute.windowHandle), &clientRect, brush))
 			goto error;
 
-		DeleteObject((HGDIOBJ)brushHandle);
+		DeleteObject((HGDIOBJ)brush);
 		return;
 
 	error:
@@ -133,11 +133,11 @@ namespace easyXPlus
 	void Window::resize(unsigned width, unsigned height)
 	{
 		RECT oldWindowRect;
-		if ( 0 == GetWindowRect(attribute.windowHandle, &oldWindowRect))
+		if ( 0 == GetWindowRect(geometryAttribute.windowHandle, &oldWindowRect))
 			goto call_error;
 
 		if (0 == MoveWindow(
-					attribute.windowHandle,
+					geometryAttribute.windowHandle,
 					oldWindowRect.left, oldWindowRect.top,
 					width, height,
 					FALSE))
@@ -153,11 +153,11 @@ namespace easyXPlus
 	void Window::reposition(int posX, int posY)
 	{
 		RECT windowRect;
-		if (0 == GetWindowRect(attribute.windowHandle, &windowRect))
+		if (0 == GetWindowRect(geometryAttribute.windowHandle, &windowRect))
 			goto call_error;
 
 		if (0 == MoveWindow(
-			attribute.windowHandle,
+			geometryAttribute.windowHandle,
 			posX, posY,
 			windowRect.right - windowRect.left,
 			windowRect.bottom - windowRect.top,
@@ -175,17 +175,17 @@ namespace easyXPlus
 	void Window::setAsDefault()
 	{
 		//	if first call, store HDC
-		if (attribute.hdc == NULL)
+		if (geometryAttribute.hdc == NULL)
 		{
-			attribute.hdc = GetDC(attribute.windowHandle);
-			if (attribute.hdc == NULL)
+			geometryAttribute.hdc = GetDC(geometryAttribute.windowHandle);
+			if (geometryAttribute.hdc == NULL)
 				throw EasyExcept("System call error!");
 
-			if (0 == SetArcDirection(attribute.hdc, AD_CLOCKWISE))
+			if (0 == SetArcDirection(geometryAttribute.hdc, AD_CLOCKWISE))
 				throw EasyExcept("System call error!");
 		}
 
-		defaultAttributePtr = &attribute;
+		defaultGeometryAttribute = &geometryAttribute;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -215,7 +215,7 @@ namespace easyXPlus
 	RECT Window::getWindowRect() const
 	{
 		RECT windowRect;
-		if (0 == GetWindowRect(attribute.windowHandle, &windowRect))
+		if (0 == GetWindowRect(geometryAttribute.windowHandle, &windowRect))
 			throw EasyExcept("Get Window Region error!");
 
 		return windowRect;

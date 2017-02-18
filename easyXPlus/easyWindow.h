@@ -14,10 +14,12 @@ namespace easyXPlus
 	{
 	private:
 		friend class Geometry;
-		struct Attribute;
+		struct GeometryAttribute;
+		struct TextAttribute;
 
 	public:
-		static Attribute* getDefaultAttribute();
+		static GeometryAttribute* getDefaultGeometryAttribute();
+		static TextAttribute* getDefaultTextAttribute();//	todo:
 
 		Window(const std::wstring title = L"easyX+");
 		Window(const std::wstring title, int posX, int posY);
@@ -47,31 +49,38 @@ namespace easyXPlus
 		void releaseGeometryResources();
 
 	private:
-		struct Attribute
+		struct GeometryAttribute
 		{
-			explicit Attribute(HWND handle = NULL)
-			:	windowHandle(handle), 
-				hdc(NULL), penHandle(NULL), brushHandle(NULL),
-				dotColor(Rgb::Red()), lineColor(Rgb::Black()), fillColor(Rgb::White())
+			explicit GeometryAttribute(HWND handle = NULL)
+				:	windowHandle(handle), 
+					hdc(NULL), pen(NULL), brush(NULL),
+					dotColor(Rgb::Red()), lineColor(Rgb::Black()), fillColor(Rgb::White())
 			{}
 
 			HWND windowHandle;
-			HDC hdc;			//	created dc
-			HPEN penHandle;		//	created pen
-			HBRUSH brushHandle;	//	created brush
-			Rgb dotColor, lineColor, fillColor;
+			HDC hdc;			//	created dc, need to delete
+			HPEN pen;			//	created pen, need to delete
+			HBRUSH brush;		//	created brush, need to delete
+			Rgb dotColor, lineColor, fillColor;	
+		};
+
+		struct TextAttribute
+		{
+			//	todo:
 		};
 
 	protected:
 		static bool registered;
-		static Attribute* defaultAttributePtr;
-		
+		static GeometryAttribute* defaultGeometryAttribute;
+		static TextAttribute* defaultTextAttribute;//	todo:
+
 		static const int INIT_POS_X = 0;
 		static const int INIT_POS_Y = 0;
 		static const int INIT_WIDTH = 480;
 		static const int INIT_HEIGHT = 640;
 
-		Attribute attribute;
+		GeometryAttribute geometryAttribute;
+		TextAttribute textAttribute;
 	};
 }
 

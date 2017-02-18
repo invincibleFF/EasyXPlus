@@ -19,12 +19,13 @@ public:
 	const int getInitWidth() const { return INIT_WIDTH; }
 	const int getInitHeight() const { return INIT_HEIGHT; }
 	const bool getRegisteredFlag() const { return registered; }
-	const HWND getWindowHandle() const { return attribute.windowHandle; }
+	const HWND getWindowHandle() const { return geometryAttribute.windowHandle; }
 
-	const HWND getDefaultWindowHandle() const { return defaultAttributePtr->windowHandle; }
+	const HWND getDefaultWindowHandle() const
+	{ return defaultGeometryAttribute->windowHandle; }
 
-	void resetDefaultWindowAttribute() { defaultAttributePtr = nullptr; }
-	void setWindowHandle(HWND hwnd)	{ attribute.windowHandle = hwnd; }
+	void resetDefaultWindowAttribute() { defaultGeometryAttribute = nullptr; }
+	void setWindowHandle(HWND hwnd)	{ geometryAttribute.windowHandle = hwnd; }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +73,7 @@ void Ctor_ByDefault_NullDefaultAttributeAndFalseRegisteredFlag()
 	FakeWindow fake(window);
 
 	assert (true == fake.getRegisteredFlag());
-	SU_ASSERT_THROW (fake.getDefaultAttribute(), EasyExcept);
+	SU_ASSERT_THROW (fake.getDefaultGeometryAttribute(), EasyExcept);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -169,7 +170,7 @@ void GetDefaultAttribute_NotSet_ThrowExcept()
 
 	fakeWindow.resetDefaultWindowAttribute();
 
-	SU_ASSERT_THROW(Window::getDefaultAttribute(), EasyExcept);
+	SU_ASSERT_THROW(Window::getDefaultGeometryAttribute(), EasyExcept);
 }
 
 //////////////////////////////////////////////////////////////////////////////
