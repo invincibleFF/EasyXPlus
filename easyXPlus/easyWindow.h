@@ -6,14 +6,11 @@
 
 namespace easyXPlus
 {
-	//	TODO:
-	//			When a window call setAsDefault() and then is is destructed, the 
-	//	defaultWindowHandle variable value is still reserved. But the system may
-	//	assign this handle to a different window.
 	class Window
 	{
 	private:
 		friend class Geometry;
+		friend class Text;
 		struct GeometryAttribute;
 		struct TextAttribute;
 
@@ -45,20 +42,19 @@ namespace easyXPlus
 		void realCtor(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
 		void registerWindowClass();
 		void createWindow(const std::wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height);
+		void createDC();
 		RECT getWindowRect() const;
+		void releaseDCResources();
 		void releaseGeometryResources();
+		void releaseTextResources();
 
 	private:
 		struct GeometryAttribute
 		{
-			explicit GeometryAttribute(HWND handle = NULL)
-				:	windowHandle(handle), 
-					hdc(NULL), pen(NULL), brush(NULL),
-					dotColor(Rgb::Red()), lineColor(Rgb::Black()), fillColor(Rgb::White())
-			{}
+			GeometryAttribute();
+			~GeometryAttribute();
 
-			HWND windowHandle;
-			HDC hdc;			//	created dc, need to delete
+			HDC hdc;
 			HPEN pen;			//	created pen, need to delete
 			HBRUSH brush;		//	created brush, need to delete
 			Rgb dotColor, lineColor, fillColor;	
@@ -66,7 +62,26 @@ namespace easyXPlus
 
 		struct TextAttribute
 		{
-			//	todo:
+			TextAttribute();
+			~TextAttribute();
+
+			HDC hdc;
+			HFONT font;
+			std::wstring fontName;
+			bool isBold;
+			bool isItalic;
+			bool isUnderline;
+			unsigned pointSize;	//	todo: test to change default value
+			Rgb textColor;
+			Rgb bkColor;
+
+			//	Since window handle is created in Outer-Class-Ctor body,
+			//	i cannot initialize this member in initialzation lists.
+			//	However, i decide to initialize it when setAsDefault() is called.
+			void realCtor();
+			HFONT createFont(
+				unsigned pointSize, bool isBold, bool isItalic,
+				bool isUnderline, std::wstring fontName);
 		};
 
 	protected:
@@ -79,6 +94,8 @@ namespace easyXPlus
 		static const int INIT_WIDTH = 480;
 		static const int INIT_HEIGHT = 640;
 
+		HWND windowHandle;
+		HDC hdc;
 		GeometryAttribute geometryAttribute;
 		TextAttribute textAttribute;
 	};

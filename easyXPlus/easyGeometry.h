@@ -16,8 +16,8 @@ namespace easyXPlus
 		bool operator == (const Point& rhs)const;
 		bool operator != (const Point& rhs)const;
 
-		unsigned getX() const	{ return x; }
-		unsigned getY() const	{ return y; }
+		int getX() const	{ return x; }
+		int getY() const	{ return y; }
 
 	private:
 		unsigned x, y;

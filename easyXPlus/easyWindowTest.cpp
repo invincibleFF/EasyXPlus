@@ -13,19 +13,21 @@ class FakeWindow : public Window
 {
 public:
 	FakeWindow(Window& window) : Window(window)		{}
+	~FakeWindow()	{ hdc = NULL; }
 
 	const int getInitPosX() const { return INIT_POS_X; }
 	const int getInitPosY() const { return INIT_POS_Y; }
 	const int getInitWidth() const { return INIT_WIDTH; }
 	const int getInitHeight() const { return INIT_HEIGHT; }
 	const bool getRegisteredFlag() const { return registered; }
-	const HWND getWindowHandle() const { return geometryAttribute.windowHandle; }
+	const HWND getWindowHandle() const { return windowHandle; }
+	const void* getTextAttribute() const { return &textAttribute; }
+	const void* getGeometryAttribute() const { return &geometryAttribute; }
 
-	const HWND getDefaultWindowHandle() const
-	{ return defaultGeometryAttribute->windowHandle; }
 
-	void resetDefaultWindowAttribute() { defaultGeometryAttribute = nullptr; }
-	void setWindowHandle(HWND hwnd)	{ geometryAttribute.windowHandle = hwnd; }
+	void resetDefaultGeometryAttribute() { defaultGeometryAttribute = nullptr; }
+	void resetDefaultTextAttribute() { defaultTextAttribute = nullptr; }
+	void setWindowHandle(HWND hwnd)	{ windowHandle = hwnd; }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,15 +67,16 @@ void Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH()
 	assert (height == window.getHeight());
 }
 
-void Ctor_ByDefault_NullDefaultAttributeAndFalseRegisteredFlag()
+void Ctor_ByDefault_NullDefaultAttributesAndFalseRegisteredFlag()
 {
-	FakeWindow(Window()).resetDefaultWindowAttribute();
+	FakeWindow(Window()).resetDefaultGeometryAttribute();
 
 	Window window;
 	FakeWindow fake(window);
 
 	assert (true == fake.getRegisteredFlag());
 	SU_ASSERT_THROW (fake.getDefaultGeometryAttribute(), EasyExcept);
+	SU_ASSERT_THROW(fake.getDefaultTextAttribute(), EasyExcept);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -152,23 +155,34 @@ void Reposiion_NullHandle_ThrowException()
 ////////////////////////////////////////////////////////////////////////////
 //						Tests for setAsDefault
 
-void SetAsDefault_ByDefault_SetDefultWindowHandleToThis()
+void SetAsDefault_ByDefault_SetDefultAttributes()
 {
 	FakeWindow fake(Window{});
 	fake.setAsDefault();
 
-	assert(fake.getWindowHandle() == fake.getDefaultWindowHandle());
+	assert(fake.getDefaultTextAttribute() == fake.getTextAttribute());
+	assert(fake.getDefaultGeometryAttribute() == fake.getGeometryAttribute());
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //						Tests for Window::getDefaultWindowHandle
 
-void GetDefaultAttribute_NotSet_ThrowExcept()
+void GetDefaultGeometryAttribute_NotSet_ThrowExcept()
 {
 	Window window;
 	FakeWindow fakeWindow(window);
 
-	fakeWindow.resetDefaultWindowAttribute();
+	fakeWindow.resetDefaultGeometryAttribute();
+
+	SU_ASSERT_THROW(Window::getDefaultGeometryAttribute(), EasyExcept);
+}
+
+void GetDefaultTextAttribute_NotSet_ThrowExcept()
+{
+	Window window;
+	FakeWindow fakeWindow(window);
+
+	fakeWindow.resetDefaultGeometryAttribute();
 
 	SU_ASSERT_THROW(Window::getDefaultGeometryAttribute(), EasyExcept);
 }
@@ -206,12 +220,14 @@ void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine();
 void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept();
 void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept();
 
+void Text_Output_DefaultWindowNotSet_ThrowExcept();
+
 int main(int argc, wchar_t* argv[])
 {
 	Ctor_WithZeroParams_CreateWindowWithInitParams();
 	Ctor_WithPosParams_CreateWindowWithThesePos();
 	Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH();
-	Ctor_ByDefault_NullDefaultAttributeAndFalseRegisteredFlag();
+	Ctor_ByDefault_NullDefaultAttributesAndFalseRegisteredFlag();
 
 	Clear_ByDefault_ClearToColorGiven();
 
@@ -221,8 +237,8 @@ int main(int argc, wchar_t* argv[])
 	Reposition_ByDefault_RepositionToGivenPos();
 	Reposiion_NullHandle_ThrowException();
 
-	SetAsDefault_ByDefault_SetDefultWindowHandleToThis();
-	GetDefaultAttribute_NotSet_ThrowExcept();
+	SetAsDefault_ByDefault_SetDefultAttributes();
+	GetDefaultGeometryAttribute_NotSet_ThrowExcept();
 
 	///////////////			Colorable		//////////////////
 
@@ -256,6 +272,10 @@ int main(int argc, wchar_t* argv[])
 	Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine();
 	Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept();
 	Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept();
+
+	////////////////////		Text		/////////////////////
+
+	Text_Output_DefaultWindowNotSet_ThrowExcept();
 
 	return 0;
 }

@@ -158,14 +158,12 @@ namespace easyXPlus
 		if (NULL == newPen)
 			throw EasyExcept("System call error!");
 
-		HGDIOBJ objRet = SelectObject(
-			geometryAttribute->hdc, (HGDIOBJ)newPen);
-		if (NULL == objRet)
+		if (NULL == SelectObject(geometryAttribute->hdc, (HGDIOBJ)newPen))
 			throw EasyExcept("System call error!");
 
 		//	if created already, delete it
 		if (geometryAttribute->pen != NULL)
-		if (0 == DeleteObject((HGDIOBJ)geometryAttribute->pen))
+			if (0 == DeleteObject((HGDIOBJ)geometryAttribute->pen))
 				throw EasyExcept("System call error!");
 		geometryAttribute->pen = newPen;
 		geometryAttribute->lineColor = Rgb(color.toColorref());
@@ -190,7 +188,7 @@ namespace easyXPlus
 
 		//	if created, delete it
 		if (geometryAttribute->brush != NULL)
-		if (0 == DeleteObject((HGDIOBJ)geometryAttribute->brush))
+			if (0 == DeleteObject((HGDIOBJ)geometryAttribute->brush))
 				throw EasyExcept("System call error!");
 		geometryAttribute->brush = newBrush;
 		geometryAttribute->fillColor = Rgb(color.toColorref());
