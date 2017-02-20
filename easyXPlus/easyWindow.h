@@ -16,7 +16,7 @@ namespace easyXPlus
 
 	public:
 		static GeometryAttribute* getDefaultGeometryAttribute();
-		static TextAttribute* getDefaultTextAttribute();//	todo:
+		static TextAttribute* getDefaultTextAttribute();
 
 		Window(const std::wstring title = L"easyX+");
 		Window(const std::wstring title, int posX, int posY);
@@ -79,9 +79,11 @@ namespace easyXPlus
 			//	i cannot initialize this member in initialzation lists.
 			//	However, i decide to initialize it when setAsDefault() is called.
 			void realCtor();
-			HFONT createFont(
-				unsigned pointSize, bool isBold, bool isItalic,
-				bool isUnderline, std::wstring fontName);
+
+			static void TextAttribute::releaseFont(TextAttribute* attributePtr);
+			static void TextAttribute::createFont(TextAttribute* attributePtr);
+			static void TextAttribute::applyFont(TextAttribute* attributePtr);
+			static void TextAttribute::changeFont(TextAttribute* attributePtr);
 		};
 
 	protected:

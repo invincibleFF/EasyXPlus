@@ -220,7 +220,14 @@ void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine();
 void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept();
 void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept();
 
-void Text_Output_DefaultWindowNotSet_ThrowExcept();
+void Text_FunctionCalls_DefaultWindowNotSet_ThrowExcept();
+void Text_SetFont_ByDefault_GetWhatSet();
+void Text_SetBold_ByDefault_GetWhatSet();
+void Text_SetItalic_ByDefault_GetWhatSet();
+void Text_SetUnderline_ByDefault_GetWhatSet();
+void Text_SetFontSize_ByDefault_GetWhatSet();
+void Text_SetTextColor_ByDefault_GetWhatSet();
+void Text_SetBkColor_ByDefault_GetWhatSet();
 
 int main(int argc, wchar_t* argv[])
 {
@@ -275,7 +282,14 @@ int main(int argc, wchar_t* argv[])
 
 	////////////////////		Text		/////////////////////
 
-	Text_Output_DefaultWindowNotSet_ThrowExcept();
+	Text_FunctionCalls_DefaultWindowNotSet_ThrowExcept();
+	Text_SetFont_ByDefault_GetWhatSet();
+	Text_SetBold_ByDefault_GetWhatSet();
+	Text_SetItalic_ByDefault_GetWhatSet();
+	Text_SetUnderline_ByDefault_GetWhatSet();
+	Text_SetFontSize_ByDefault_GetWhatSet();
+	Text_SetTextColor_ByDefault_GetWhatSet();
+	Text_SetBkColor_ByDefault_GetWhatSet();
 
 	return 0;
 }

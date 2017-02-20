@@ -1,19 +1,21 @@
 #include "easyWindow.h"
 #include "easyExcept.h"
 
+#include <cassert>
+
 using namespace std;
 
 namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
-	//								Static variables
+	//								Static Window variables
 
 	bool Window::registered = false;
 	Window::TextAttribute* Window::defaultTextAttribute = nullptr;
 	Window::GeometryAttribute* Window::defaultGeometryAttribute = nullptr;
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	//								Static functions
+	//								Static Window functions
 
 	Window::TextAttribute* Window::getDefaultTextAttribute()
 	{
@@ -249,7 +251,7 @@ namespace easyXPlus
 	Window::TextAttribute::TextAttribute() :
 		hdc(NULL),
 		fontName(L"Arial"), isBold(false), isItalic(false), isUnderline(false),
-		pointSize(10), textColor(Rgb::White()), bkColor(Rgb::Black())
+		pointSize(70), textColor(Rgb::White()), bkColor(Rgb::Black())
 	{
 	}
 
@@ -262,38 +264,67 @@ namespace easyXPlus
 
 	void Window::TextAttribute::realCtor()
 	{
-		font = createFont(pointSize, isBold, isItalic, isUnderline, fontName);
+		TextAttribute::createFont(this);
+
 		if (NULL == SelectObject(hdc, font))
 			throw EasyExcept("System call error!");
-
 		if (CLR_INVALID == SetTextColor(hdc, textColor.toColorref()))
 			throw EasyExcept("System call error!");
 		if (CLR_INVALID == SetBkColor(hdc, bkColor.toColorref()))
 			throw EasyExcept("System call error!");
 	}
 
-	////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	//					static TextAttribute functions
 
-	HFONT Window::TextAttribute::createFont(
-		unsigned pointSize, bool isBold, bool isItalic,
-		bool isUnderline, std::wstring fontName)
+	void Window::TextAttribute::releaseFont(TextAttribute* attributePtr)
 	{
-		HFONT font = CreateFont(
-			-MulDiv(pointSize, GetDeviceCaps(hdc, LOGPIXELSY), 72),
+		assert(attributePtr != nullptr);
+
+		if (0 == DeleteObject(attributePtr->font))
+			throw EasyExcept("System call error!");
+	}
+
+	/////////////////////////////////
+
+	void Window::TextAttribute::createFont(TextAttribute* attributePtr)
+	{
+		assert(attributePtr != nullptr);
+
+		attributePtr->font = CreateFont(
+			-MulDiv(attributePtr->pointSize,
+					GetDeviceCaps(attributePtr->hdc, LOGPIXELSY), 72),
 			0, 0, 0,
-			FW_NORMAL,
-			isItalic,
-			isUnderline,
+			attributePtr->isBold ? FW_BOLD : FW_NORMAL,
+			attributePtr->isItalic,
+			attributePtr->isUnderline,
 			FALSE,
 			CHINESEBIG5_CHARSET,
 			OUT_DEFAULT_PRECIS,
 			CLIP_DEFAULT_PRECIS,
 			CLEARTYPE_QUALITY,
 			DEFAULT_PITCH,
-			fontName.c_str());
-		if (font == NULL)	throw EasyExcept("System call error!");
+			attributePtr->fontName.c_str());
+		if (attributePtr->font == NULL)	throw EasyExcept("System call error!");
+	}
 
-		return font;
+	///////////////////////////////////////
+
+	void Window::TextAttribute::applyFont(TextAttribute* attributePtr)
+	{
+		assert(attributePtr != nullptr);
+
+		if (NULL == SelectObject(attributePtr->hdc, attributePtr->font))
+			throw EasyExcept("System call error!");
+	}
+
+	//////////////////////////////////////
+
+	void Window::TextAttribute::changeFont(TextAttribute* attributePtr)
+	{
+		TextAttribute::releaseFont(attributePtr);
+		TextAttribute::createFont(attributePtr);
+		TextAttribute::applyFont(attributePtr);
 	}
 
 	////////////////////////////////////////  END  //////////////////////////////////////
