@@ -158,4 +158,8 @@ namespace easyXPlus
 			text.size());
 		if (ret == 0)	throw EasyExcept("System call error!");
 	}
+
+#undef APPLY_ONE_FONT_ATTRIBUTE_FIELD_CHANGE
+
+	///////////////////////////////		END		///////////////////////////////
 }
