@@ -5,17 +5,31 @@
 
 using namespace std;
 
+extern LRESULT CALLBACK CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
 	//								Static Window variables
 
 	bool Window::registered = false;
+	HWND Window::defaultWindowHandle = NULL;
 	Window::TextAttribute* Window::defaultTextAttribute = nullptr;
 	Window::GeometryAttribute* Window::defaultGeometryAttribute = nullptr;
+	Window::EventAttribute* Window::defaultEventAttribute = nullptr;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//								Static Window functions
+
+	HWND Window::getDefaultWindowHandle()
+	{
+		if (defaultWindowHandle == NULL)
+			throw EasyExcept("No default window set!");
+
+		return defaultWindowHandle;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	Window::TextAttribute* Window::getDefaultTextAttribute()
 	{
@@ -33,6 +47,16 @@ namespace easyXPlus
 			throw EasyExcept("No default window set!");
 
 		return defaultGeometryAttribute;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	Window::EventAttribute* Window::getDefaultEventAttribute()
+	{
+		if (defaultEventAttribute == nullptr)
+			throw EasyExcept("No default window set!");
+
+		return defaultEventAttribute;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -59,11 +83,14 @@ namespace easyXPlus
 			if (0 == ReleaseDC(windowHandle, hdc))
 				throw EasyExcept("System call error!");
 
-		//	reset default pair if current dc equals this->hdc
+		if (defaultWindowHandle = defaultWindowHandle)
+			defaultWindowHandle = NULL;
 		if (defaultGeometryAttribute ==  &geometryAttribute)
 			defaultGeometryAttribute = nullptr;
 		if (defaultTextAttribute == &textAttribute)
 			defaultTextAttribute = nullptr;
+		if (defaultEventAttribute == &eventAttribute)
+			defaultEventAttribute = nullptr;
 	}
 
 	///////////////////////////////////////
@@ -84,7 +111,7 @@ namespace easyXPlus
 			WNDCLASSW wndclass = { 0 };
 			wndclass.lpszClassName = L"easyXPlus::WindowClassName";
 			wndclass.hInstance = GetModuleHandleW(NULL);			//	current .exe's module handle
-			wndclass.lpfnWndProc = DefWindowProc;					//	default window procedure
+			wndclass.lpfnWndProc = CustomeWndProc;					//	default window procedure
 			wndclass.hCursor = LoadCursorW(NULL, IDC_ARROW);		//	default arrow cursor
 			wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_DROPSHADOW;//	default window style
 			wndclass.hbrBackground = (HBRUSH)(1 + COLOR_BACKGROUND);
@@ -190,8 +217,10 @@ namespace easyXPlus
 
 	void Window::setAsDefault()
 	{
+		defaultWindowHandle=  windowHandle;
 		defaultGeometryAttribute = &geometryAttribute;
 		defaultTextAttribute = &textAttribute;
+		defaultEventAttribute = &eventAttribute;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -257,14 +286,16 @@ namespace easyXPlus
 
 	Window::TextAttribute::~TextAttribute()
 	{
-		//	todo:
+		if (font != NULL)
+			if (0 == DeleteObject((HGDIOBJ)font))
+				throw EasyExcept("System call error!");
 	}
 
 	////////////////////////////////
 
 	void Window::TextAttribute::realCtor()
 	{
-		TextAttribute::createFont(this);
+		createFont();
 
 		if (NULL == SelectObject(hdc, font))
 			throw EasyExcept("System call error!");
@@ -277,54 +308,47 @@ namespace easyXPlus
 	////////////////////////////////////////////////////////////////////
 	//					static TextAttribute functions
 
-	void Window::TextAttribute::releaseFont(TextAttribute* attributePtr)
+	void Window::TextAttribute::releaseFont()
 	{
-		assert(attributePtr != nullptr);
-
-		if (0 == DeleteObject(attributePtr->font))
+		if (0 == DeleteObject(font))
 			throw EasyExcept("System call error!");
 	}
 
 	/////////////////////////////////
 
-	void Window::TextAttribute::createFont(TextAttribute* attributePtr)
+	void Window::TextAttribute::createFont()
 	{
-		assert(attributePtr != nullptr);
-
-		attributePtr->font = CreateFont(
-			-MulDiv(attributePtr->pointSize,
-					GetDeviceCaps(attributePtr->hdc, LOGPIXELSY), 72),
+		font = CreateFont(
+			-MulDiv(pointSize, GetDeviceCaps(hdc, LOGPIXELSY), 72),
 			0, 0, 0,
-			attributePtr->isBold ? FW_BOLD : FW_NORMAL,
-			attributePtr->isItalic,
-			attributePtr->isUnderline,
+			isBold ? FW_BOLD : FW_NORMAL,
+			isItalic,
+			isUnderline,
 			FALSE,
 			CHINESEBIG5_CHARSET,
 			OUT_DEFAULT_PRECIS,
 			CLIP_DEFAULT_PRECIS,
 			CLEARTYPE_QUALITY,
 			DEFAULT_PITCH,
-			attributePtr->fontName.c_str());
-		if (attributePtr->font == NULL)	throw EasyExcept("System call error!");
+			fontName.c_str());
+		if (font == NULL)	throw EasyExcept("System call error!");
 	}
 
 	///////////////////////////////////////
 
-	void Window::TextAttribute::applyFont(TextAttribute* attributePtr)
+	void Window::TextAttribute::applyFont()
 	{
-		assert(attributePtr != nullptr);
-
-		if (NULL == SelectObject(attributePtr->hdc, attributePtr->font))
+		if (NULL == SelectObject(hdc, font))
 			throw EasyExcept("System call error!");
 	}
 
 	//////////////////////////////////////
 
-	void Window::TextAttribute::changeFont(TextAttribute* attributePtr)
+	void Window::TextAttribute::changeFont()
 	{
-		TextAttribute::releaseFont(attributePtr);
-		TextAttribute::createFont(attributePtr);
-		TextAttribute::applyFont(attributePtr);
+		TextAttribute::releaseFont();
+		TextAttribute::createFont();
+		TextAttribute::applyFont();
 	}
 
 	////////////////////////////////////////  END  //////////////////////////////////////

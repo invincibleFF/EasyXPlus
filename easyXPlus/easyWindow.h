@@ -2,7 +2,12 @@
 #define EASY_WINDOW_H
 
 #include "easyColor.h"
+#include "easyMouse.h"
 #include <string>
+#include <map>
+
+//	in easyBase.cpp unit
+LRESULT CALLBACK CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace easyXPlus
 {
@@ -11,12 +16,19 @@ namespace easyXPlus
 	private:
 		friend class Geometry;
 		friend class Text;
+		friend class Mouse;
+		friend LRESULT CALLBACK ::CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 		struct GeometryAttribute;
 		struct TextAttribute;
 
+		typedef std::map<Mouse::EventType, Mouse::EventPairs> EventAttribute;
+
 	public:
+		static HWND getDefaultWindowHandle();
 		static GeometryAttribute* getDefaultGeometryAttribute();
 		static TextAttribute* getDefaultTextAttribute();
+		static EventAttribute* getDefaultEventAttribute();
 
 		Window(const std::wstring title = L"easyX+");
 		Window(const std::wstring title, int posX, int posY);
@@ -24,7 +36,7 @@ namespace easyXPlus
 
 		virtual ~Window();
 
-		//	forbit copy constructor
+		//	forbid copy constructor
 		Window operator = (Window& window) = delete;
 
 		int getPosX() const;
@@ -80,16 +92,19 @@ namespace easyXPlus
 			//	However, i decide to initialize it when setAsDefault() is called.
 			void realCtor();
 
-			static void TextAttribute::releaseFont(TextAttribute* attributePtr);
-			static void TextAttribute::createFont(TextAttribute* attributePtr);
-			static void TextAttribute::applyFont(TextAttribute* attributePtr);
-			static void TextAttribute::changeFont(TextAttribute* attributePtr);
+			void TextAttribute::releaseFont();
+			void TextAttribute::createFont();
+			void TextAttribute::applyFont();
+			void TextAttribute::changeFont();
 		};
+
 
 	protected:
 		static bool registered;
+		static HWND defaultWindowHandle;
 		static GeometryAttribute* defaultGeometryAttribute;
-		static TextAttribute* defaultTextAttribute;//	todo:
+		static TextAttribute* defaultTextAttribute;
+		static EventAttribute* defaultEventAttribute;
 
 		static const int INIT_POS_X = 0;
 		static const int INIT_POS_Y = 0;
@@ -100,6 +115,7 @@ namespace easyXPlus
 		HDC hdc;
 		GeometryAttribute geometryAttribute;
 		TextAttribute textAttribute;
+		EventAttribute eventAttribute;
 	};
 }
 

@@ -10,11 +10,11 @@ namespace easyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//									Macros
 
-#define APPLY_ONE_FONT_ATTRIBUTE_FIELD_CHANGE(oneField)								\
+#define APPLY_ONE_FONT_ATTRIBUTE_FIELD_CHANGE(oneField)							\
 	Window::TextAttribute* textAttribute = Window::getDefaultTextAttribute();	\
 	textAttribute->oneField = oneField;											\
 																				\
-	Window::TextAttribute::changeFont(textAttribute);
+	textAttribute->changeFont();
 
 	///////////////////////////////////////////////////////////////////////////
 	//									Text

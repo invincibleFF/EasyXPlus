@@ -13,7 +13,11 @@ class FakeWindow : public Window
 {
 public:
 	FakeWindow(Window& window) : Window(window)		{}
-	~FakeWindow()	{ hdc = NULL; }
+	~FakeWindow()
+	{ 
+		hdc = NULL; geometryAttribute.brush = NULL;
+		geometryAttribute.pen = NULL; textAttribute.font = NULL;
+	}
 
 	const int getInitPosX() const { return INIT_POS_X; }
 	const int getInitPosY() const { return INIT_POS_Y; }
@@ -229,6 +233,15 @@ void Text_SetFontSize_ByDefault_GetWhatSet();
 void Text_SetTextColor_ByDefault_GetWhatSet();
 void Text_SetBkColor_ByDefault_GetWhatSet();
 
+
+void SetEventHandler_DefaultWindowNotSet_ThrowExcept();
+void SetEventHandler_ByDefault_CalledAndParamPassedWhenEventHappens();
+void CancelEventHandler_HandlerNotSet_ThrowExcept();
+void CancelEventHandler_ByDefault_CancelFormerRegisteredHandler();
+void GetCurrentPos_ByDefault_GetWhereItIs();
+
+//////////////////////////////////////////////////////////////////////
+
 int main(int argc, wchar_t* argv[])
 {
 	Ctor_WithZeroParams_CreateWindowWithInitParams();
@@ -290,6 +303,14 @@ int main(int argc, wchar_t* argv[])
 	Text_SetFontSize_ByDefault_GetWhatSet();
 	Text_SetTextColor_ByDefault_GetWhatSet();
 	Text_SetBkColor_ByDefault_GetWhatSet();
+
+	/////////////////////		Mouse		////////////////////////
+
+	SetEventHandler_DefaultWindowNotSet_ThrowExcept();
+	SetEventHandler_ByDefault_CalledAndParamPassedWhenEventHappens();
+	CancelEventHandler_HandlerNotSet_ThrowExcept();
+	CancelEventHandler_ByDefault_CancelFormerRegisteredHandler();
+	GetCurrentPos_ByDefault_GetWhereItIs();
 
 	return 0;
 }
