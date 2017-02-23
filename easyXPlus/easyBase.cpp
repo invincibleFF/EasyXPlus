@@ -1,4 +1,6 @@
 #include "easyWindow.h"
+#include "easyKeyboard.h"
+
 #include <cassert>
 
 //	pseudo main function used for developers
@@ -39,6 +41,14 @@ LRESULT CALLBACK CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 
 			for (int i = eventPairs.size() - 1; i >= 0; --i)
 				(eventPairs[i].first)(eventPairs[i].second);
+			return 0;
+		}
+
+	case WM_KEYDOWN:
+		{
+			Key key = Keyboard::convertToKeyEnum(wParam);
+			if (key != Key::KeyNone)
+				Keyboard::keysPressed.push(key);
 			return 0;
 		}
 

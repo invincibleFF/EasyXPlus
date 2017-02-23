@@ -240,8 +240,19 @@ void CancelEventHandler_HandlerNotSet_ThrowExcept();
 void CancelEventHandler_ByDefault_CancelFormerRegisteredHandler();
 void GetCurrentPos_ByDefault_GetWhereItIs();
 
-//////////////////////////////////////////////////////////////////////
+/*
+	uncomment to run the test
+void IsPressed_ByDefault_CanDetected();
 
+*/
+
+void GetPressed_WindowNotSet_ThrowExcept();
+void GetPressed_NoPressed_ReturnKeyNone();
+void GetPressed_ManyPressed_GetInSequence();
+void GetPressed_ManyPressed_GetInSequence();
+
+//////////////////////////////////////////////////////////////////////
+#include "easyKeyboard.h"
 int main(int argc, wchar_t* argv[])
 {
 	Ctor_WithZeroParams_CreateWindowWithInitParams();
@@ -311,6 +322,19 @@ int main(int argc, wchar_t* argv[])
 	CancelEventHandler_HandlerNotSet_ThrowExcept();
 	CancelEventHandler_ByDefault_CancelFormerRegisteredHandler();
 	GetCurrentPos_ByDefault_GetWhereItIs();
+
+	////////////////////////	Keyboard	////////////////////////
+
+	/*	
+		uncomment to run the test
+	IsPressed_ByDefault_CanDetected();
+	
+	*/
+	GetPressed_WindowNotSet_ThrowExcept();
+	GetPressed_NoPressed_ReturnKeyNone();
+	GetPressed_ManyPressed_GetInSequence();
+	GetPressed_ManyPressed_GetInSequence();
+
 
 	return 0;
 }
