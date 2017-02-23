@@ -8,13 +8,7 @@ namespace easyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//								Keyboard
 
-	//		static variables
-
-	std::queue<Key> Keyboard::keysPressed;
-
-	//		static functions
-
-	bool Keyboard::isPressing(Key key)
+	bool Keyboard::isPressed(Key key)
 	{
 		int virtualKey = convertToVirtualKey(key);
 		return GetAsyncKeyState(virtualKey) != 0;
@@ -81,88 +75,6 @@ namespace easyXPlus
 		case Key::KeyBackspace:		return VK_BACK;
 		default:
 			assert(false && "Key not supported!");
-		}
-	}
-
-	//////////////////////////////////////////
-
-	Key Keyboard::getPressed()
-	{
-		//	TODO:	change a method
-		//	test to see if default set
-		Window::getDefaultWindowHandle();
-
-		if (keysPressed.empty())
-			return Key::KeyNone;
-		else
-		{
-			Key key = keysPressed.front();
-			keysPressed.pop();
-			return key;
-		}
-	}
-
-	Key Keyboard::convertToKeyEnum(int virtualKey)
-	{
-		switch (virtualKey)
-		{
-		case 0x30:		return Key::Key0;
-		case 0x31:		return Key::Key1;
-		case 0x32:		return Key::Key2;
-		case 0x33:		return Key::Key3;
-		case 0x34:		return Key::Key4;
-		case 0x35:		return Key::Key5;
-		case 0x36:		return Key::Key6;
-		case 0x37:		return Key::Key7;
-		case 0x38:		return Key::Key8;
-		case 0x39:		return Key::Key9;
-
-		case 0x41:		return Key::KeyA;
-		case 0x42:		return Key::KeyB;
-		case 0x43:		return Key::KeyC;
-		case 0x44:		return Key::KeyD;
-		case 0x45:		return Key::KeyE;
-		case 0x46:		return Key::KeyF;
-		case 0x47:		return Key::KeyG;
-		case 0x48:		return Key::KeyH;
-		case 0x49:		return Key::KeyI;
-		case 0x4A:		return Key::KeyJ;
-		case 0x4B:		return Key::KeyK;
-		case 0x4C:		return Key::KeyL;
-		case 0x4D:		return Key::KeyM;
-		case 0x4E:		return Key::KeyN;
-		case 0x4F:		return Key::KeyO;
-		case 0x50:		return Key::KeyP;
-		case 0x51:		return Key::KeyQ;
-		case 0x52:		return Key::KeyR;
-		case 0x53:		return Key::KeyS;
-		case 0x54:		return Key::KeyT;
-		case 0x55:		return Key::KeyU;
-		case 0x56:		return Key::KeyV;
-		case 0x57:		return Key::KeyW;
-		case 0x58:		return Key::KeyX;
-		case 0x59:		return Key::KeyY;
-		case 0x5A:		return Key::KeyZ;
-
-		case VK_LSHIFT:			return Key::KeyLeftShift;
-		case VK_LCONTROL:		return Key::KeyLeftCtrl;
-		case VK_LMENU:			return Key::KeyLeftAlt;
-		case VK_RSHIFT:			return Key::KeyRightShift;
-		case VK_RCONTROL:		return Key::KeyRightCtrl;
-		case VK_RMENU:			return Key::KeyRightAlt;
-
-		case VK_UP:				return Key::KeyUpArrow;
-		case VK_DOWN:			return Key::KeyDownArrow;
-		case VK_LEFT:			return Key::KeyLeftArrow;
-		case VK_RIGHT:			return Key::KeyRightArrow;
-
-		case VK_ESCAPE:			return Key::KeyEsc;
-		case VK_TAB:			return Key::KeyTab;
-		case VK_SPACE:			return Key::KeySpace;
-		case VK_RETURN:			return Key::KeyEnter;
-		case VK_BACK:			return Key::KeyBackspace;
-		default:
-			return Key::KeyNone;	//	for other keys, we just ignore them
 		}
 	}
 }

@@ -16,19 +16,14 @@ namespace easyXPlus
 	private:
 		friend class Geometry;
 		friend class Text;
-		friend class Mouse;
-		friend LRESULT CALLBACK ::CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 		struct GeometryAttribute;
 		struct TextAttribute;
-
-		typedef std::map<Mouse::EventType, Mouse::EventPairs> EventAttribute;
 
 	public:
 		static HWND getDefaultWindowHandle();
 		static GeometryAttribute* getDefaultGeometryAttribute();
 		static TextAttribute* getDefaultTextAttribute();
-		static EventAttribute* getDefaultEventAttribute();
 
 		Window(const std::wstring title = L"easyX+");
 		Window(const std::wstring title, int posX, int posY);
@@ -104,7 +99,6 @@ namespace easyXPlus
 		static HWND defaultWindowHandle;
 		static GeometryAttribute* defaultGeometryAttribute;
 		static TextAttribute* defaultTextAttribute;
-		static EventAttribute* defaultEventAttribute;
 
 		static const int INIT_POS_X = 0;
 		static const int INIT_POS_Y = 0;
@@ -115,7 +109,6 @@ namespace easyXPlus
 		HDC hdc;
 		GeometryAttribute geometryAttribute;
 		TextAttribute textAttribute;
-		EventAttribute eventAttribute;
 	};
 }
 

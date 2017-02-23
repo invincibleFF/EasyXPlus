@@ -5,8 +5,6 @@
 
 using namespace std;
 
-extern LRESULT CALLBACK CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 namespace easyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +14,6 @@ namespace easyXPlus
 	HWND Window::defaultWindowHandle = NULL;
 	Window::TextAttribute* Window::defaultTextAttribute = nullptr;
 	Window::GeometryAttribute* Window::defaultGeometryAttribute = nullptr;
-	Window::EventAttribute* Window::defaultEventAttribute = nullptr;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//								Static Window functions
@@ -50,16 +47,6 @@ namespace easyXPlus
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-
-	Window::EventAttribute* Window::getDefaultEventAttribute()
-	{
-		if (defaultEventAttribute == nullptr)
-			throw EasyExcept("No default window set!");
-
-		return defaultEventAttribute;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 	//									Window class
 
 	Window::Window(const wstring title)
@@ -89,8 +76,6 @@ namespace easyXPlus
 			defaultGeometryAttribute = nullptr;
 		if (defaultTextAttribute == &textAttribute)
 			defaultTextAttribute = nullptr;
-		if (defaultEventAttribute == &eventAttribute)
-			defaultEventAttribute = nullptr;
 	}
 
 	///////////////////////////////////////
@@ -111,7 +96,7 @@ namespace easyXPlus
 			WNDCLASSW wndclass = { 0 };
 			wndclass.lpszClassName = L"easyXPlus::WindowClassName";
 			wndclass.hInstance = GetModuleHandleW(NULL);			//	current .exe's module handle
-			wndclass.lpfnWndProc = CustomeWndProc;					//	default window procedure
+			wndclass.lpfnWndProc = DefWindowProc;					//	default window procedure
 			wndclass.hCursor = LoadCursorW(NULL, IDC_ARROW);		//	default arrow cursor
 			wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_DROPSHADOW;//	default window style
 			wndclass.hbrBackground = (HBRUSH)(1 + COLOR_BACKGROUND);
@@ -220,7 +205,6 @@ namespace easyXPlus
 		defaultWindowHandle=  windowHandle;
 		defaultGeometryAttribute = &geometryAttribute;
 		defaultTextAttribute = &textAttribute;
-		defaultEventAttribute = &eventAttribute;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

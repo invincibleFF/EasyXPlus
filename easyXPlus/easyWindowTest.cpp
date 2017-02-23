@@ -233,11 +233,6 @@ void Text_SetFontSize_ByDefault_GetWhatSet();
 void Text_SetTextColor_ByDefault_GetWhatSet();
 void Text_SetBkColor_ByDefault_GetWhatSet();
 
-
-void SetEventHandler_DefaultWindowNotSet_ThrowExcept();
-void SetEventHandler_ByDefault_CalledAndParamPassedWhenEventHappens();
-void CancelEventHandler_HandlerNotSet_ThrowExcept();
-void CancelEventHandler_ByDefault_CancelFormerRegisteredHandler();
 void GetCurrentPos_ByDefault_GetWhereItIs();
 
 /*
@@ -245,11 +240,6 @@ void GetCurrentPos_ByDefault_GetWhereItIs();
 void IsPressed_ByDefault_CanDetected();
 
 */
-
-void GetPressed_WindowNotSet_ThrowExcept();
-void GetPressed_NoPressed_ReturnKeyNone();
-void GetPressed_ManyPressed_GetInSequence();
-void GetPressed_ManyPressed_GetInSequence();
 
 //////////////////////////////////////////////////////////////////////
 #include "easyKeyboard.h"
@@ -317,10 +307,6 @@ int main(int argc, wchar_t* argv[])
 
 	/////////////////////		Mouse		////////////////////////
 
-	SetEventHandler_DefaultWindowNotSet_ThrowExcept();
-	SetEventHandler_ByDefault_CalledAndParamPassedWhenEventHappens();
-	CancelEventHandler_HandlerNotSet_ThrowExcept();
-	CancelEventHandler_ByDefault_CancelFormerRegisteredHandler();
 	GetCurrentPos_ByDefault_GetWhereItIs();
 
 	////////////////////////	Keyboard	////////////////////////
@@ -330,11 +316,6 @@ int main(int argc, wchar_t* argv[])
 	IsPressed_ByDefault_CanDetected();
 	
 	*/
-	GetPressed_WindowNotSet_ThrowExcept();
-	GetPressed_NoPressed_ReturnKeyNone();
-	GetPressed_ManyPressed_GetInSequence();
-	GetPressed_ManyPressed_GetInSequence();
-
 
 	return 0;
 }

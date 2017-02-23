@@ -78,27 +78,3 @@ void IsPressed_ByDefault_CanDetected()
 	for (int i = 0; i < g_count; ++i)
 		assert(Keyboard::isPressing(g_keys[i]) == false);
 }*/
-
-void GetPressed_WindowNotSet_ThrowExcept()
-{
-	SU_ASSERT_THROW(Keyboard::getPressed(), EasyExcept);
-}
-
-void GetPressed_NoPressed_ReturnKeyNone()
-{
-	Window window;
-	window.setAsDefault();
-
-	assert(Key::KeyNone == Keyboard::getPressed());
-}
-
-void GetPressed_ManyPressed_GetInSequence()
-{
-	Window window;
-	window.setAsDefault();
-	sendKeyDownMsgs();
-
-	for (int i = 0; i < g_count; ++i)
-		assert(Keyboard::getPressed() == g_keys[i]);
-	assert(Keyboard::getPressed() == Key::KeyNone);
-}

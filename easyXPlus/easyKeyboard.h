@@ -2,9 +2,6 @@
 #define EASY_KEYBOARD_H
 
 #include <windows.h>
-#include <queue>
-
-LRESULT CALLBACK CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace easyXPlus
 {
@@ -27,18 +24,11 @@ namespace easyXPlus
 
 	class Keyboard
 	{
-	private:
-		friend LRESULT CALLBACK ::CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 	public:
-		static bool isPressing(Key key);
-		static Key getPressed();
+		static bool isPressed(Key key);
 
 	private:
 		static int convertToVirtualKey(Key key);
-		static Key convertToKeyEnum(int virtualKey);
-
-		static std::queue<Key>	keysPressed;
 	};
 }
 
