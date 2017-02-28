@@ -24,14 +24,36 @@ namespace easyXPlus
 
 	//////////////////////////////////////////////////////////////////////////
 
-	MouseEvent Mouse::tryGetEvent()
+	bool Mouse::hasEvents()
+	{
+		MSG msg;
+		if (0 == PeekMessageW(
+						&msg,
+						Window::getDefaultWindowHandle(),
+						WM_MOUSEFIRST, WM_MOUSELAST, PM_NOREMOVE))
+			return false;
+
+		switch (msg.message)
+		{
+		case WM_LBUTTONDOWN:		//	fall through
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_MOUSEMOVE:			return true;
+		default:					return false;
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+
+	MouseEvent Mouse::getEvent()
 	{
 		MSG msg;
 		if (0 == PeekMessageW(
 					&msg,
 					Window::getDefaultWindowHandle(),
 					WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
-			return MouseEvent::None;
+					throw EasyExcept("Has no events!");
 		
 		switch (msg.message)
 		{
@@ -40,7 +62,7 @@ namespace easyXPlus
 		case WM_RBUTTONDOWN:	return MouseEvent::RightDown;
 		case WM_RBUTTONUP:		return MouseEvent::RightUp;
 		case WM_MOUSEMOVE:		return MouseEvent::Move;
-		default:				return MouseEvent::None;
+		default:				throw EasyExcept("Has no supported events!");
 		}
 	}
 

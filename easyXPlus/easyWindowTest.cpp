@@ -240,8 +240,11 @@ void GetCurrentPos_ByDefault_GetWhereItIs();
 void IsPressed_ByDefault_CanDetected();
 
 */
-void TryGetEvent_NoEvent_ReturnNone();
-void TryGetEvent_ByDefault_ReturnMouseMsg();
+void HasEvent_NoEvent_ReturnFalse();
+void HasEvent_SupportedEvent_AlwaysReturnTrue();
+void HasEvent_NotSupportedEvent_AlwaysReturnFalse();
+void GetEvent_NoEvent_ThrowExcept();
+void GetEvent_ByDefault_ReturnMouseEvent();
 
 //////////////////////////////////////////////////////////////////////
 #include "easyKeyboard.h"
@@ -318,8 +321,11 @@ int main(int argc, wchar_t* argv[])
 	IsPressed_ByDefault_CanDetected();
 	
 	*/
-	TryGetEvent_NoEvent_ReturnNone();
-	TryGetEvent_ByDefault_ReturnMouseMsg();
+	HasEvent_NoEvent_ReturnFalse();
+	HasEvent_SupportedEvent_AlwaysReturnTrue();
+	HasEvent_NotSupportedEvent_AlwaysReturnFalse();
+	GetEvent_NoEvent_ThrowExcept();
+	GetEvent_ByDefault_ReturnMouseEvent();
 	
 	return 0;
 }

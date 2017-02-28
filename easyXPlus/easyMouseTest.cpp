@@ -22,16 +22,44 @@ void GetCurrentPos_ByDefault_GetWhereItIs()
 	assert(Point(point.x, point.y) == expectedPoint);
 }
 
-//	Do not move mouse!!!
-void TryGetEvent_NoEvent_ReturnNone()
+void HasEvent_NoEvent_ReturnFalse()
 {
 	Window window;
 	window.setAsDefault();
 
-	assert(Mouse::tryGetEvent() == MouseEvent::None);
+	assert(Mouse::hasEvents() == false);
 }
 
-void TryGetEvent_ByDefault_ReturnMouseMsg()
+void HasEvent_SupportedEvent_AlwaysReturnTrue()
+{
+	Window window;
+	window.setAsDefault();
+	PostMessageW(Window::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
+
+	assert(Mouse::hasEvents() == true);
+	assert(Mouse::hasEvents() == true);
+}
+
+void HasEvent_NotSupportedEvent_AlwaysReturnFalse()
+{
+	Window window;
+	window.setAsDefault();
+	PostMessageW(Window::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
+
+	assert(Mouse::hasEvents() == false);
+	assert(Mouse::hasEvents() == false);
+}
+
+//	Do not move mouse!!!
+void GetEvent_NoEvent_ThrowExcept()
+{
+	Window window;
+	window.setAsDefault();
+
+	SU_ASSERT_THROW(Mouse::getEvent(), EasyExcept);
+}
+
+void GetEvent_ByDefault_ReturnMouseEvent()
 {
 	Window window;
 	window.setAsDefault();
@@ -42,10 +70,9 @@ void TryGetEvent_ByDefault_ReturnMouseMsg()
 	PostMessageW(Window::getDefaultWindowHandle(), WM_RBUTTONUP, 0, 0);
 	PostMessageW(Window::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
 
-	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
-	assert(Mouse::tryGetEvent() == MouseEvent::LeftUp);
-	assert(Mouse::tryGetEvent() == MouseEvent::RightDown);
-	assert(Mouse::tryGetEvent() == MouseEvent::RightUp);
-	assert(Mouse::tryGetEvent() == MouseEvent::Move);
-	assert(Mouse::tryGetEvent() == MouseEvent::None);
+	assert(Mouse::getEvent() == MouseEvent::LeftDown);
+	assert(Mouse::getEvent() == MouseEvent::LeftUp);
+	assert(Mouse::getEvent() == MouseEvent::RightDown);
+	assert(Mouse::getEvent() == MouseEvent::RightUp);
+	assert(Mouse::getEvent() == MouseEvent::Move);
 }

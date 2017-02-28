@@ -7,14 +7,16 @@ namespace easyXPlus
 {
 	enum class MouseEvent
 	{
-		None, Move, LeftDown, LeftUp, RightDown, RightUp
+		Move, LeftDown, LeftUp, RightDown, RightUp
 	};
 
 	class Mouse
 	{
 	public:
 		static Point getCurrentPos();
-		static MouseEvent tryGetEvent();
+
+		static bool hasEvents();
+		static MouseEvent getEvent();
 	};
 }
 
