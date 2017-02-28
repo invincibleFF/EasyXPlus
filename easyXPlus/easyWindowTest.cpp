@@ -240,6 +240,8 @@ void GetCurrentPos_ByDefault_GetWhereItIs();
 void IsPressed_ByDefault_CanDetected();
 
 */
+void TryGetEvent_NoEvent_ReturnNone();
+void TryGetEvent_ByDefault_ReturnMouseMsg();
 
 //////////////////////////////////////////////////////////////////////
 #include "easyKeyboard.h"
@@ -316,6 +318,8 @@ int main(int argc, wchar_t* argv[])
 	IsPressed_ByDefault_CanDetected();
 	
 	*/
-
+	TryGetEvent_NoEvent_ReturnNone();
+	TryGetEvent_ByDefault_ReturnMouseMsg();
+	
 	return 0;
 }
