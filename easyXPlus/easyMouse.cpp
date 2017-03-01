@@ -24,53 +24,26 @@ namespace easyXPlus
 
 	//////////////////////////////////////////////////////////////////////////
 
-	bool Mouse::hasEvents()
+	MouseEvent Mouse::tryGetEvent()
 	{
 		MSG msg;
-		if (0 == PeekMessageW(
+		while (0 != PeekMessageW(
 						&msg,
 						Window::getDefaultWindowHandle(),
-						WM_MOUSEFIRST, WM_MOUSELAST, PM_NOREMOVE))
-			return false;
-
-		switch (msg.message)
+						WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
 		{
-		case WM_LBUTTONDOWN:		//	fall through
-		case WM_LBUTTONUP:
-		case WM_RBUTTONDOWN:
-		case WM_RBUTTONUP:
-		case WM_MOUSEMOVE:			return true;
-		default:
+			switch (msg.message)
 			{
-				PeekMessageW(
-					   &msg,
-					   Window::getDefaultWindowHandle(),
-					   WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE);
-				return false;
+			case WM_LBUTTONDOWN:	return MouseEvent::LeftDown;
+			case WM_LBUTTONUP:		return MouseEvent::LeftUp;
+			case WM_RBUTTONDOWN:	return MouseEvent::RightDown;
+			case WM_RBUTTONUP:		return MouseEvent::RightUp;
+			case WM_MOUSEMOVE:		return MouseEvent::Move;
+
+			default:				continue;	//	skip other mouse events
 			}
 		}
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-
-	MouseEvent Mouse::getEvent()
-	{
-		MSG msg;
-		if (0 == PeekMessageW(
-					&msg,
-					Window::getDefaultWindowHandle(),
-					WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
-					throw EasyExcept("Has no events!");
-		
-		switch (msg.message)
-		{
-		case WM_LBUTTONDOWN:	return MouseEvent::LeftDown;
-		case WM_LBUTTONUP:		return MouseEvent::LeftUp;
-		case WM_RBUTTONDOWN:	return MouseEvent::RightDown;
-		case WM_RBUTTONUP:		return MouseEvent::RightUp;
-		case WM_MOUSEMOVE:		return MouseEvent::Move;
-		default:				throw EasyExcept("Never got here!");
-		}
+		return MouseEvent::None;
 	}
 
 }

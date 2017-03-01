@@ -234,13 +234,10 @@ void Text_SetTextColor_ByDefault_GetWhatSet();
 void Text_SetBkColor_ByDefault_GetWhatSet();
 
 void GetCurrentPos_ByDefault_GetWhereItIs();
-void HasEvent_NoEvent_ReturnFalse();
-void HasEvent_SupportedEvent_AlwaysReturnTrue();
-void HasEvent_NotSupportedEvent_AlwaysReturnFalse();
-void HasEvent_NotSupportedEvent_RemoveIt();
-void HasEvent_AfterGetEventCall_ReturnFalse();
-void GetEvent_NoEvent_ThrowExcept();
-void GetEvent_ByDefault_ReturnMouseEvent();
+void TryGetEvent_NoEvent_ReturnNone();
+void TryGetEvent_SupportedEvent_ReturnEvent();
+void TryGetEvent_NotSupportedEvent_ReturnNone();
+void TryGetEvent_SupportedMixedWithUnsupported_ReturnSupported();
 
 /*
 	uncomment to run the test
@@ -322,19 +319,16 @@ int main(int argc, wchar_t* argv[])
 	/////////////////////		Mouse		////////////////////////
 
 	GetCurrentPos_ByDefault_GetWhereItIs();
-	HasEvent_NoEvent_ReturnFalse();
-	HasEvent_SupportedEvent_AlwaysReturnTrue();
-	HasEvent_NotSupportedEvent_AlwaysReturnFalse();
-	HasEvent_NotSupportedEvent_RemoveIt();
-	HasEvent_AfterGetEventCall_ReturnFalse();
-	GetEvent_NoEvent_ThrowExcept();
-	GetEvent_ByDefault_ReturnMouseEvent();
+	TryGetEvent_NoEvent_ReturnNone();
+	TryGetEvent_SupportedEvent_ReturnEvent();
+	TryGetEvent_NotSupportedEvent_ReturnNone();
+	TryGetEvent_SupportedMixedWithUnsupported_ReturnSupported();
 
 	////////////////////////	Keyboard	////////////////////////
 
 	/*	
 		uncomment to run the test
-	IsPressed_ByDefault_CanDetected();
+		IsPressed_ByDefault_CanDetected();
 	*/
 	TryGetPressed_NoPressed_ReturnKeyNone();
 	TryGetPressed_SupportedKeyPressed_ReturnKey();

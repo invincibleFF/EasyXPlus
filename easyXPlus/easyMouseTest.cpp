@@ -22,67 +22,16 @@ void GetCurrentPos_ByDefault_GetWhereItIs()
 	assert(Point(point.x, point.y) == expectedPoint);
 }
 
-void HasEvent_NoEvent_ReturnFalse()
-{
-	Window window;
-	window.setAsDefault();
-
-	assert(Mouse::hasEvents() == false);
-}
-
-void HasEvent_SupportedEvent_AlwaysReturnTrue()
-{
-	Window window;
-	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
-
-	assert(Mouse::hasEvents() == true);
-	assert(Mouse::hasEvents() == true);
-}
-
-void HasEvent_NotSupportedEvent_AlwaysReturnFalse()
-{
-	Window window;
-	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
-
-	assert(Mouse::hasEvents() == false);
-	assert(Mouse::hasEvents() == false);
-}
-
-void HasEvent_NotSupportedEvent_RemoveIt()
-{
-	Window window;
-	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
-
-	Mouse::hasEvents();
-
-	assert(Mouse::getEvent() == MouseEvent::Move);
-}
-
-void HasEvent_AfterGetEventCall_ReturnFalse()
-{
-	Window window;
-	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
-
-	Mouse::getEvent();
-
-	assert(Mouse::hasEvents() == false);
-}
-
 //	Do not move mouse!!!
-void GetEvent_NoEvent_ThrowExcept()
+void TryGetEvent_NoEvent_ReturnNone()
 {
 	Window window;
 	window.setAsDefault();
 
-	SU_ASSERT_THROW(Mouse::getEvent(), EasyExcept);
+	assert(Mouse::tryGetEvent() == MouseEvent::None);
 }
 
-void GetEvent_ByDefault_ReturnMouseEvent()
+void TryGetEvent_SupportedEvent_ReturnEvent()
 {
 	Window window;
 	window.setAsDefault();
@@ -93,9 +42,33 @@ void GetEvent_ByDefault_ReturnMouseEvent()
 	PostMessageW(Window::getDefaultWindowHandle(), WM_RBUTTONUP, 0, 0);
 	PostMessageW(Window::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
 
-	assert(Mouse::getEvent() == MouseEvent::LeftDown);
-	assert(Mouse::getEvent() == MouseEvent::LeftUp);
-	assert(Mouse::getEvent() == MouseEvent::RightDown);
-	assert(Mouse::getEvent() == MouseEvent::RightUp);
-	assert(Mouse::getEvent() == MouseEvent::Move);
+	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
+	assert(Mouse::tryGetEvent() == MouseEvent::LeftUp);
+	assert(Mouse::tryGetEvent() == MouseEvent::RightDown);
+	assert(Mouse::tryGetEvent() == MouseEvent::RightUp);
+	assert(Mouse::tryGetEvent() == MouseEvent::Move);
+}
+
+void TryGetEvent_NotSupportedEvent_ReturnNone()
+{
+	Window window;
+	window.setAsDefault();
+
+	PostMessageW(Window::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
+
+	assert(Mouse::tryGetEvent() == MouseEvent::None);
+}
+
+void TryGetEvent_SupportedMixedWithUnsupported_ReturnSupported()
+{
+	Window window;
+	window.setAsDefault();
+
+	PostMessageW(Window::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_NCLBUTTONDBLCLK, 0, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
+
+	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
+	assert(Mouse::tryGetEvent() == MouseEvent::Move);
+	assert(Mouse::tryGetEvent() == MouseEvent::None);
 }

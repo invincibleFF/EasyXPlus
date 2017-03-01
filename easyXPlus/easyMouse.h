@@ -7,7 +7,7 @@ namespace easyXPlus
 {
 	enum class MouseEvent
 	{
-		Move, LeftDown, LeftUp, RightDown, RightUp
+		None, Move, LeftDown, LeftUp, RightDown, RightUp
 	};
 
 	//	TODO:	change Mouse to support multi-window.
@@ -16,8 +16,7 @@ namespace easyXPlus
 	public:
 		static Point getCurrentPos();
 
-		static bool hasEvents();
-		static MouseEvent getEvent();
+		static MouseEvent tryGetEvent();
 	};
 }
 
