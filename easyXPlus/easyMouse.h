@@ -10,6 +10,7 @@ namespace easyXPlus
 		Move, LeftDown, LeftUp, RightDown, RightUp
 	};
 
+	//	TODO:	change Mouse to support multi-window.
 	class Mouse
 	{
 	public:

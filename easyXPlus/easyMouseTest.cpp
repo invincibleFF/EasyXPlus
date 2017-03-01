@@ -50,6 +50,17 @@ void HasEvent_NotSupportedEvent_AlwaysReturnFalse()
 	assert(Mouse::hasEvents() == false);
 }
 
+void HasEvent_AfterGetEventCall_ReturnFalse()
+{
+	Window window;
+	window.setAsDefault();
+	PostMessageW(Window::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
+
+	Mouse::getEvent();
+
+	assert(Mouse::hasEvents() == false);
+}
+
 //	Do not move mouse!!!
 void GetEvent_NoEvent_ThrowExcept()
 {
