@@ -244,13 +244,16 @@ void GetEvent_ByDefault_ReturnMouseEvent();
 
 /*
 	uncomment to run the test
-void IsPressed_ByDefault_CanDetected();
+	void IsPressed_ByDefault_CanDetected();
 */
 
-void HasPressed_NoPressed_AlwaysReturnFalse();
-void HasPressed_hasPressed_AlwaysReturnTrue();
-void HasPressed_AfterGetPressedCall_ReturnFalse();
-void GetPressed_NoPressed_ThrowExcept();
+void TryGetPressed_NoPressed_ReturnKeyNone();
+void TryGetPressed_SupportedKeyPressed_ReturnKey();
+void TryGetPressed_ManyKeyDownOneKeyUp_MiddleMsgsIgnored();
+void TryGetPressed_KeyMsgsAfterCharMsgs_ReturnKey();
+void TryGetPressed_KeyMsgsBeforeCharMsgs_ReturnKey();
+void TryGetPressed_OnlyKeyDownMsg_ReturnKeyNone();
+void TryGetPressed_TwoKeyPressed_GetTwo();
 
 //////////////////////////////////////////////////////////////////////
 #include "easyKeyboard.h"
@@ -333,10 +336,13 @@ int main(int argc, wchar_t* argv[])
 		uncomment to run the test
 	IsPressed_ByDefault_CanDetected();
 	*/
-	HasPressed_NoPressed_AlwaysReturnFalse();
-	HasPressed_hasPressed_AlwaysReturnTrue();
-	HasPressed_AfterGetPressedCall_ReturnFalse();
-	GetPressed_NoPressed_ThrowExcept();
+	TryGetPressed_NoPressed_ReturnKeyNone();
+	TryGetPressed_SupportedKeyPressed_ReturnKey();
+	TryGetPressed_ManyKeyDownOneKeyUp_MiddleMsgsIgnored();
+	TryGetPressed_KeyMsgsAfterCharMsgs_ReturnKey();
+	TryGetPressed_KeyMsgsBeforeCharMsgs_ReturnKey();
+	TryGetPressed_OnlyKeyDownMsg_ReturnKeyNone();
+	TryGetPressed_TwoKeyPressed_GetTwo();
 
 	return 0;
 }

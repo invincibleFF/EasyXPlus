@@ -7,7 +7,7 @@ namespace easyXPlus
 {
 	enum class Key
 	{
-		KeyNone,
+		KeyNone, KeyNotSupport,
 
 		KeyA, KeyB, KeyC, KeyD, KeyE, KeyF, KeyG, KeyH, KeyI,
 		KeyJ, KeyK, KeyL, KeyM, KeyN, KeyO, KeyP, KeyQ, KeyR,
@@ -16,8 +16,8 @@ namespace easyXPlus
 		Key0, Key1, Key2, Key3, Key4, Key5, Key6, Key7, Key8,
 		Key9,
 
-		KeyLeftShift, KeyLeftCtrl, KeyLeftAlt,
-		KeyRightShift, KeyRightCtrl, KeyRightAlt,
+		KeyLeftShift, KeyLeftCtrl,
+		KeyRightShift, KeyRightCtrl,
 		KeyUpArrow, KeyDownArrow, KeyLeftArrow, KeyRightArrow,
 		KeyEsc, KeyTab, KeySpace, KeyEnter, KeyBackspace
 	};
@@ -25,10 +25,12 @@ namespace easyXPlus
 	class Keyboard
 	{
 	public:
-		static bool isPressed(Key key);
+		static bool isPressing(Key key);
+		static Key tryGetPressed();
 
 	private:
 		static int convertToVirtualKey(Key key);
+		static Key convertToKeyEnum(int virtualKey);
 	};
 }
 

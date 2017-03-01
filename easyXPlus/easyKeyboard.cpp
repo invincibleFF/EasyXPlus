@@ -1,5 +1,6 @@
 #include "easyKeyboard.h"
 #include "easyWindow.h"
+#include "easyExcept.h"
 
 #include <cassert>
 
@@ -8,7 +9,7 @@ namespace easyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//								Keyboard
 
-	bool Keyboard::isPressed(Key key)
+	bool Keyboard::isPressing(Key key)
 	{
 		int virtualKey = convertToVirtualKey(key);
 		return GetAsyncKeyState(virtualKey) != 0;
@@ -58,10 +59,8 @@ namespace easyXPlus
 
 		case Key::KeyLeftShift:		return VK_LSHIFT;
 		case Key::KeyLeftCtrl:		return VK_LCONTROL;
-		case Key::KeyLeftAlt:		return VK_LMENU;
 		case Key::KeyRightShift:	return VK_RSHIFT;
 		case Key::KeyRightCtrl:		return VK_RCONTROL;
-		case Key::KeyRightAlt:		return VK_RMENU;
 
 		case Key::KeyUpArrow:		return VK_UP;
 		case Key::KeyDownArrow:		return VK_DOWN;
@@ -74,7 +73,89 @@ namespace easyXPlus
 		case Key::KeyEnter:			return VK_RETURN;
 		case Key::KeyBackspace:		return VK_BACK;
 		default:
-			assert(false && "Key not supported!");
+			throw EasyExcept("Invalid key!");
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////
+
+	Key Keyboard::tryGetPressed()
+	{
+		MSG msg;
+
+		while (0 != PeekMessageW(
+						&msg,
+						Window::getDefaultWindowHandle(),
+						WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
+		{
+			if (msg.message == WM_KEYUP)
+				return convertToKeyEnum(msg.wParam);
+			else
+				continue;
+		}
+
+		return Key::KeyNone;
+	}
+
+	Key Keyboard::convertToKeyEnum(int virtualKey)
+	{
+		switch (virtualKey)
+		{
+		case 0x30:		return Key::Key0;
+		case 0x31:		return Key::Key1;
+		case 0x32:		return Key::Key2;
+		case 0x33:		return Key::Key3;
+		case 0x34:		return Key::Key4;
+		case 0x35:		return Key::Key5;
+		case 0x36:		return Key::Key6;
+		case 0x37:		return Key::Key7;
+		case 0x38:		return Key::Key8;
+		case 0x39:		return Key::Key9;
+
+		case 0x41:		return Key::KeyA;
+		case 0x42:		return Key::KeyB;
+		case 0x43:		return Key::KeyC;
+		case 0x44:		return Key::KeyD;
+		case 0x45:		return Key::KeyE;
+		case 0x46:		return Key::KeyF;
+		case 0x47:		return Key::KeyG;
+		case 0x48:		return Key::KeyH;
+		case 0x49:		return Key::KeyI;
+		case 0x4A:		return Key::KeyJ;
+		case 0x4B:		return Key::KeyK;
+		case 0x4C:		return Key::KeyL;
+		case 0x4D:		return Key::KeyM;
+		case 0x4E:		return Key::KeyN;
+		case 0x4F:		return Key::KeyO;
+		case 0x50:		return Key::KeyP;
+		case 0x51:		return Key::KeyQ;
+		case 0x52:		return Key::KeyR;
+		case 0x53:		return Key::KeyS;
+		case 0x54:		return Key::KeyT;
+		case 0x55:		return Key::KeyU;
+		case 0x56:		return Key::KeyV;
+		case 0x57:		return Key::KeyW;
+		case 0x58:		return Key::KeyX;
+		case 0x59:		return Key::KeyY;
+		case 0x5A:		return Key::KeyZ;
+
+		case VK_LSHIFT:			return Key::KeyLeftShift;
+		case VK_LCONTROL:		return Key::KeyLeftCtrl;
+		case VK_RSHIFT:			return Key::KeyRightShift;
+		case VK_RCONTROL:		return Key::KeyRightCtrl;
+
+		case VK_UP:				return Key::KeyUpArrow;
+		case VK_DOWN:			return Key::KeyDownArrow;
+		case VK_LEFT:			return Key::KeyLeftArrow;
+		case VK_RIGHT:			return Key::KeyRightArrow;
+
+		case VK_ESCAPE:			return Key::KeyEsc;
+		case VK_TAB:			return Key::KeyTab;
+		case VK_SPACE:			return Key::KeySpace;
+		case VK_RETURN:			return Key::KeyEnter;
+		case VK_BACK:			return Key::KeyBackspace;
+
+		default:				return Key::KeyNotSupport;
 		}
 	}
 }
