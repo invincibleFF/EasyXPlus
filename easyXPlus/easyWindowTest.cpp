@@ -234,17 +234,23 @@ void Text_SetTextColor_ByDefault_GetWhatSet();
 void Text_SetBkColor_ByDefault_GetWhatSet();
 
 void GetCurrentPos_ByDefault_GetWhereItIs();
+void HasEvent_NoEvent_ReturnFalse();
+void HasEvent_SupportedEvent_AlwaysReturnTrue();
+void HasEvent_NotSupportedEvent_AlwaysReturnFalse();
+void HasEvent_NotSupportedEvent_RemoveIt();
+void HasEvent_AfterGetEventCall_ReturnFalse();
+void GetEvent_NoEvent_ThrowExcept();
+void GetEvent_ByDefault_ReturnMouseEvent();
 
 /*
 	uncomment to run the test
 void IsPressed_ByDefault_CanDetected();
-
 */
-void HasEvent_NoEvent_ReturnFalse();
-void HasEvent_SupportedEvent_AlwaysReturnTrue();
-void HasEvent_NotSupportedEvent_AlwaysReturnFalse();
-void GetEvent_NoEvent_ThrowExcept();
-void GetEvent_ByDefault_ReturnMouseEvent();
+
+void HasPressed_NoPressed_AlwaysReturnFalse();
+void HasPressed_hasPressed_AlwaysReturnTrue();
+void HasPressed_AfterGetPressedCall_ReturnFalse();
+void GetPressed_NoPressed_ThrowExcept();
 
 //////////////////////////////////////////////////////////////////////
 #include "easyKeyboard.h"
@@ -313,19 +319,24 @@ int main(int argc, wchar_t* argv[])
 	/////////////////////		Mouse		////////////////////////
 
 	GetCurrentPos_ByDefault_GetWhereItIs();
+	HasEvent_NoEvent_ReturnFalse();
+	HasEvent_SupportedEvent_AlwaysReturnTrue();
+	HasEvent_NotSupportedEvent_AlwaysReturnFalse();
+	HasEvent_NotSupportedEvent_RemoveIt();
+	HasEvent_AfterGetEventCall_ReturnFalse();
+	GetEvent_NoEvent_ThrowExcept();
+	GetEvent_ByDefault_ReturnMouseEvent();
 
 	////////////////////////	Keyboard	////////////////////////
 
 	/*	
 		uncomment to run the test
 	IsPressed_ByDefault_CanDetected();
-	
 	*/
-	HasEvent_NoEvent_ReturnFalse();
-	HasEvent_SupportedEvent_AlwaysReturnTrue();
-	HasEvent_NotSupportedEvent_AlwaysReturnFalse();
-	GetEvent_NoEvent_ThrowExcept();
-	GetEvent_ByDefault_ReturnMouseEvent();
-	
+	HasPressed_NoPressed_AlwaysReturnFalse();
+	HasPressed_hasPressed_AlwaysReturnTrue();
+	HasPressed_AfterGetPressedCall_ReturnFalse();
+	GetPressed_NoPressed_ThrowExcept();
+
 	return 0;
 }

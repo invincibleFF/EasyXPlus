@@ -50,6 +50,18 @@ void HasEvent_NotSupportedEvent_AlwaysReturnFalse()
 	assert(Mouse::hasEvents() == false);
 }
 
+void HasEvent_NotSupportedEvent_RemoveIt()
+{
+	Window window;
+	window.setAsDefault();
+	PostMessageW(Window::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
+
+	Mouse::hasEvents();
+
+	assert(Mouse::getEvent() == MouseEvent::Move);
+}
+
 void HasEvent_AfterGetEventCall_ReturnFalse()
 {
 	Window window;

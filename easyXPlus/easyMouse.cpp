@@ -40,7 +40,14 @@ namespace easyXPlus
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONUP:
 		case WM_MOUSEMOVE:			return true;
-		default:					return false;
+		default:
+			{
+				PeekMessageW(
+					   &msg,
+					   Window::getDefaultWindowHandle(),
+					   WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE);
+				return false;
+			}
 		}
 	}
 
@@ -62,7 +69,7 @@ namespace easyXPlus
 		case WM_RBUTTONDOWN:	return MouseEvent::RightDown;
 		case WM_RBUTTONUP:		return MouseEvent::RightUp;
 		case WM_MOUSEMOVE:		return MouseEvent::Move;
-		default:				throw EasyExcept("Has no supported events!");
+		default:				throw EasyExcept("Never got here!");
 		}
 	}
 
