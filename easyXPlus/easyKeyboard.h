@@ -16,8 +16,7 @@ namespace easyXPlus
 		Key0, Key1, Key2, Key3, Key4, Key5, Key6, Key7, Key8,
 		Key9,
 
-		KeyLeftShift, KeyLeftCtrl,
-		KeyRightShift, KeyRightCtrl,
+		KeyShift, KeyCtrl,
 		KeyUpArrow, KeyDownArrow, KeyLeftArrow, KeyRightArrow,
 		KeyEsc, KeyTab, KeySpace, KeyEnter, KeyBackspace
 	};

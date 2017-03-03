@@ -252,8 +252,10 @@ void TryGetPressed_KeyMsgsBeforeCharMsgs_ReturnKey();
 void TryGetPressed_OnlyKeyDownMsg_ReturnKeyNone();
 void TryGetPressed_TwoKeyPressed_GetTwo();
 
+void PauseAll_PassZero_ThrowExcept();
+
 //////////////////////////////////////////////////////////////////////
-#include "easyKeyboard.h"
+
 int main(int argc, wchar_t* argv[])
 {
 	Ctor_WithZeroParams_CreateWindowWithInitParams();
@@ -338,5 +340,11 @@ int main(int argc, wchar_t* argv[])
 	TryGetPressed_OnlyKeyDownMsg_ReturnKeyNone();
 	TryGetPressed_TwoKeyPressed_GetTwo();
 
+	//////////////////////		Others		/////////////////////////
+
+	PauseAll_PassZero_ThrowExcept();
+
 	return 0;
 }
+
+#error "change default font szie"

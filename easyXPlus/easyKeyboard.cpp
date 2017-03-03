@@ -57,10 +57,8 @@ namespace easyXPlus
 		case Key::KeyY:		return 0x59;
 		case Key::KeyZ:		return 0x5A;
 
-		case Key::KeyLeftShift:		return VK_LSHIFT;
-		case Key::KeyLeftCtrl:		return VK_LCONTROL;
-		case Key::KeyRightShift:	return VK_RSHIFT;
-		case Key::KeyRightCtrl:		return VK_RCONTROL;
+		case Key::KeyShift:		return VK_SHIFT;
+		case Key::KeyCtrl:		return VK_CONTROL;
 
 		case Key::KeyUpArrow:		return VK_UP;
 		case Key::KeyDownArrow:		return VK_DOWN;
@@ -139,10 +137,8 @@ namespace easyXPlus
 		case 0x59:		return Key::KeyY;
 		case 0x5A:		return Key::KeyZ;
 
-		case VK_LSHIFT:			return Key::KeyLeftShift;
-		case VK_LCONTROL:		return Key::KeyLeftCtrl;
-		case VK_RSHIFT:			return Key::KeyRightShift;
-		case VK_RCONTROL:		return Key::KeyRightCtrl;
+		case VK_SHIFT:			return Key::KeyShift;
+		case VK_CONTROL:		return Key::KeyCtrl;
 
 		case VK_UP:				return Key::KeyUpArrow;
 		case VK_DOWN:			return Key::KeyDownArrow;

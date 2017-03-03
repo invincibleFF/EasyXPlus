@@ -24,7 +24,7 @@ int g_virtualKeys[] = {
 
 	0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39,
 
-	0xA0, 0xA1, 0xA2, 0xA3,
+	0x10, 0x11,
 	0x25, 0x26, 0x27, 0x28,
 	0x1B, 0x09, 0x20, 0x0D, 0x08
 };
@@ -37,7 +37,7 @@ Key g_keys[] = {
 	Key::Key0, Key::Key1, Key::Key2, Key::Key3, Key::Key4, Key::Key5, Key::Key6, Key::Key7, Key::Key8,
 	Key::Key9,
 
-	Key::KeyLeftShift, Key::KeyRightShift, Key::KeyLeftCtrl, Key::KeyRightCtrl,
+	Key::KeyShift, Key::KeyCtrl,
 	Key::KeyLeftArrow, Key::KeyUpArrow, Key::KeyRightArrow, Key::KeyDownArrow,
 	Key::KeyEsc, Key::KeyTab, Key::KeySpace, Key::KeyEnter, Key::KeyBackspace
 };
@@ -117,29 +117,29 @@ void TryGetPressed_KeyMsgsAfterCharMsgs_ReturnKey()
 	window.setAsDefault();
 	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_ESCAPE, 0);
 	PostMessageW(Window::getDefaultWindowHandle(), WM_UNICHAR, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_LSHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
 
-	assert(Keyboard::tryGetPressed() == Key::KeyLeftShift);
+	assert(Keyboard::tryGetPressed() == Key::KeyShift);
 }
 
 void TryGetPressed_KeyMsgsBeforeCharMsgs_ReturnKey()
 {
 	Window window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_LSHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
 	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_ESCAPE, 0);
 	PostMessageW(Window::getDefaultWindowHandle(), WM_UNICHAR, VK_ESCAPE, 0);
 
-	assert(Keyboard::tryGetPressed() == Key::KeyLeftShift);
+	assert(Keyboard::tryGetPressed() == Key::KeyShift);
 }
 
 void TryGetPressed_OnlyKeyDownMsg_ReturnKeyNone()
 {
 	Window window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_LSHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyNone);
 }
@@ -148,14 +148,14 @@ void TryGetPressed_TwoKeyPressed_GetTwo()
 {
 	Window window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_LSHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_LSHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
+	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_SHIFT, 0);
 
-	assert(Keyboard::tryGetPressed() == Key::KeyLeftShift);
-	assert(Keyboard::tryGetPressed() == Key::KeyLeftShift);
+	assert(Keyboard::tryGetPressed() == Key::KeyShift);
+	assert(Keyboard::tryGetPressed() == Key::KeyShift);
 	assert(Keyboard::tryGetPressed() == Key::KeyNone);
 }
