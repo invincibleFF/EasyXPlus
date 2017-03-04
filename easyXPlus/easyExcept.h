@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	class EasyExcept : public std::logic_error
 	{

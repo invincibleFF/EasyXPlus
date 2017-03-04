@@ -5,13 +5,13 @@
 
 using namespace std;
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	///////////////////////////////////////////////////////////////////////////
 	//									Macros
 
 #define APPLY_ONE_FONT_ATTRIBUTE_FIELD_CHANGE(oneField)							\
-	Window::TextAttribute* textAttribute = Window::getDefaultTextAttribute();	\
+	MultiWindow::TextAttribute* textAttribute = MultiWindow::getDefaultTextAttribute();	\
 	textAttribute->oneField = oneField;											\
 																				\
 	textAttribute->changeFont();
@@ -56,7 +56,7 @@ namespace easyXPlus
 
 	void Text::setTextColor(const Colorable& color)
 	{
-		Window::TextAttribute* attribute = Window::getDefaultTextAttribute();
+		MultiWindow::TextAttribute* attribute = MultiWindow::getDefaultTextAttribute();
 		attribute->textColor = Rgb(color.toColorref());
 
 		if (CLR_INVALID ==
@@ -69,7 +69,7 @@ namespace easyXPlus
 
 	void Text::setBkColor(const Colorable& color)
 	{
-		Window::TextAttribute* attribute = Window::getDefaultTextAttribute();
+		MultiWindow::TextAttribute* attribute = MultiWindow::getDefaultTextAttribute();
 		attribute->bkColor = Rgb(color.toColorref());
 
 		if (CLR_INVALID ==
@@ -82,56 +82,56 @@ namespace easyXPlus
 
 	wstring Text::getCurrentFontName()
 	{
-		return Window::getDefaultTextAttribute()->fontName;
+		return MultiWindow::getDefaultTextAttribute()->fontName;
 	}
 
 	////////////////////////////////////
 
 	bool Text::isCurrentBold()
 	{
-		return Window::getDefaultTextAttribute()->isBold;
+		return MultiWindow::getDefaultTextAttribute()->isBold;
 	}
 
 	///////////////////////////////////
 
 	bool Text::isCurrentItalic()
 	{
-		return Window::getDefaultTextAttribute()->isItalic;
+		return MultiWindow::getDefaultTextAttribute()->isItalic;
 	}
 
 	////////////////////////////////////
 
 	bool Text::isCurrentUnderline()
 	{
-		return Window::getDefaultTextAttribute()->isUnderline;
+		return MultiWindow::getDefaultTextAttribute()->isUnderline;
 	}
 
 	////////////////////////////////////
 
 	unsigned Text::getCurrentFontSize()
 	{
-		return Window::getDefaultTextAttribute()->pointSize;
+		return MultiWindow::getDefaultTextAttribute()->pointSize;
 	}
 
 	////////////////////////////////////
 
 	Rgb Text::getCurrentTextColor()
 	{
-		return Window::getDefaultTextAttribute()->textColor;
+		return MultiWindow::getDefaultTextAttribute()->textColor;
 	}
 
 	////////////////////////////////////
 
 	Rgb Text::getCurrentBkColor()
 	{
-		return Window::getDefaultTextAttribute()->bkColor;
+		return MultiWindow::getDefaultTextAttribute()->bkColor;
 	}
 
 	////////////////////////////////////
 
-	Rectangle Text::getOutputSize(std::wstring text)
+	Rect Text::getOutputSize(std::wstring text)
 	{
-		Window::TextAttribute* attribute = Window::getDefaultTextAttribute();
+		MultiWindow::TextAttribute* attribute = MultiWindow::getDefaultTextAttribute();
 
 		SIZE sizeRet;
 		BOOL ret = GetTextExtentPoint32W(
@@ -141,14 +141,14 @@ namespace easyXPlus
 			&sizeRet);
 		if (ret == 0)	throw EasyExcept("System call error!");
 
-		return Rectangle(sizeRet.cx, sizeRet.cy);
+		return Rect(sizeRet.cx, sizeRet.cy);
 	}
 
 	////////////////////////////////////
 
 	void Text::output(const Point pos, wstring text)
 	{
-		Window::TextAttribute* textAttribute = Window::getDefaultTextAttribute();
+		MultiWindow::TextAttribute* textAttribute = MultiWindow::getDefaultTextAttribute();
 
 		BOOL ret = TextOutW(
 			textAttribute->hdc,

@@ -8,7 +8,7 @@ int main(int argc, wchar_t* argv[]);
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-using namespace easyXPlus;
+using namespace EasyXPlus;
 
 int WINAPI wWinMain(
 	HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)

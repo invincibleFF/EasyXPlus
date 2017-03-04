@@ -5,20 +5,20 @@
 
 using namespace std;
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	/////////////////////////////////////////////////////////////////////////////////////
-	//								Static Window variables
+	//								Static MultiWindow variables
 
-	bool Window::registered = false;
-	HWND Window::defaultWindowHandle = NULL;
-	Window::TextAttribute* Window::defaultTextAttribute = nullptr;
-	Window::GeometryAttribute* Window::defaultGeometryAttribute = nullptr;
+	bool MultiWindow::registered = false;
+	HWND MultiWindow::defaultWindowHandle = NULL;
+	MultiWindow::TextAttribute* MultiWindow::defaultTextAttribute = nullptr;
+	MultiWindow::GeometryAttribute* MultiWindow::defaultGeometryAttribute = nullptr;
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	//								Static Window functions
+	//								Static MultiWindow functions
 
-	HWND Window::getDefaultWindowHandle()
+	HWND MultiWindow::getDefaultWindowHandle()
 	{
 		if (defaultWindowHandle == NULL)
 			throw EasyExcept("No default window set!");
@@ -28,7 +28,7 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	Window::TextAttribute* Window::getDefaultTextAttribute()
+	MultiWindow::TextAttribute* MultiWindow::getDefaultTextAttribute()
 	{
 		if (defaultTextAttribute == nullptr)
 			throw EasyExcept("No default window set!");
@@ -38,7 +38,7 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	Window::GeometryAttribute* Window::getDefaultGeometryAttribute()
+	MultiWindow::GeometryAttribute* MultiWindow::getDefaultGeometryAttribute()
 	{
 		if (defaultGeometryAttribute == nullptr)
 			throw EasyExcept("No default window set!");
@@ -47,24 +47,24 @@ namespace easyXPlus
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	//									Window class
+	//									MultiWindow class
 
-	Window::Window(const wstring title)
+	MultiWindow::MultiWindow(const wstring title)
 	{
 		realCtor(title, INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(const wstring title, int posX, int posY)
+	MultiWindow::MultiWindow(const wstring title, int posX, int posY)
 	{
 		realCtor(title, posX, posY, INIT_WIDTH, INIT_HEIGHT);
 	}
 
-	Window::Window(const wstring title, int posX, int posY, unsigned width, unsigned height)
+	MultiWindow::MultiWindow(const wstring title, int posX, int posY, unsigned width, unsigned height)
 	{
 		realCtor(title, posX, posY, width, height);
 	}
 
-	Window::~Window()
+	MultiWindow::~MultiWindow()
 	{
 		if (hdc != NULL)
 			if (0 == ReleaseDC(windowHandle, hdc))
@@ -80,7 +80,7 @@ namespace easyXPlus
 
 	///////////////////////////////////////
 
-	void Window::realCtor(const wstring title, int posX, int posY, unsigned width, unsigned height)
+	void MultiWindow::realCtor(const wstring title, int posX, int posY, unsigned width, unsigned height)
 	{
 		registerWindowClass();
 		createWindow(title.c_str(), posX, posY, width, height);
@@ -89,12 +89,12 @@ namespace easyXPlus
 		UpdateWindow(windowHandle); 
 	}
 
-	void Window::registerWindowClass()
+	void MultiWindow::registerWindowClass()
 	{
 		if (!registered)
 		{
 			WNDCLASSW wndclass = { 0 };
-			wndclass.lpszClassName = L"easyXPlus::WindowClassName";
+			wndclass.lpszClassName = L"EasyXPlus::WindowClassName";
 			wndclass.hInstance = GetModuleHandleW(NULL);			//	current .exe's module handle
 			wndclass.lpfnWndProc = DefWindowProc;					//	default window procedure
 			wndclass.hCursor = LoadCursorW(NULL, IDC_ARROW);		//	default arrow cursor
@@ -107,12 +107,12 @@ namespace easyXPlus
 		}
 	}
 
-	void Window::createWindow(const wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height)
+	void MultiWindow::createWindow(const wstring title, unsigned posX, unsigned posY, unsigned width, unsigned height)
 	{
 		windowHandle = CreateWindowW(
-			L"easyXPlus::WindowClassName",
+			L"EasyXPlus::WindowClassName",
 			title.c_str(),
-			WS_POPUP | WS_CAPTION,
+			WS_POPUP,
 			posX, posY,
 			width, height,
 			NULL, NULL,
@@ -122,7 +122,7 @@ namespace easyXPlus
 			throw EasyExcept("Cannot create window!");
 	}
 
-	void Window::createDC()
+	void MultiWindow::createDC()
 	{
 		if (NULL == (hdc = GetDC(windowHandle)))
 			throw EasyExcept("System call error!");
@@ -136,7 +136,7 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::clear(const Colorable& color)
+	void MultiWindow::clear(const Colorable& color)
 	{
 		HBRUSH brush = CreateSolidBrush(color.toColorref());
 		if (brush == NULL)
@@ -153,12 +153,12 @@ namespace easyXPlus
 		return;
 
 	error:
-		throw EasyExcept("Window clear error!");
+		throw EasyExcept("MultiWindow clear error!");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::resize(unsigned width, unsigned height)
+	void MultiWindow::resize(unsigned width, unsigned height)
 	{
 		RECT oldWindowRect;
 		if ( 0 == GetWindowRect(windowHandle, &oldWindowRect))
@@ -173,12 +173,12 @@ namespace easyXPlus
 		return;
 
 	call_error:
-		throw easyXPlus::EasyExcept("resize error!");
+		throw EasyXPlus::EasyExcept("resize error!");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::reposition(int posX, int posY)
+	void MultiWindow::reposition(int posX, int posY)
 	{
 		RECT windowRect;
 		if (0 == GetWindowRect(windowHandle, &windowRect))
@@ -195,12 +195,12 @@ namespace easyXPlus
 		return;
 
 	call_error:
-		throw easyXPlus::EasyExcept("reposition error!");
+		throw EasyXPlus::EasyExcept("reposition error!");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::setAsDefault()
+	void MultiWindow::setAsDefault()
 	{
 		defaultWindowHandle=  windowHandle;
 		defaultGeometryAttribute = &geometryAttribute;
@@ -209,33 +209,33 @@ namespace easyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	int Window::getPosX() const
+	int MultiWindow::getPosX() const
 	{
 		return getWindowRect().left;
 	}
 
-	int Window::getPosY() const
+	int MultiWindow::getPosY() const
 	{
 		return getWindowRect().top;
 	}
 
-	unsigned Window::getWidth() const
+	unsigned MultiWindow::getWidth() const
 	{
 		RECT rect = getWindowRect();
 		return rect.right - rect.left;
 	}
 
-	unsigned Window::getHeight() const
+	unsigned MultiWindow::getHeight() const
 	{
 		RECT rect = getWindowRect();
 		return rect.bottom - rect.top;
 	}
 
-	RECT Window::getWindowRect() const
+	RECT MultiWindow::getWindowRect() const
 	{
 		RECT windowRect;
 		if (0 == GetWindowRect(windowHandle, &windowRect))
-			throw EasyExcept("Get Window Region error!");
+			throw EasyExcept("Get MultiWindow Region error!");
 
 		return windowRect;
 	}
@@ -243,12 +243,12 @@ namespace easyXPlus
 	/////////////////////////////////////////////////////////////////////////////////////
 	//								GeometryAttribute struct
 
-	Window::GeometryAttribute::GeometryAttribute() :
+	MultiWindow::GeometryAttribute::GeometryAttribute() :
 		hdc(NULL), pen(NULL), brush(NULL),
 		dotColor(Rgb::Red()), lineColor(Rgb::Black()), fillColor(Rgb::White())
 	{}
 
-	Window::GeometryAttribute::~GeometryAttribute()
+	MultiWindow::GeometryAttribute::~GeometryAttribute()
 	{
 		if (pen != NULL)
 			if (0 == DeleteObject((HGDIOBJ)pen))
@@ -261,14 +261,14 @@ namespace easyXPlus
 	/////////////////////////////////////////////////////////////////////////////////////
 	//								TextAttribute struct
 
-	Window::TextAttribute::TextAttribute() :
+	MultiWindow::TextAttribute::TextAttribute() :
 		hdc(NULL),
 		fontName(L"Arial"), isBold(false), isItalic(false), isUnderline(false),
 		pointSize(14), textColor(Rgb::White()), bkColor(Rgb::Black())
 	{
 	}
 
-	Window::TextAttribute::~TextAttribute()
+	MultiWindow::TextAttribute::~TextAttribute()
 	{
 		if (font != NULL)
 			if (0 == DeleteObject((HGDIOBJ)font))
@@ -277,7 +277,7 @@ namespace easyXPlus
 
 	////////////////////////////////
 
-	void Window::TextAttribute::realCtor()
+	void MultiWindow::TextAttribute::realCtor()
 	{
 		createFont();
 
@@ -292,7 +292,7 @@ namespace easyXPlus
 	////////////////////////////////////////////////////////////////////
 	//					static TextAttribute functions
 
-	void Window::TextAttribute::releaseFont()
+	void MultiWindow::TextAttribute::releaseFont()
 	{
 		if (0 == DeleteObject(font))
 			throw EasyExcept("System call error!");
@@ -300,7 +300,7 @@ namespace easyXPlus
 
 	/////////////////////////////////
 
-	void Window::TextAttribute::createFont()
+	void MultiWindow::TextAttribute::createFont()
 	{
 		font = CreateFont(
 			-MulDiv(pointSize, GetDeviceCaps(hdc, LOGPIXELSY), 72),
@@ -320,7 +320,7 @@ namespace easyXPlus
 
 	///////////////////////////////////////
 
-	void Window::TextAttribute::applyFont()
+	void MultiWindow::TextAttribute::applyFont()
 	{
 		if (NULL == SelectObject(hdc, font))
 			throw EasyExcept("System call error!");
@@ -328,7 +328,7 @@ namespace easyXPlus
 
 	//////////////////////////////////////
 
-	void Window::TextAttribute::changeFont()
+	void MultiWindow::TextAttribute::changeFont()
 	{
 		TextAttribute::releaseFont();
 		TextAttribute::createFont();

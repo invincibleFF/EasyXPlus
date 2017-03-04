@@ -1,7 +1,7 @@
 #ifndef EASY_MISCELLANEOUS_H
 #define EASY_MISCELLANEOUS_H
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	class Others
 	{

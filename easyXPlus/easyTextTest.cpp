@@ -5,7 +5,7 @@
 #include "SU.h"
 
 using namespace std;
-using namespace easyXPlus;
+using namespace EasyXPlus;
 
 /////////////////////////////////////////////////////////////////////////////
 //									Tests
@@ -31,7 +31,7 @@ void Text_FunctionCalls_DefaultWindowNotSet_ThrowExcept()
 
 void Text_SetFont_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	wstring fontName = L"Arial";
@@ -42,7 +42,7 @@ void Text_SetFont_ByDefault_GetWhatSet()
 
 void Text_SetBold_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Text::setBold(true);
@@ -53,7 +53,7 @@ void Text_SetBold_ByDefault_GetWhatSet()
 
 void Text_SetItalic_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Text::setItalic(true);
@@ -64,7 +64,7 @@ void Text_SetItalic_ByDefault_GetWhatSet()
 
 void Text_SetUnderline_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Text::setUnderline(true);
@@ -75,7 +75,7 @@ void Text_SetUnderline_ByDefault_GetWhatSet()
 
 void Text_SetFontSize_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Text::setFontSize(10);
@@ -85,7 +85,7 @@ void Text_SetFontSize_ByDefault_GetWhatSet()
 
 void Text_SetTextColor_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Text::setTextColor(Rgb::Black());
@@ -95,7 +95,7 @@ void Text_SetTextColor_ByDefault_GetWhatSet()
 
 void Text_SetBkColor_ByDefault_GetWhatSet()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Text::setBkColor(Rgb::Black());

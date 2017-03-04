@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <vector>
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	//	Color Interface definition
 	class Colorable

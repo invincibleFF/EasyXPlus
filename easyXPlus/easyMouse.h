@@ -3,7 +3,7 @@
 
 #include "easyGeometry.h"
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	enum class MouseEvent
 	{

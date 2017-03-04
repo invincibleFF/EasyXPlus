@@ -5,7 +5,7 @@
 #include "easyOthers.h"
 #include "easyExcept.h"
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	///////////////////////////////////////////////////////////////////////////
 	//									Others

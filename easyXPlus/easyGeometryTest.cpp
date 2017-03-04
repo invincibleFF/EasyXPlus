@@ -8,7 +8,7 @@
 #include <string>
 
 using namespace std;
-using namespace easyXPlus;
+using namespace EasyXPlus;
 
 ////////////////////////////////////////////////////////////////////////////
 //							Tests for PointArray
@@ -45,7 +45,7 @@ void PointArray_InsertPoint_InvalidIndex_ThrowExcept()
 void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 {
 	Rgb color = Rgb(23, 45, 89);
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Point point(23, 23);
@@ -58,7 +58,7 @@ void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 {
 	Rgb color = Rgb(23, 34, 23);
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Geometry::setLineColor(color);
@@ -69,7 +69,7 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 
 void Geometry_SetLineColor_SameColor_ColorNotChange()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Rgb oldColorValue = Geometry::getCurrentLineColor();
 
@@ -81,7 +81,7 @@ void Geometry_SetLineColor_SameColor_ColorNotChange()
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 {
 	Rgb color = Rgb(11, 22, 33);
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Geometry::setFillColor(color);
@@ -92,7 +92,7 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 
 void Geometry_SetFillColor_SameColor_ColorNotChange()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	const Colorable& oldColorValue = Geometry::getCurrentFillColor();
 
@@ -103,7 +103,7 @@ void Geometry_SetFillColor_SameColor_ColorNotChange()
 
 void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
 {
-	Window firstWindow, secondWindow;
+	MultiWindow firstWindow, secondWindow;
 	Rgb firstDotColor(0, 1, 2), firstLineColor(3, 4, 5), firstFillColor(6, 7, 8);
 	Rgb secondDotColor(1, 1, 1), secondLineColor(3, 3, 3), secondFillColor(6, 6, 6);
 
@@ -136,7 +136,7 @@ void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
 
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Point dot(23, 23);
 	Rgb dotColor = Rgb::Coral();
@@ -149,7 +149,7 @@ void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 
 void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	Geometry::setDotColor(Rgb::Black());
@@ -163,7 +163,7 @@ void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
 
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Point from(0, 0), to(30, 20), middle(15, 10);
 	Rgb lineColor(12, 22, 43);
@@ -178,7 +178,7 @@ void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
 
 void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Point from(0, 0), to = from;
 	Rgb lineColor(12, 22, 43);
@@ -191,7 +191,7 @@ void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
 
 void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	SU_ASSERT_THROW(
@@ -201,7 +201,7 @@ void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep()
 
 void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
@@ -215,7 +215,7 @@ void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 
 void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
@@ -233,7 +233,7 @@ void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept()
 
 void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
@@ -253,7 +253,7 @@ void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints()
 
 void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	SU_ASSERT_THROW(
@@ -266,7 +266,7 @@ void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept()
 
 void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
@@ -284,7 +284,7 @@ void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 
 void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	SU_ASSERT_THROW(
@@ -294,7 +294,7 @@ void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept()
 
 void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
@@ -313,7 +313,7 @@ void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine()
 
 void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	SU_ASSERT_THROW(
@@ -323,7 +323,7 @@ void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept()
 
 void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	SU_ASSERT_THROW(

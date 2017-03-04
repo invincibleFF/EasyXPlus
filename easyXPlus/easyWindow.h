@@ -9,9 +9,9 @@
 //	in easyBase.cpp unit
 LRESULT CALLBACK CustomeWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-namespace easyXPlus
+namespace EasyXPlus
 {
-	class Window
+	class MultiWindow
 	{
 	private:
 		friend class Geometry;
@@ -25,14 +25,14 @@ namespace easyXPlus
 		static GeometryAttribute* getDefaultGeometryAttribute();
 		static TextAttribute* getDefaultTextAttribute();
 
-		Window(const std::wstring title = L"easyX+");
-		Window(const std::wstring title, int posX, int posY);
-		Window(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
+		MultiWindow(const std::wstring title = L"easyX+");
+		MultiWindow(const std::wstring title, int posX, int posY);
+		MultiWindow(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
 
-		virtual ~Window();
+		virtual ~MultiWindow();
 
 		//	forbid copy constructor
-		Window operator = (Window& window) = delete;
+		MultiWindow operator = (MultiWindow& window) = delete;
 
 		int getPosX() const;
 		int getPosY() const;

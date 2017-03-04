@@ -4,7 +4,7 @@
 #include "easyColor.h"
 #include <vector>
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	//	A point in a coordinate system.
 	class Point
@@ -40,10 +40,10 @@ namespace easyXPlus
 
 	//	A rectangle is an "RectRegion" without coordinate information. Thus, it is only
 	//	limited by width and height.
-	class Rectangle
+	class Rect
 	{
 	public:
-		Rectangle(unsigned width, unsigned height) : width(width), height(height)
+		Rect(unsigned width, unsigned height) : width(width), height(height)
 		{}
 
 		unsigned getWidth() const	{ return width; }
@@ -102,7 +102,7 @@ namespace easyXPlus
 		static void drawChord(RectRegion bound, Point start, Point end);
 		static void drawEllipse(RectRegion bound);
 		static void drawRectangle(RectRegion rectRegion);
-		static void drawRoundRectangle(RectRegion rectRegion, Rectangle ellipseBound);
+		static void drawRoundRectangle(RectRegion rectRegion, Rect ellipseBound);
 		static void drawPie(RectRegion bound, Point start, Point end);
 		static void drawPolygon(PointArray points);
 

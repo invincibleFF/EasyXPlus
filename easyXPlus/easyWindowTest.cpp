@@ -3,16 +3,16 @@
 
 #include "SU.h"
 
-using namespace easyXPlus;
+using namespace EasyXPlus;
 using namespace std;
 
 /////////////////////////////////////////////////////////////////////////////
 //							Faker
 
-class FakeWindow : public Window
+class FakeWindow : public MultiWindow
 {
 public:
-	FakeWindow(Window& window) : Window(window)		{}
+	FakeWindow(MultiWindow& window) : MultiWindow(window)		{}
 	~FakeWindow()
 	{ 
 		hdc = NULL; geometryAttribute.brush = NULL;
@@ -39,7 +39,7 @@ public:
 
 void Ctor_WithZeroParams_CreateWindowWithInitParams()
 {
-	Window window;
+	MultiWindow window;
 	
 	FakeWindow fake(window);
 	assert (fake.getInitPosX() == window.getPosX());
@@ -52,7 +52,7 @@ void Ctor_WithPosParams_CreateWindowWithThesePos()
 {
 	int posX = 234, posY = 245;
 
-	Window window(L"window", posX, posY);
+	MultiWindow window(L"window", posX, posY);
 
 	assert (posX == window.getPosX());
 	assert (posY == window.getPosY());
@@ -63,7 +63,7 @@ void Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH()
 	int posX = 67, posY = 89;
 	unsigned width = 12, height = 567;
 
-	Window window(L"window", posX, posY, width, height);
+	MultiWindow window(L"window", posX, posY, width, height);
 
 	assert (posX == window.getPosX());
 	assert (posY == window.getPosY());
@@ -73,9 +73,9 @@ void Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH()
 
 void Ctor_ByDefault_NullDefaultAttributesAndFalseRegisteredFlag()
 {
-	FakeWindow(Window()).resetDefaultGeometryAttribute();
+	FakeWindow(MultiWindow()).resetDefaultGeometryAttribute();
 
-	Window window;
+	MultiWindow window;
 	FakeWindow fake(window);
 
 	assert (true == fake.getRegisteredFlag());
@@ -95,7 +95,7 @@ public:
 
 void Clear_ByDefault_ClearToColorGiven()
 {
-	Window window(L"window", 120, 400, 90, 90);
+	MultiWindow window(L"window", 120, 400, 90, 90);
 	FakeWindow fakeWindow(window);
 
 	fakeWindow.clear(FakeColor());
@@ -111,7 +111,7 @@ void Clear_ByDefault_ClearToColorGiven()
 void Resize_ByDefault_ResizeToGivenSize()
 {
 	unsigned width = 567, height = 234;
-	Window window;
+	MultiWindow window;
 
 	window.resize(width, height);
 
@@ -121,7 +121,7 @@ void Resize_ByDefault_ResizeToGivenSize()
 
 void Resize_NullHandle_ThrowException()
 {
-	FakeWindow fake(Window{});
+	FakeWindow fake(MultiWindow{});
 	HWND oldHandle = fake.getWindowHandle();
 	fake.setWindowHandle(NULL);
 
@@ -137,7 +137,7 @@ void Resize_NullHandle_ThrowException()
 void Reposition_ByDefault_RepositionToGivenPos()
 {
 	int posX = -56, posY = 67;
-	Window window;
+	MultiWindow window;
 
 	window.reposition(posX, posY);
 
@@ -147,7 +147,7 @@ void Reposition_ByDefault_RepositionToGivenPos()
 
 void Reposiion_NullHandle_ThrowException()
 {
-	FakeWindow fakeWindow(Window{ L"window", 12, 12, 120, 120 });
+	FakeWindow fakeWindow(MultiWindow{ L"window", 12, 12, 120, 120 });
 	HWND oldHandle = fakeWindow.getWindowHandle();
 	fakeWindow.setWindowHandle(NULL);
 
@@ -161,7 +161,7 @@ void Reposiion_NullHandle_ThrowException()
 
 void SetAsDefault_ByDefault_SetDefultAttributes()
 {
-	FakeWindow fake(Window{});
+	FakeWindow fake(MultiWindow{});
 	fake.setAsDefault();
 
 	assert(fake.getDefaultTextAttribute() == fake.getTextAttribute());
@@ -169,26 +169,26 @@ void SetAsDefault_ByDefault_SetDefultAttributes()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-//						Tests for Window::getDefaultWindowHandle
+//						Tests for MultiWindow::getDefaultWindowHandle
 
 void GetDefaultGeometryAttribute_NotSet_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	FakeWindow fakeWindow(window);
 
 	fakeWindow.resetDefaultGeometryAttribute();
 
-	SU_ASSERT_THROW(Window::getDefaultGeometryAttribute(), EasyExcept);
+	SU_ASSERT_THROW(MultiWindow::getDefaultGeometryAttribute(), EasyExcept);
 }
 
 void GetDefaultTextAttribute_NotSet_ThrowExcept()
 {
-	Window window;
+	MultiWindow window;
 	FakeWindow fakeWindow(window);
 
 	fakeWindow.resetDefaultGeometryAttribute();
 
-	SU_ASSERT_THROW(Window::getDefaultGeometryAttribute(), EasyExcept);
+	SU_ASSERT_THROW(MultiWindow::getDefaultGeometryAttribute(), EasyExcept);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -343,6 +343,5 @@ int main(int argc, wchar_t* argv[])
 	//////////////////////		Others		/////////////////////////
 
 	PauseAll_PassZero_ThrowExcept();
-
 	return 0;
 }

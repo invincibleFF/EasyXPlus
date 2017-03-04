@@ -4,11 +4,11 @@
 #include "easyGeometry.h"
 #include <string>
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	//	TODO:
 	//		1.add a setFontSize() overload that uses pixel size to set the font.
-	//		2.test to see if adding namespace before Rectangle class is useless.
+	//		2.test to see if adding namespace before Rect class is useless.
 	class Text
 	{
 	public:
@@ -28,7 +28,7 @@ namespace easyXPlus
 		static Rgb getCurrentTextColor();
 		static Rgb getCurrentBkColor();
 
-		static Rectangle getOutputSize(std::wstring text);
+		static Rect getOutputSize(std::wstring text);
 		static void output(const Point pos,  std::wstring text);
 	};
 }

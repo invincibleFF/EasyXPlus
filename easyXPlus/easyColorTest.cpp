@@ -1,7 +1,7 @@
 #include "easyColor.h"
 #include <cassert>
 
-using namespace easyXPlus;
+using namespace EasyXPlus;
 
 ////////////////////////////////////////////////////////////////////////////
 //								Faker

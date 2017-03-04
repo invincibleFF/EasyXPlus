@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	///////////////////////////////////////////////////////////////////////////
 	//								Keyboard
@@ -83,7 +83,7 @@ namespace easyXPlus
 
 		while (0 != PeekMessageW(
 						&msg,
-						Window::getDefaultWindowHandle(),
+						MultiWindow::getDefaultWindowHandle(),
 						WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
 		{
 			if (msg.message == WM_KEYUP)

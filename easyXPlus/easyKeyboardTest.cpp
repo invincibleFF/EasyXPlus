@@ -6,7 +6,7 @@
 
 #include "SU.h"
 
-using namespace easyXPlus;
+using namespace EasyXPlus;
 
 ///////////////////////////////////////////////////////////////////////////////
 //									NOTE:
@@ -60,7 +60,7 @@ void simulateKeyStrikes()
 void sendKeyDownMsgs()
 {
 	for (int i = 0; i < g_count; ++i)
-		SendMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, g_virtualKeys[i], 0);
+		SendMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, g_virtualKeys[i], 0);
 }
 
 /*
@@ -82,7 +82,7 @@ void IsPressed_ByDefault_CanDetected()
 
 void TryGetPressed_NoPressed_ReturnKeyNone()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
 
 	assert(Keyboard::tryGetPressed() == Key::KeyNone);
@@ -90,70 +90,70 @@ void TryGetPressed_NoPressed_ReturnKeyNone()
 
 void TryGetPressed_SupportedKeyPressed_ReturnKey()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYUP, VK_ESCAPE, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyEsc);
 }
 
 void TryGetPressed_ManyKeyDownOneKeyUp_MiddleMsgsIgnored()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYUP, VK_ESCAPE, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyEsc);
 }
 
 void TryGetPressed_KeyMsgsAfterCharMsgs_ReturnKey()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_UNICHAR, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_CHAR, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_UNICHAR, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyShift);
 }
 
 void TryGetPressed_KeyMsgsBeforeCharMsgs_ReturnKey()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_ESCAPE, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_UNICHAR, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_CHAR, VK_ESCAPE, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_UNICHAR, VK_ESCAPE, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyShift);
 }
 
 void TryGetPressed_OnlyKeyDownMsg_ReturnKeyNone()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyNone);
 }
 
 void TryGetPressed_TwoKeyPressed_GetTwo()
 {
-	Window window;
+	MultiWindow window;
 	window.setAsDefault();
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
-	PostMessageW(Window::getDefaultWindowHandle(), WM_CHAR, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_CHAR, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYDOWN, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_KEYUP, VK_SHIFT, 0);
+	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_CHAR, VK_SHIFT, 0);
 
 	assert(Keyboard::tryGetPressed() == Key::KeyShift);
 	assert(Keyboard::tryGetPressed() == Key::KeyShift);

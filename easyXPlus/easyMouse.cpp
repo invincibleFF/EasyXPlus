@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace easyXPlus
+namespace EasyXPlus
 {
 	//////////////////////////////////////////////////////////////////////////
 	//								Mouse class
@@ -16,7 +16,7 @@ namespace easyXPlus
 		if (0 == GetCursorPos(&pos))
 			throw EasyExcept("System call error!");
 
-		if (0 == ScreenToClient(Window::getDefaultWindowHandle(), &pos))
+		if (0 == ScreenToClient(MultiWindow::getDefaultWindowHandle(), &pos))
 			throw EasyExcept("System call error!");
 
 		return Point(pos.x, pos.y);
@@ -29,7 +29,7 @@ namespace easyXPlus
 		MSG msg;
 		while (0 != PeekMessageW(
 						&msg,
-						Window::getDefaultWindowHandle(),
+						MultiWindow::getDefaultWindowHandle(),
 						WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
 		{
 			switch (msg.message)
