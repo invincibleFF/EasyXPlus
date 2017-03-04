@@ -346,5 +346,3 @@ int main(int argc, wchar_t* argv[])
 
 	return 0;
 }
-
-#error "change default font szie"

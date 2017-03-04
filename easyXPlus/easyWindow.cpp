@@ -264,7 +264,7 @@ namespace easyXPlus
 	Window::TextAttribute::TextAttribute() :
 		hdc(NULL),
 		fontName(L"Arial"), isBold(false), isItalic(false), isUnderline(false),
-		pointSize(70), textColor(Rgb::White()), bkColor(Rgb::Black())
+		pointSize(14), textColor(Rgb::White()), bkColor(Rgb::Black())
 	{
 	}
 

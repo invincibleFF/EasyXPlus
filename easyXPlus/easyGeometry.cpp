@@ -217,7 +217,9 @@ namespace easyXPlus
 			point.getX(), point.getY(),
 			geometryAttribute->dotColor.toColorref());
 
-		if (colorRet == -1 || colorRet == ERROR_INVALID_PARAMETER)
+		//	colorRet == -1 when the dot is on the window border,
+		//	skip this failure since it does not matter
+		if (colorRet == ERROR_INVALID_PARAMETER)
 			throw EasyExcept("System call error!");
 	}
 
