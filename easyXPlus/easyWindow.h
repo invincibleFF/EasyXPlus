@@ -8,6 +8,9 @@ namespace EasyXPlus
 {
 	class BaseWindow;
 
+	//	TODO:
+	//		1.window size problems.
+	//		2.change window style.
 	class Window
 	{
 	public:

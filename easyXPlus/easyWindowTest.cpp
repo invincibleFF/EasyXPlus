@@ -138,7 +138,7 @@ void TryGetPressed_TwoKeyPressed_GetTwo();
 void PauseAll_PassZero_ThrowExcept();
 
 //////////////////////////////////////////////////////////////////////
-
+#include "easyText.h"
 int main(int argc, wchar_t* argv[])
 {
 	Init_NotCalled_CallOtherWindowFunctionsThrowExcept();
@@ -220,5 +220,12 @@ int main(int argc, wchar_t* argv[])
 	PauseAll_PassZero_ThrowExcept();
 
 	MessageBoxW(NULL, L"", L"Succeed!", MB_OK);
+
+	int count = 0;
+	Text::setTextColor(Rgb::Grey())
+;	while (true)
+	{
+		Text::output(Point(0, 0), to_wstring(count++));
+	}
 	return 0;
 }
