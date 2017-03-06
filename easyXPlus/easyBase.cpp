@@ -1,8 +1,10 @@
 #include "easyBaseWindow.h"
 #include "easyKeyboard.h"
+#include "easyMouse.h"
 #include "easyExcept.h"
 
 #include <cassert>
+#include <queue>
 
 //	pseudo main function used for developers
 int main(int argc, wchar_t* argv[]);
@@ -10,6 +12,11 @@ int main(int argc, wchar_t* argv[]);
 ///////////////////////////////////////////////////////////////////////////////////
 
 using namespace EasyXPlus;
+
+///////////////////////////////////////////////////////////////////////////////////
+//							globals
+
+std::queue<MouseEvent> g_mouseEvents;
 
 int WINAPI wWinMain(
 	HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
@@ -56,10 +63,20 @@ LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 
 	case WM_LBUTTONDOWN:
+		g_mouseEvents.push(MouseEvent::LeftDown);
+		return 0;
 	case WM_LBUTTONUP:
+		g_mouseEvents.push(MouseEvent::LeftUp);
+		return 0;
 	case WM_RBUTTONDOWN:
+		g_mouseEvents.push(MouseEvent::RightDown);
+		return 0;
 	case WM_RBUTTONUP:
+		g_mouseEvents.push(MouseEvent::RightUp);
+		return 0;
 	case WM_MOUSEMOVE:
+		g_mouseEvents.push(MouseEvent::Move);
+		return 0;
 
 	default:
 		return DefWindowProcW(hwnd, msg, wParam, lParam);

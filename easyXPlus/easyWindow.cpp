@@ -140,7 +140,7 @@ namespace EasyXPlus
 		windowHandle = CreateWindowW(
 			L"EasyXPlus::WindowClassName",
 			title.c_str(),
-			WS_POPUP | WS_BORDER,
+			WS_POPUP | WS_CAPTION,
 			posX, posY,
 			width, height,
 			NULL, NULL,

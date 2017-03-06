@@ -17,9 +17,6 @@ namespace EasyXPlus
 		static Point getCurrentPos();
 
 		static MouseEvent tryGetEvent();
-
-	private:
-		static void pushMouseEvent(UINT msg);
 	};
 }
 

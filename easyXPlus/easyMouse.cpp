@@ -1,15 +1,19 @@
 #include "easyMouse.h"
 #include "easyBaseWindow.h"
 #include "easyExcept.h"
+
 #include <algorithm>
+#include <queue>
 
 using namespace std;
+
+extern std::queue<EasyXPlus::MouseEvent> g_mouseEvents;
 
 namespace EasyXPlus
 {
 	//////////////////////////////////////////////////////////////////////////
 	//								Mouse class
-
+	
 	Point Mouse::getCurrentPos()
 	{
 		POINT pos;
@@ -26,24 +30,13 @@ namespace EasyXPlus
 
 	MouseEvent Mouse::tryGetEvent()
 	{
-		MSG msg;
-		while (0 != PeekMessageW(
-						&msg,
-						BaseWindow::getDefaultWindowHandle(),
-						WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
+		if (g_mouseEvents.empty())
+			return MouseEvent::None;
+		else
 		{
-			switch (msg.message)
-			{
-			case WM_LBUTTONDOWN:	return MouseEvent::LeftDown;
-			case WM_LBUTTONUP:		return MouseEvent::LeftUp;
-			case WM_RBUTTONDOWN:	return MouseEvent::RightDown;
-			case WM_RBUTTONUP:		return MouseEvent::RightUp;
-			case WM_MOUSEMOVE:		return MouseEvent::Move;
-
-			default:				continue;	//	skip other mouse events
-			}
+			MouseEvent key = g_mouseEvents.front();
+			g_mouseEvents.pop();
+			return key;
 		}
-		return MouseEvent::None;
 	}
-
 }

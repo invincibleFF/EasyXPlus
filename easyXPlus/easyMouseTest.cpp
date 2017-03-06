@@ -44,14 +44,16 @@ void TryGetEvent_NoEvent_ReturnNone()
 void TryGetEvent_SupportedEvent_ReturnEvent()
 {
 	Window::clearScreen(Rgb::Black());
+	flushMouseEvnets();
 
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONUP, 0, 0);
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_RBUTTONUP, 0, 0);
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONUP, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_RBUTTONUP, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
 
-	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
+	auto it = Mouse::tryGetEvent();
+	assert(it == MouseEvent::LeftDown);
 	assert(Mouse::tryGetEvent() == MouseEvent::LeftUp);
 	assert(Mouse::tryGetEvent() == MouseEvent::RightDown);
 	assert(Mouse::tryGetEvent() == MouseEvent::RightUp);
@@ -72,9 +74,9 @@ void TryGetEvent_SupportedMixedWithUnsupported_ReturnSupported()
 	Window::clearScreen(Rgb::Black());
 	flushMouseEvnets();
 
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_NCLBUTTONDBLCLK, 0, 0);
-	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_NCLBUTTONDBLCLK, 0, 0);
+	SendMessageW(BaseWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
 
 	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
 	assert(Mouse::tryGetEvent() == MouseEvent::Move);
