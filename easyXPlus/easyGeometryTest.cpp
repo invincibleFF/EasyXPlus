@@ -15,7 +15,6 @@ using namespace EasyXPlus;
 
 void RectRegion_Ctor_InvalidRectRegion_ThrowExcept()
 {
-	
 	SU_ASSERT_THROW(RectRegion(Point(2, 5), Point(2, 6)), EasyExcept);
 	SU_ASSERT_THROW(RectRegion(Point(2, 5), Point(3, 5)), EasyExcept);
 	SU_ASSERT_THROW(RectRegion(Point(3, 5), Point(3, 5)), EasyExcept);
@@ -45,8 +44,7 @@ void PointArray_InsertPoint_InvalidIndex_ThrowExcept()
 void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 {
 	Rgb color = Rgb(23, 45, 89);
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Point point(23, 23);
 	Geometry::setDotColor(color);
@@ -58,8 +56,7 @@ void Geometry_SetDotColor_ByDefault_DrawDotWithThisColor()
 void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 {
 	Rgb color = Rgb(23, 34, 23);
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Geometry::setLineColor(color);
 	Geometry::drawLine(Point(0, 0), Point(40, 40));
@@ -69,8 +66,7 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor()
 
 void Geometry_SetLineColor_SameColor_ColorNotChange()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Rgb oldColorValue = Geometry::getCurrentLineColor();
 
 	Geometry::setLineColor(Geometry::getCurrentLineColor());
@@ -81,8 +77,7 @@ void Geometry_SetLineColor_SameColor_ColorNotChange()
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 {
 	Rgb color = Rgb(11, 22, 33);
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Geometry::setFillColor(color);
 	Geometry::drawRectangle(RectRegion(Point(0, 0), Point(60, 60)));
@@ -92,8 +87,7 @@ void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor()
 
 void Geometry_SetFillColor_SameColor_ColorNotChange()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	const Colorable& oldColorValue = Geometry::getCurrentFillColor();
 
 	Geometry::setFillColor(Geometry::getCurrentFillColor());
@@ -101,43 +95,9 @@ void Geometry_SetFillColor_SameColor_ColorNotChange()
 	assert(Geometry::getCurrentFillColor().toColorref() == oldColorValue.toColorref());
 }
 
-void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings()
-{
-	MultiWindow firstWindow, secondWindow;
-	Rgb firstDotColor(0, 1, 2), firstLineColor(3, 4, 5), firstFillColor(6, 7, 8);
-	Rgb secondDotColor(1, 1, 1), secondLineColor(3, 3, 3), secondFillColor(6, 6, 6);
-
-	firstWindow.setAsDefault();
-	Geometry::setDotColor(firstDotColor);
-	Geometry::setLineColor(firstLineColor);
-	Geometry::setFillColor(firstFillColor);
-
-	secondWindow.setAsDefault();
-	Geometry::setDotColor(secondDotColor);
-	Geometry::setLineColor(secondLineColor);
-	Geometry::setFillColor(secondFillColor);
-
-	firstWindow.setAsDefault();
-	Geometry::drawDot(Point(1, 1));
-	Geometry::drawLine(Point(2, 2), Point(4, 4));
-	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
-	assert( Geometry::getPointColor(Point(1, 1)) == firstDotColor );
-	assert( Geometry::getPointColor(Point(3, 3)) == firstLineColor );
-	assert(Geometry::getPointColor(Point(6, 6)) == firstFillColor );
-
-	secondWindow.setAsDefault();
-	Geometry::drawDot(Point(1, 1));
-	Geometry::drawLine(Point(2, 2), Point(4, 4));
-	Geometry::drawRectangle(RectRegion(Point(5, 5), Point(8, 8)));
-	assert(Geometry::getPointColor(Point(1, 1)) == secondDotColor);
-	assert(Geometry::getPointColor(Point(3, 3)) == secondLineColor);
-	assert(Geometry::getPointColor(Point(6, 6)) == secondFillColor);
-}
-
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Point dot(23, 23);
 	Rgb dotColor = Rgb::Coral();
 	Geometry::setDotColor(dotColor);
@@ -149,8 +109,7 @@ void Geometry_DrawDot_ByDefault_DrawDotWithDotColor()
 
 void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Geometry::setDotColor(Rgb::Black());
 	Geometry::setLineColor(Rgb::Blue());
@@ -163,8 +122,7 @@ void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange()
 
 void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Point from(0, 0), to(30, 20), middle(15, 10);
 	Rgb lineColor(12, 22, 43);
 	Geometry::setLineColor(lineColor);
@@ -178,8 +136,7 @@ void Geometry_DrawLine_ByDefault_IncludeTwoEndPoint()
 
 void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Point from(0, 0), to = from;
 	Rgb lineColor(12, 22, 43);
 	Geometry::setLineColor(lineColor);
@@ -191,8 +148,7 @@ void Geometry_DrawLine_TwoSameEnd_DrawOnePoint()
 
 void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	SU_ASSERT_THROW(
 		Geometry::drawArc(RectRegion(Point(0, 0), Point(40, 40)), Point(20, 20), Point(23, 45)),
@@ -201,8 +157,7 @@ void Geometry_DrawArc_TwoPointsOneCenterOneNot_ThrowExcep()
 
 void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
 
@@ -215,8 +170,7 @@ void Geometry_DrawArc_SameStartAndEndPoint_DrawEntireEllipse()
 
 void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
 
@@ -233,8 +187,7 @@ void Geometry_DrawBezier_PointNumberNotThreeTimePlusOne_ThrowExcept()
 
 void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
 	PointArray points{ Point(0, 0), Point(10, 10), Point(20, 20), Point(30, 30) };
@@ -253,8 +206,7 @@ void Geometry_DrawBezier_ByDefault_IncludeTwoEndAndTwoControlPoints()
 
 void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	SU_ASSERT_THROW(
 		Geometry::drawPolyline(PointArray{}),
@@ -266,8 +218,7 @@ void Geometry_DrawPolyline_PointNumberNotGreaterOne_ThrowExcept()
 
 void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
 	PointArray points{ Point(0, 0), Point(10, 10), Point(20, 20)};
@@ -284,8 +235,7 @@ void Geometry_DrawPolyline_ByDefault_IncludeAllStartAndEndsPoints()
 
 void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	SU_ASSERT_THROW(
 		Geometry::drawChord(RectRegion(Point(0, 0), Point(10, 10)), Point(5, 5), Point(1, 2)),
@@ -294,8 +244,7 @@ void Geometry_DrawChord_EndPointsOneCenterAnotherNot_ThrowExcept()
 
 void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Rgb lineColor = Rgb::Blue();
 	Geometry::setLineColor(lineColor);
 
@@ -313,8 +262,7 @@ void Geometry_DrawRectangle_ByDegault_IncludeBottomLineAndRightLine()
 
 void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	SU_ASSERT_THROW(
 		Geometry::drawPie(RectRegion(Point(0, 0), Point(10, 10)), Point(5, 5), Point(1, 2)),
@@ -323,8 +271,7 @@ void Geometry_DrawPie_TwoEndsOneCanterOneAnoter_ThrowExcept()
 
 void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	SU_ASSERT_THROW(
 		Geometry::drawPolygon(PointArray{ Point(0, 0) }),
@@ -333,5 +280,3 @@ void Geometry_DrawPolygon_PointNumberLessThree_ThrowExcept()
 		Geometry::drawPolygon(PointArray{ Point(0, 0), Point(23, 34) }),
 		EasyExcept);
 }
-
-//#error "test color module, change attribute name"

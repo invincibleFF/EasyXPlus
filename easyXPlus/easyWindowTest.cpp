@@ -6,81 +6,35 @@
 using namespace EasyXPlus;
 using namespace std;
 
-/////////////////////////////////////////////////////////////////////////////
-//							Faker
-
-class FakeWindow : public MultiWindow
-{
-public:
-	FakeWindow(MultiWindow& window) : MultiWindow(window)		{}
-	~FakeWindow()
-	{ 
-		hdc = NULL; geometryAttribute.brush = NULL;
-		geometryAttribute.pen = NULL; textAttribute.font = NULL;
-	}
-
-	const int getInitPosX() const { return INIT_POS_X; }
-	const int getInitPosY() const { return INIT_POS_Y; }
-	const int getInitWidth() const { return INIT_WIDTH; }
-	const int getInitHeight() const { return INIT_HEIGHT; }
-	const bool getRegisteredFlag() const { return registered; }
-	const HWND getWindowHandle() const { return windowHandle; }
-	const void* getTextAttribute() const { return &textAttribute; }
-	const void* getGeometryAttribute() const { return &geometryAttribute; }
-
-
-	void resetDefaultGeometryAttribute() { defaultGeometryAttribute = nullptr; }
-	void resetDefaultTextAttribute() { defaultTextAttribute = nullptr; }
-	void setWindowHandle(HWND hwnd)	{ windowHandle = hwnd; }
-};
-
 ////////////////////////////////////////////////////////////////////////////////
 //								Tests for ctors and getters
 
-void Ctor_WithZeroParams_CreateWindowWithInitParams()
+void Init_NotCalled_CallOtherWindowFunctionsThrowExcept()
 {
-	MultiWindow window;
-	
-	FakeWindow fake(window);
-	assert (fake.getInitPosX() == window.getPosX());
-	assert (fake.getInitPosY() == window.getPosY());
-	assert (fake.getWidth() == window.getWidth());
-	assert (fake.getHeight() == window.getHeight());
+	SU_ASSERT_THROW( Window::resize(90, 90), EasyExcept );
 }
 
-void Ctor_WithPosParams_CreateWindowWithThesePos()
+void Init_WithPosParams_CreateWindowWithThesePos()
 {
 	int posX = 234, posY = 245;
 
-	MultiWindow window(L"window", posX, posY);
+	Window::init(L"", posX, posY);
 
-	assert (posX == window.getPosX());
-	assert (posY == window.getPosY());
+	assert (posX == Window::getPosX());
+	assert (posY == Window::getPosY());
 }
 
-void Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH()
+void Init_WithPosAndWH_CreateWindowWithThesePosAndWH()
 {
 	int posX = 67, posY = 89;
 	unsigned width = 12, height = 567;
 
-	MultiWindow window(L"window", posX, posY, width, height);
+	Window::init(L"window", posX, posY, width, height);
 
-	assert (posX == window.getPosX());
-	assert (posY == window.getPosY());
-	assert (width == window.getWidth());
-	assert (height == window.getHeight());
-}
-
-void Ctor_ByDefault_NullDefaultAttributesAndFalseRegisteredFlag()
-{
-	FakeWindow(MultiWindow()).resetDefaultGeometryAttribute();
-
-	MultiWindow window;
-	FakeWindow fake(window);
-
-	assert (true == fake.getRegisteredFlag());
-	SU_ASSERT_THROW (fake.getDefaultGeometryAttribute(), EasyExcept);
-	SU_ASSERT_THROW(fake.getDefaultTextAttribute(), EasyExcept);
+	assert (posX == Window::getPosX());
+	assert (posY == Window::getPosY());
+	assert (width == Window::getWidth());
+	assert (height == Window::getHeight());
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -93,42 +47,18 @@ public:
 	Colorable* fromColorref(COLORREF colorValue)const { return new FakeColor(); }
 };
 
-void Clear_ByDefault_ClearToColorGiven()
-{
-	MultiWindow window(L"window", 120, 400, 90, 90);
-	FakeWindow fakeWindow(window);
-
-	fakeWindow.clear(FakeColor());
-
-	assert(	FakeColor().toColorref()
-				==
-			GetPixel(GetDC(fakeWindow.getWindowHandle()), 0, 0));
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////
 //								Tests for Resize
 
 void Resize_ByDefault_ResizeToGivenSize()
 {
 	unsigned width = 567, height = 234;
-	MultiWindow window;
+	Window::init();
 
-	window.resize(width, height);
+	Window::resize(width, height);
 
-	assert (width == window.getWidth());
-	assert(height == window.getHeight());
-}
-
-void Resize_NullHandle_ThrowException()
-{
-	FakeWindow fake(MultiWindow{});
-	HWND oldHandle = fake.getWindowHandle();
-	fake.setWindowHandle(NULL);
-
-	SU_ASSERT_THROW(fake.resize(12, 34), EasyExcept);
-
-	//	to make destructer pass
-	fake.setWindowHandle(oldHandle);
+	assert (width == Window::getWidth());
+	assert(height == Window::getHeight());
 }
 
 /////////////////////////////////////////////////////////////////
@@ -137,58 +67,12 @@ void Resize_NullHandle_ThrowException()
 void Reposition_ByDefault_RepositionToGivenPos()
 {
 	int posX = -56, posY = 67;
-	MultiWindow window;
+	Window::init();
 
-	window.reposition(posX, posY);
+	Window::reposition(posX, posY);
 
-	assert (posX == window.getPosX());
-	assert ( posY == window.getPosY() );
-}
-
-void Reposiion_NullHandle_ThrowException()
-{
-	FakeWindow fakeWindow(MultiWindow{ L"window", 12, 12, 120, 120 });
-	HWND oldHandle = fakeWindow.getWindowHandle();
-	fakeWindow.setWindowHandle(NULL);
-
-	SU_ASSERT_THROW( fakeWindow.reposition(34, 34), EasyExcept);
-
-	fakeWindow.setWindowHandle(oldHandle);
-}
-
-////////////////////////////////////////////////////////////////////////////
-//						Tests for setAsDefault
-
-void SetAsDefault_ByDefault_SetDefultAttributes()
-{
-	FakeWindow fake(MultiWindow{});
-	fake.setAsDefault();
-
-	assert(fake.getDefaultTextAttribute() == fake.getTextAttribute());
-	assert(fake.getDefaultGeometryAttribute() == fake.getGeometryAttribute());
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//						Tests for MultiWindow::getDefaultWindowHandle
-
-void GetDefaultGeometryAttribute_NotSet_ThrowExcept()
-{
-	MultiWindow window;
-	FakeWindow fakeWindow(window);
-
-	fakeWindow.resetDefaultGeometryAttribute();
-
-	SU_ASSERT_THROW(MultiWindow::getDefaultGeometryAttribute(), EasyExcept);
-}
-
-void GetDefaultTextAttribute_NotSet_ThrowExcept()
-{
-	MultiWindow window;
-	FakeWindow fakeWindow(window);
-
-	fakeWindow.resetDefaultGeometryAttribute();
-
-	SU_ASSERT_THROW(MultiWindow::getDefaultGeometryAttribute(), EasyExcept);
+	assert (posX == Window::getPosX());
+	assert ( posY == Window::getPosY() );
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -207,7 +91,6 @@ void Geometry_SetLineColor_ByDefault_DrawLineWithThisColor();
 void Geometry_SetLineColor_SameColor_ColorNotChange();
 void Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 void Geometry_SetFillColor_SameColor_ColorNotChange();
-void Geometry_SetColors_DifferentWindow_KeepFormerColorSettings();
 void Geometry_Drawers_ByDefault_SeeWindowOutput();
 void Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
 void Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange();
@@ -258,21 +141,15 @@ void PauseAll_PassZero_ThrowExcept();
 
 int main(int argc, wchar_t* argv[])
 {
-	Ctor_WithZeroParams_CreateWindowWithInitParams();
-	Ctor_WithPosParams_CreateWindowWithThesePos();
-	Ctor_WithPosAndWH_CreateWindowWithThesePosAndWH();
-	Ctor_ByDefault_NullDefaultAttributesAndFalseRegisteredFlag();
+	Init_NotCalled_CallOtherWindowFunctionsThrowExcept();
+	Text_FunctionCalls_DefaultWindowNotSet_ThrowExcept();
 
-	Clear_ByDefault_ClearToColorGiven();
+	Window::init();
 
+	Init_WithPosParams_CreateWindowWithThesePos();
+	Init_WithPosAndWH_CreateWindowWithThesePosAndWH();
 	Resize_ByDefault_ResizeToGivenSize();
-	Resize_NullHandle_ThrowException();
-
 	Reposition_ByDefault_RepositionToGivenPos();
-	Reposiion_NullHandle_ThrowException();
-
-	SetAsDefault_ByDefault_SetDefultAttributes();
-	GetDefaultGeometryAttribute_NotSet_ThrowExcept();
 
 	///////////////			Colorable		//////////////////
 
@@ -291,7 +168,6 @@ int main(int argc, wchar_t* argv[])
 	Geometry_SetLineColor_SameColor_ColorNotChange();
 	Geometry_SetFillColor_ByDefault_DrawShapesWithThisColor();
 	Geometry_SetFillColor_SameColor_ColorNotChange();
-	Geometry_SetColors_DifferentWindow_KeepFormerColorSettings();
 	Geometry_DrawDot_ByDefault_DrawDotWithDotColor();
 	Geometry_DrawLine_AfterDraw_DotColorAndLineColorNotChange();
 	Geometry_DrawLine_ByDefault_IncludeTwoEndPoint();
@@ -309,7 +185,6 @@ int main(int argc, wchar_t* argv[])
 
 	////////////////////		Text		/////////////////////
 
-	Text_FunctionCalls_DefaultWindowNotSet_ThrowExcept();
 	Text_SetFont_ByDefault_GetWhatSet();
 	Text_SetBold_ByDefault_GetWhatSet();
 	Text_SetItalic_ByDefault_GetWhatSet();
@@ -343,5 +218,7 @@ int main(int argc, wchar_t* argv[])
 	//////////////////////		Others		/////////////////////////
 
 	PauseAll_PassZero_ThrowExcept();
+
+	MessageBoxW(NULL, L"", L"Succeed!", MB_OK);
 	return 0;
 }

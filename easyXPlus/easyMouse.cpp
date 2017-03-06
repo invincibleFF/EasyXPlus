@@ -1,5 +1,5 @@
 #include "easyMouse.h"
-#include "easyWindow.h"
+#include "easyBaseWindow.h"
 #include "easyExcept.h"
 #include <algorithm>
 
@@ -16,7 +16,7 @@ namespace EasyXPlus
 		if (0 == GetCursorPos(&pos))
 			throw EasyExcept("System call error!");
 
-		if (0 == ScreenToClient(MultiWindow::getDefaultWindowHandle(), &pos))
+		if (0 == ScreenToClient(BaseWindow::getDefaultWindowHandle(), &pos))
 			throw EasyExcept("System call error!");
 
 		return Point(pos.x, pos.y);
@@ -29,7 +29,7 @@ namespace EasyXPlus
 		MSG msg;
 		while (0 != PeekMessageW(
 						&msg,
-						MultiWindow::getDefaultWindowHandle(),
+						BaseWindow::getDefaultWindowHandle(),
 						WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
 		{
 			switch (msg.message)

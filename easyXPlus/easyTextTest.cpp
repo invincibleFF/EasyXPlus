@@ -1,6 +1,6 @@
 ﻿#include "easyText.h"
-#include "easyWindow.h"
 #include "easyExcept.h"
+#include "easyWindow.h"
 
 #include "SU.h"
 
@@ -31,8 +31,7 @@ void Text_FunctionCalls_DefaultWindowNotSet_ThrowExcept()
 
 void Text_SetFont_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	wstring fontName = L"Arial";
 	Text::setFont(fontName);
@@ -42,8 +41,7 @@ void Text_SetFont_ByDefault_GetWhatSet()
 
 void Text_SetBold_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Text::setBold(true);
 	assert(Text::isCurrentBold() == true);
@@ -53,8 +51,7 @@ void Text_SetBold_ByDefault_GetWhatSet()
 
 void Text_SetItalic_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Text::setItalic(true);
 	assert(Text::isCurrentItalic() == true);
@@ -64,8 +61,7 @@ void Text_SetItalic_ByDefault_GetWhatSet()
 
 void Text_SetUnderline_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Text::setUnderline(true);
 	assert(Text::isCurrentUnderline() == true);
@@ -75,8 +71,7 @@ void Text_SetUnderline_ByDefault_GetWhatSet()
 
 void Text_SetFontSize_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Text::setFontSize(10);
 
@@ -85,8 +80,7 @@ void Text_SetFontSize_ByDefault_GetWhatSet()
 
 void Text_SetTextColor_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Text::setTextColor(Rgb::Black());
 
@@ -95,8 +89,7 @@ void Text_SetTextColor_ByDefault_GetWhatSet()
 
 void Text_SetBkColor_ByDefault_GetWhatSet()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
 	Text::setBkColor(Rgb::Black());
 

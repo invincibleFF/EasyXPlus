@@ -1,5 +1,5 @@
 #include "easyGeometry.h"
-#include "easyWindow.h"
+#include "easyBaseWindow.h"
 #include "easyExcept.h"
 
 #include <cassert>
@@ -122,35 +122,35 @@ namespace EasyXPlus
 
 	Rgb Geometry::getCurrentDotColor()
 	{
-		return MultiWindow::getDefaultGeometryAttribute()->dotColor;
+		return BaseWindow::getDefaultGeometryAttribute()->dotColor;
 	}
 
 	/////////////////////////////////
 
 	Rgb Geometry::getCurrentLineColor()
 	{
-		return MultiWindow::getDefaultGeometryAttribute()->lineColor;
+		return BaseWindow::getDefaultGeometryAttribute()->lineColor;
 	}
 
 	/////////////////////////////////
 
 	Rgb Geometry::getCurrentFillColor()
 	{
-		return MultiWindow::getDefaultGeometryAttribute()->fillColor;
+		return BaseWindow::getDefaultGeometryAttribute()->fillColor;
 	}
 
 	/////////////////////////////////
 
 	void Geometry::setDotColor(const Colorable& color)
 	{
-		MultiWindow::getDefaultGeometryAttribute()->dotColor = Rgb(color.toColorref());
+		BaseWindow::getDefaultGeometryAttribute()->dotColor = Rgb(color.toColorref());
 	}
 
 	/////////////////////////////////
 
 	void Geometry::setLineColor(const Colorable& color)
 	{
-		MultiWindow::GeometryAttribute* geometryAttribute = MultiWindow::getDefaultGeometryAttribute();
+		BaseWindow::GeometryAttribute* geometryAttribute = BaseWindow::getDefaultGeometryAttribute();
 		if (geometryAttribute->lineColor.toColorref() == color.toColorref())
 			return;
 
@@ -173,7 +173,7 @@ namespace EasyXPlus
 
 	void Geometry::setFillColor(const Colorable& color)
 	{
-		MultiWindow::GeometryAttribute* geometryAttribute = MultiWindow::getDefaultGeometryAttribute();
+		BaseWindow::GeometryAttribute* geometryAttribute = BaseWindow::getDefaultGeometryAttribute();
 		if (geometryAttribute->fillColor.toColorref() == color.toColorref())
 			return;
 
@@ -182,7 +182,7 @@ namespace EasyXPlus
 			throw EasyExcept("System call error!");
 
 		HGDIOBJ objRet = SelectObject(
-			MultiWindow::getDefaultGeometryAttribute()->hdc, (HGDIOBJ)newBrush);
+			BaseWindow::getDefaultGeometryAttribute()->hdc, (HGDIOBJ)newBrush);
 		if (NULL == objRet)
 			throw EasyExcept("System call error!");
 
@@ -199,7 +199,7 @@ namespace EasyXPlus
 	Rgb Geometry::getPointColor(Point point)
 	{
 		COLORREF retColor = GetPixel(
-			MultiWindow::getDefaultGeometryAttribute()->hdc, point.getX(), point.getY());
+			BaseWindow::getDefaultGeometryAttribute()->hdc, point.getX(), point.getY());
 
 		if (retColor == CLR_INVALID)
 			throw EasyExcept("System call error!");
@@ -211,7 +211,7 @@ namespace EasyXPlus
 
 	void Geometry::drawDot(Point point)
 	{
-		MultiWindow::GeometryAttribute* geometryAttribute = MultiWindow::getDefaultGeometryAttribute();
+		BaseWindow::GeometryAttribute* geometryAttribute = BaseWindow::getDefaultGeometryAttribute();
 		COLORREF colorRet = SetPixel(
 			geometryAttribute->hdc,
 			point.getX(), point.getY(),
@@ -227,7 +227,7 @@ namespace EasyXPlus
 
 	void Geometry::drawLine(Point from, Point to)
 	{
-		HDC hdc = MultiWindow::getDefaultGeometryAttribute()->hdc;
+		HDC hdc = BaseWindow::getDefaultGeometryAttribute()->hdc;
 
 		if (0 == MoveToEx(hdc, from.getX(), from.getY(), NULL))
 			throw EasyExcept("System call error!");
@@ -249,7 +249,7 @@ namespace EasyXPlus
 		checkTwoEndPoints(bound, start, end);
 
 		BOOL ret = Arc(
-			MultiWindow::getDefaultGeometryAttribute()->hdc,
+			BaseWindow::getDefaultGeometryAttribute()->hdc,
 			bound.getLeftTop().getX(),
 			bound.getLeftTop().getY(),
 			bound.getRightBottom().getX(),
@@ -287,7 +287,7 @@ namespace EasyXPlus
 		
 		POINT* pointArray = convertToPOINTs(points);
 		BOOL ret = PolyBezier(
-			MultiWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());
+			BaseWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());
 
 		delete[] pointArray;
 		if (ret == 0)	throw EasyExcept("System call error");
@@ -318,7 +318,7 @@ namespace EasyXPlus
 
 		POINT* pointArray = convertToPOINTs(points);
 		BOOL ret = Polyline(
-			MultiWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());
+			BaseWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());
 
 		delete[] pointArray;
 		if (ret == 0)	throw EasyExcept("System call error!");
@@ -336,7 +336,7 @@ namespace EasyXPlus
 		checkTwoEndPoints(bound, start, end);
 
 		BOOL ret = Chord(
-			MultiWindow::getDefaultGeometryAttribute()->hdc,
+			BaseWindow::getDefaultGeometryAttribute()->hdc,
 			bound.getLeftTop().getX(),
 			bound.getLeftTop().getY(),
 			bound.getRightBottom().getX(),
@@ -353,7 +353,7 @@ namespace EasyXPlus
 	void Geometry::drawEllipse(RectRegion bound)
 	{
 		BOOL ret = Ellipse(
-			MultiWindow::getDefaultGeometryAttribute()->hdc,
+			BaseWindow::getDefaultGeometryAttribute()->hdc,
 			bound.getLeftTop().getX(),
 			bound.getLeftTop().getY(),
 			bound.getRightBottom().getX(),
@@ -367,7 +367,7 @@ namespace EasyXPlus
 	void Geometry::drawRectangle(RectRegion rectRegion)
 	{
 		BOOL ret = Rectangle(
-			MultiWindow::getDefaultGeometryAttribute()->hdc,
+			BaseWindow::getDefaultGeometryAttribute()->hdc,
 			rectRegion.getLeftTop().getX(),
 			rectRegion.getLeftTop().getY(),
 			rectRegion.getRightBottom().getX(),
@@ -397,7 +397,7 @@ namespace EasyXPlus
 			throw EasyExcept("Rect invalid!");
 
 		BOOL ret = RoundRect(
-			MultiWindow::getDefaultGeometryAttribute()->hdc,
+			BaseWindow::getDefaultGeometryAttribute()->hdc,
 			rectRegion.getLeftTop().getX(),
 			rectRegion.getLeftTop().getY(),
 			rectRegion.getRightBottom().getX(),
@@ -415,7 +415,7 @@ namespace EasyXPlus
 		checkTwoEndPoints(bound, start, end);
 
 		BOOL ret = Pie(
-			MultiWindow::getDefaultGeometryAttribute()->hdc,
+			BaseWindow::getDefaultGeometryAttribute()->hdc,
 			bound.getLeftTop().getX(),
 			bound.getLeftTop().getY(),
 			bound.getRightBottom().getY(),
@@ -436,7 +436,7 @@ namespace EasyXPlus
 
 		POINT* pointArray = convertToPOINTs(points);
 		BOOL ret = Polygon(
-			MultiWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());
+			BaseWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());
 
 		delete[] pointArray;
 		if (ret == 0)	throw EasyExcept("System call error!");

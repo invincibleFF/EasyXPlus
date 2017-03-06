@@ -1,5 +1,5 @@
 #include "easyKeyboard.h"
-#include "easyWindow.h"
+#include "easyBaseWindow.h"
 #include "easyExcept.h"
 
 #include <cassert>
@@ -83,7 +83,7 @@ namespace EasyXPlus
 
 		while (0 != PeekMessageW(
 						&msg,
-						MultiWindow::getDefaultWindowHandle(),
+						BaseWindow::getDefaultWindowHandle(),
 						WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
 		{
 			if (msg.message == WM_KEYUP)

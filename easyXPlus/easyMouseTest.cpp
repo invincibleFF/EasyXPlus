@@ -1,6 +1,7 @@
 #include "easyMouse.h"
 #include "easyExcept.h"
 #include "easyWindow.h"
+#include "easyBaseWindow.h"
 
 #include "SU.h"
 
@@ -18,8 +19,7 @@ void flushMouseEvnets()
 //	!!! Do not move mouse when running this test
 void GetCurrentPos_ByDefault_GetWhereItIs()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	Point expectedPoint(12, 32);
 
 	SetCursorPos(expectedPoint.getX(), expectedPoint.getY());
@@ -27,15 +27,14 @@ void GetCurrentPos_ByDefault_GetWhereItIs()
 	POINT point;
 	Point returnPoint = Mouse::getCurrentPos();
 	point.x = returnPoint.getX(), point.y = returnPoint.getY();
-	ClientToScreen(MultiWindow::getDefaultWindowHandle(), &point);
+	ClientToScreen(BaseWindow::getDefaultWindowHandle(), &point);
 	assert(Point(point.x, point.y) == expectedPoint);
 }
 
 //	Do not move mouse!!!
 void TryGetEvent_NoEvent_ReturnNone()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	flushMouseEvnets();
 
 	MouseEvent ev = Mouse::tryGetEvent();
@@ -44,14 +43,13 @@ void TryGetEvent_NoEvent_ReturnNone()
 
 void TryGetEvent_SupportedEvent_ReturnEvent()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_LBUTTONUP, 0, 0);
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_RBUTTONUP, 0, 0);
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONUP, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_RBUTTONDOWN, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_RBUTTONUP, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
 
 	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
 	assert(Mouse::tryGetEvent() == MouseEvent::LeftUp);
@@ -62,23 +60,21 @@ void TryGetEvent_SupportedEvent_ReturnEvent()
 
 void TryGetEvent_NotSupportedEvent_ReturnNone()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	flushMouseEvnets();
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDBLCLK, 0, 0);
 
 	assert(Mouse::tryGetEvent() == MouseEvent::None);
 }
 
 void TryGetEvent_SupportedMixedWithUnsupported_ReturnSupported()
 {
-	MultiWindow window;
-	window.setAsDefault();
+	Window::clearScreen(Rgb::Black());
 	flushMouseEvnets();
 
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_NCLBUTTONDBLCLK, 0, 0);
-	PostMessageW(MultiWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_LBUTTONDOWN, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_NCLBUTTONDBLCLK, 0, 0);
+	PostMessageW(BaseWindow::getDefaultWindowHandle(), WM_MOUSEMOVE, 0, 0);
 
 	assert(Mouse::tryGetEvent() == MouseEvent::LeftDown);
 	assert(Mouse::tryGetEvent() == MouseEvent::Move);
