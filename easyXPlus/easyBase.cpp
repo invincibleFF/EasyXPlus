@@ -17,6 +17,7 @@ using namespace EasyXPlus;
 //							globals
 
 std::queue<MouseEvent> g_mouseEvents;
+std::queue<Key> g_keysPressed;
 
 int WINAPI wWinMain(
 	HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
@@ -61,6 +62,10 @@ LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			return 0;
 		}
+
+	case WM_KEYUP:
+		g_keysPressed.push(Keyboard::convertToKeyEnum(wParam));
+		return 0;
 
 	case WM_LBUTTONDOWN:
 		g_mouseEvents.push(MouseEvent::LeftDown);

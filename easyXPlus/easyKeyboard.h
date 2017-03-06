@@ -27,7 +27,6 @@ namespace EasyXPlus
 		static bool isPressing(Key key);
 		static Key tryGetPressed();
 
-	private:
 		static int convertToVirtualKey(Key key);
 		static Key convertToKeyEnum(int virtualKey);
 	};

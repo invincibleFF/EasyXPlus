@@ -3,6 +3,10 @@
 #include "easyExcept.h"
 
 #include <cassert>
+#include <queue>
+
+//	variables in other units
+extern std::queue<EasyXPlus::Key> g_keysPressed;
 
 namespace EasyXPlus
 {
@@ -79,20 +83,14 @@ namespace EasyXPlus
 
 	Key Keyboard::tryGetPressed()
 	{
-		MSG msg;
-
-		while (0 != PeekMessageW(
-						&msg,
-						BaseWindow::getDefaultWindowHandle(),
-						WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
+		if (g_keysPressed.empty())
+			return Key::KeyNone;
+		else
 		{
-			if (msg.message == WM_KEYUP)
-				return convertToKeyEnum(msg.wParam);
-			else
-				continue;
+			Key key = g_keysPressed.front();
+			g_keysPressed.pop();
+			return key;
 		}
-
-		return Key::KeyNone;
 	}
 
 	Key Keyboard::convertToKeyEnum(int virtualKey)
