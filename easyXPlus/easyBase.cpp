@@ -22,7 +22,7 @@ std::queue<Key> g_keysPressed;
 int WINAPI wWinMain(
 	HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
-	BaseWindow window;
+	BaseWindow window(L"easyX+", 0, 0, 640, 480);
 	window.setAsDefault();
 
 	MSG msg;

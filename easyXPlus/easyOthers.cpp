@@ -10,7 +10,7 @@ namespace EasyXPlus
 	///////////////////////////////////////////////////////////////////////////
 	//									Others
 
-	void Others::pauseAll(unsigned milliSecond)
+	void Others::pause(unsigned milliSecond)
 	{
 		if (milliSecond == 0)
 			throw EasyExcept("Invalid parameter!");

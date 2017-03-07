@@ -28,8 +28,6 @@ namespace EasyXPlus
 		static GeometryAttribute* getDefaultGeometryAttribute();
 		static TextAttribute* getDefaultTextAttribute();
 
-		BaseWindow(const std::wstring title = L"easyX+");
-		BaseWindow(const std::wstring title, int posX, int posY);
 		BaseWindow(const std::wstring title, int posX, int posY, unsigned width, unsigned height);
 
 		virtual ~BaseWindow();
@@ -103,11 +101,6 @@ namespace EasyXPlus
 		static HWND defaultWindowHandle;
 		static GeometryAttribute* defaultGeometryAttribute;
 		static TextAttribute* defaultTextAttribute;
-
-		static const int INIT_POS_X = 0;
-		static const int INIT_POS_Y = 0;
-		static const int INIT_WIDTH = 480;
-		static const int INIT_HEIGHT = 640;
 
 		HWND windowHandle;
 		HDC hdc;

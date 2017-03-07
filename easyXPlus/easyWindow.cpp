@@ -3,6 +3,7 @@
 #include "easyExcept.h"
 
 #include <cassert>
+#include <climits>	//	for INT_MAX
 
 using namespace std;
 
@@ -74,16 +75,6 @@ namespace EasyXPlus
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	//									BaseWindow class
-
-	BaseWindow::BaseWindow(const wstring title)
-	{
-		realCtor(title, INIT_POS_X, INIT_POS_Y, INIT_WIDTH, INIT_HEIGHT);
-	}
-
-	BaseWindow::BaseWindow(const wstring title, int posX, int posY)
-	{
-		realCtor(title, posX, posY, INIT_WIDTH, INIT_HEIGHT);
-	}
 
 	BaseWindow::BaseWindow(const wstring title, int posX, int posY, unsigned width, unsigned height)
 	{
@@ -188,6 +179,9 @@ namespace EasyXPlus
 
 	void BaseWindow::resize(unsigned width, unsigned height)
 	{
+		if (width > INT_MAX || height > INT_MAX)
+			throw EasyExcept("Too big width or height!");
+
 		RECT oldWindowRect;
 		if ( 0 == GetWindowRect(windowHandle, &oldWindowRect))
 			goto call_error;
@@ -391,6 +385,9 @@ namespace EasyXPlus
 
 		BaseWindow::getDefaultBaseWindow()->reposition(posX, posY);
 		BaseWindow::getDefaultBaseWindow()->resize(width, height);
+
+		assert(
+			SetWindowText(BaseWindow::getDefaultWindowHandle(), title.c_str()));
 		ShowWindow(BaseWindow::getDefaultWindowHandle(), SW_SHOW);
 	}
 

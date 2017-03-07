@@ -284,7 +284,6 @@ namespace EasyXPlus
 		if ( (points.getSize() % 3) != 1 )
 			throw EasyExcept("The number of points is invalid!");
 
-		
 		POINT* pointArray = convertToPOINTs(points);
 		BOOL ret = PolyBezier(
 			BaseWindow::getDefaultGeometryAttribute()->hdc, pointArray, points.getSize());

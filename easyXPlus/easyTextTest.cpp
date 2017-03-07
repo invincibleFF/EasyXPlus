@@ -78,6 +78,13 @@ void Text_SetFontSize_ByDefault_GetWhatSet()
 	assert(Text::getCurrentFontSize() == 10);
 }
 
+void Text_SetFontSize_LargerThen7200_ThrowExcept()
+{
+	Window::clearScreen(Rgb::Black());
+
+	SU_ASSERT_THROW( Text::setFontSize(7201), EasyExcept );
+}
+
 void Text_SetTextColor_ByDefault_GetWhatSet()
 {
 	Window::clearScreen(Rgb::Black());

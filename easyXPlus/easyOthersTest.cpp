@@ -10,5 +10,5 @@ using namespace EasyXPlus;
 
 void PauseAll_PassZero_ThrowExcept()
 {
-	SU_ASSERT_THROW( Others::pauseAll(0), EasyExcept);
+	SU_ASSERT_THROW( Others::pause(0), EasyExcept);
 }

@@ -6,7 +6,7 @@ namespace EasyXPlus
 	class Others
 	{
 	public:
-		static void pauseAll(unsigned milliSecond);
+		static void pause(unsigned milliSecond);
 	};
 }
 

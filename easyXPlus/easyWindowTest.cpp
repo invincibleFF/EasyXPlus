@@ -1,4 +1,4 @@
-#include "easyWindow.h"
+﻿#include "easyWindow.h"
 #include "easyExcept.h"
 
 #include "SU.h"
@@ -27,7 +27,7 @@ void Init_WithPosParams_CreateWindowWithThesePos()
 void Init_WithPosAndWH_CreateWindowWithThesePosAndWH()
 {
 	int posX = 67, posY = 89;
-	unsigned width = 12, height = 567;
+	unsigned width = 320, height = 567;
 
 	Window::init(L"window", posX, posY, width, height);
 
@@ -59,6 +59,15 @@ void Resize_ByDefault_ResizeToGivenSize()
 
 	assert (width == Window::getWidth());
 	assert(height == Window::getHeight());
+}
+
+void Resize_WidthOrHeightLargerThanIntMax_ThrowExcept()
+{
+	Window::init();
+
+	SU_ASSERT_THROW( Window::resize(INT_MAX + 1, 10), EasyExcept );
+	SU_ASSERT_THROW(Window::resize(10, INT_MAX + 1), EasyExcept );
+	SU_ASSERT_THROW(Window::resize(INT_MAX + 1, INT_MAX + 1), EasyExcept);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -113,6 +122,7 @@ void Text_SetBold_ByDefault_GetWhatSet();
 void Text_SetItalic_ByDefault_GetWhatSet();
 void Text_SetUnderline_ByDefault_GetWhatSet();
 void Text_SetFontSize_ByDefault_GetWhatSet();
+void Text_SetFontSize_LargerThen7200_ThrowExcept();
 void Text_SetTextColor_ByDefault_GetWhatSet();
 void Text_SetBkColor_ByDefault_GetWhatSet();
 
@@ -149,6 +159,7 @@ int main(int argc, wchar_t* argv[])
 	Init_WithPosParams_CreateWindowWithThesePos();
 	Init_WithPosAndWH_CreateWindowWithThesePosAndWH();
 	Resize_ByDefault_ResizeToGivenSize();
+	Resize_WidthOrHeightLargerThanIntMax_ThrowExcept();
 	Reposition_ByDefault_RepositionToGivenPos();
 
 	///////////////			Colorable		//////////////////
@@ -190,6 +201,7 @@ int main(int argc, wchar_t* argv[])
 	Text_SetItalic_ByDefault_GetWhatSet();
 	Text_SetUnderline_ByDefault_GetWhatSet();
 	Text_SetFontSize_ByDefault_GetWhatSet();
+	Text_SetFontSize_LargerThen7200_ThrowExcept();
 	Text_SetTextColor_ByDefault_GetWhatSet();
 	Text_SetBkColor_ByDefault_GetWhatSet();
 
@@ -221,6 +233,7 @@ int main(int argc, wchar_t* argv[])
 
 	MessageBoxW(NULL, L"", L"Succeed!", MB_OK);
 
+	Window::init(L"Shit是什么意思", 0, 0, 400, 400);
 	int count = 0;
 	Text::setTextColor(Rgb::Grey())
 ;	while (true)

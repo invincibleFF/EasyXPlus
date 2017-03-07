@@ -49,6 +49,9 @@ namespace EasyXPlus
 
 	void Text::setFontSize(unsigned pointSize)
 	{
+		if (pointSize > 7200)	//	100 inch
+			throw EasyExcept("Too big the size!");
+
 		APPLY_ONE_FONT_ATTRIBUTE_FIELD_CHANGE(pointSize);
 	}
 
