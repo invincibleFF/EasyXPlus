@@ -131,11 +131,19 @@ namespace EasyXPlus
 		windowHandle = CreateWindowW(
 			L"EasyXPlus::WindowClassName",
 			title.c_str(),
-			WS_POPUP | WS_CAPTION,
+			WS_OVERLAPPEDWINDOW,
 			posX, posY,
 			width, height,
 			NULL, NULL,
 			NULL, NULL);
+
+		//	disable unwanted window buttons
+		SetWindowLong(windowHandle, GWL_STYLE,
+			GetWindowLong(windowHandle, GWL_STYLE) & ~WS_MINIMIZEBOX);
+		SetWindowLong(windowHandle, GWL_STYLE,
+			GetWindowLong(windowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX);
+		SetWindowLong(windowHandle, GWL_STYLE,
+			GetWindowLong(windowHandle, GWL_STYLE) & ~WS_SIZEBOX);
 
 		if (windowHandle == NULL)
 			throw EasyExcept("Cannot create window!");

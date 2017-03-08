@@ -233,10 +233,13 @@ int main(int argc, wchar_t* argv[])
 
 	MessageBoxW(NULL, L"", L"Succeed!", MB_OK);
 
+
+	//	drag-drop tests
 	Window::init(L"Shit是什么意思", 0, 0, 400, 400);
 	int count = 0;
-	Text::setTextColor(Rgb::Grey())
-;	while (true)
+	Text::setTextColor(Rgb::Grey());
+	
+	while (true)
 	{
 		Text::output(Point(0, 0), to_wstring(count++));
 	}

@@ -16,6 +16,7 @@ using namespace EasyXPlus;
 ///////////////////////////////////////////////////////////////////////////////////
 //							globals
 
+HANDLE g_threadHandle = NULL;
 std::queue<MouseEvent> g_mouseEvents;
 std::queue<Key> g_keysPressed;
 
@@ -57,7 +58,9 @@ LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 			if (!called)
 			{
-				if (NULL == CreateThread(NULL, NULL, MainThread, nullptr, 0, NULL))
+				g_threadHandle = CreateThread(NULL, NULL, MainThread, nullptr, 0, NULL);
+				
+				if (g_threadHandle == NULL)
 					throw EasyExcept("Thread create error!");
 				called = true;
 			}
@@ -86,6 +89,11 @@ LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	case WM_ERASEBKGND:
 		return TRUE;	//	no erase drawing
+
+	case WM_CLOSE:
+		assert (TerminateThread(g_threadHandle, 0));
+		DestroyWindow(hwnd);
+		return 0;
 
 	default:
 		return DefWindowProcW(hwnd, msg, wParam, lParam);
