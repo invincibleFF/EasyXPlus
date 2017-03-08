@@ -45,7 +45,10 @@ DWORD WINAPI MainThread(LPVOID param)
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-	return main(argc, argv);
+	try	{ main(argc, argv); }
+	catch (EasyExcept except){	/*	do nothing	*/	};
+
+	return 0;
 }
 
 LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
