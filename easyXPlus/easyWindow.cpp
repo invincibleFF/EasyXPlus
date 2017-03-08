@@ -118,7 +118,7 @@ namespace EasyXPlus
 			wndclass.lpfnWndProc = EasyWndProc;						//	default window procedure
 			wndclass.hCursor = LoadCursorW(NULL, IDC_ARROW);		//	default arrow cursor
 			wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_DROPSHADOW;//	default window style
-			wndclass.hbrBackground = (HBRUSH)(1 + COLOR_BACKGROUND);
+			wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
 			if (RegisterClassW(&wndclass) == 0)
 				throw EasyExcept("Cannot register window class!");

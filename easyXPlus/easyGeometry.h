@@ -71,9 +71,6 @@ namespace EasyXPlus
 		std::vector<Point>	points;
 	};
 
-	//	TODO:
-	//		To make setDotColor() only applys to the window set, not always the
-	//		current window.
 	class Geometry
 	{
 	public:

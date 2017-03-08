@@ -24,6 +24,7 @@ int WINAPI wWinMain(
 {
 	BaseWindow window(L"easyX+", 0, 0, 640, 480);
 	window.setAsDefault();
+	window.clear(Rgb::Black());
 
 	MSG msg;
 	BOOL fGotMessage;
@@ -82,6 +83,9 @@ LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		g_mouseEvents.push(MouseEvent::Move);
 		return 0;
+
+	case WM_ERASEBKGND:
+		return TRUE;	//	no erase drawing
 
 	default:
 		return DefWindowProcW(hwnd, msg, wParam, lParam);

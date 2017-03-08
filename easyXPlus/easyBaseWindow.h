@@ -79,7 +79,7 @@ namespace EasyXPlus
 			bool isBold;
 			bool isItalic;
 			bool isUnderline;
-			unsigned pointSize;	//	todo: test to change default value
+			unsigned pointSize;
 			Rgb textColor;
 			Rgb bkColor;
 

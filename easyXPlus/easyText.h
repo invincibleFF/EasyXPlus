@@ -8,7 +8,6 @@ namespace EasyXPlus
 {
 	//	TODO:
 	//		1.add a setFontSize() overload that uses pixel size to set the font.
-	//		2.test to see if adding namespace before Rect class is useless.
 	class Text
 	{
 	public:
