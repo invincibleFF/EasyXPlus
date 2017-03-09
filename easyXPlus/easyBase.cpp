@@ -48,7 +48,7 @@ DWORD WINAPI MainThread(LPVOID param)
 	try	{ main(argc, argv); }
 	catch (EasyExcept except){	/*	do nothing	*/	};
 
-	return 0;
+	ExitProcess(0);
 }
 
 LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -94,7 +94,7 @@ LRESULT CALLBACK EasyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return TRUE;	//	no erase drawing
 
 	case WM_CLOSE:
-		assert (TerminateThread(g_threadHandle, 0));
+		ExitProcess(0);
 		DestroyWindow(hwnd);
 		return 0;
 
