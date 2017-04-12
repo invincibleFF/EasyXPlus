@@ -25,17 +25,21 @@ void Init_WithPosParams_CreateWindowWithThesePos()
 	assert (posY == Window::getPosY());
 }
 
-void Init_WithPosAndWH_CreateWindowWithThesePosAndWH()
+void Init_WithPosAndWH_CreateWindowWithThesePosAndWHAsClientArea()
 {
 	int posX = 67, posY = 89;
 	unsigned width = 320, height = 567;
 
 	Window::init(L"window", posX, posY, width, height);
 
+	unsigned expectedWidth =
+		width + 2 * GetSystemMetrics(SM_CXSIZEFRAME);
+	unsigned expectedHeight =
+		height + 2 * GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION);
 	assert (posX == Window::getPosX());
 	assert (posY == Window::getPosY());
-	assert (width == Window::getWidth());
-	assert (height == Window::getHeight());
+	assert (expectedWidth == Window::getWidth());
+	assert (expectedHeight == Window::getHeight());
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -51,15 +55,19 @@ public:
 ////////////////////////////////////////////////////////////////////////////////////////
 //								Tests for Resize
 
-void Resize_ByDefault_ResizeToGivenSize()
+void Resize_ByDefault_ResizeClientAreaToGivenSize()
 {
 	unsigned width = 567, height = 234;
 	Window::init();
 
 	Window::resize(width, height);
 
-	assert (width == Window::getWidth());
-	assert(height == Window::getHeight());
+	unsigned expectedWidth =
+		width + 2 * GetSystemMetrics(SM_CXSIZEFRAME);
+	unsigned expectedHeight =
+		height + 2 * GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION);
+	assert (expectedWidth == Window::getWidth());
+	assert(expectedHeight == Window::getHeight());
 }
 
 void Resize_WidthOrHeightLargerThanIntMax_ThrowExcept()
@@ -67,7 +75,7 @@ void Resize_WidthOrHeightLargerThanIntMax_ThrowExcept()
 	Window::init();
 
 	SU_ASSERT_THROW( Window::resize(INT_MAX + 1, 10), EasyExcept );
-	SU_ASSERT_THROW(Window::resize(10, INT_MAX + 1), EasyExcept );
+	SU_ASSERT_THROW( Window::resize(10, INT_MAX + 1), EasyExcept );
 	SU_ASSERT_THROW(Window::resize(INT_MAX + 1, INT_MAX + 1), EasyExcept);
 }
 
@@ -158,8 +166,8 @@ int main(int argc, wchar_t* argv[])
 	Window::init();
 
 	Init_WithPosParams_CreateWindowWithThesePos();
-	Init_WithPosAndWH_CreateWindowWithThesePosAndWH();
-	Resize_ByDefault_ResizeToGivenSize();
+	Init_WithPosAndWH_CreateWindowWithThesePosAndWHAsClientArea();
+	Resize_ByDefault_ResizeClientAreaToGivenSize();
 	Resize_WidthOrHeightLargerThanIntMax_ThrowExcept();
 	Reposition_ByDefault_RepositionToGivenPos();
 

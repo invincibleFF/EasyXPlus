@@ -193,10 +193,14 @@ namespace EasyXPlus
 		if ( 0 == GetWindowRect(windowHandle, &oldWindowRect))
 			goto call_error;
 
+		unsigned widthPlusBorder =
+			width + 2 * GetSystemMetrics(SM_CXSIZEFRAME);
+		unsigned heightPlusBorderAndTitle =
+			height + 2 * GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION);
 		if (0 == MoveWindow(
 					windowHandle,
 					oldWindowRect.left, oldWindowRect.top,
-					width, height,
+					widthPlusBorder, heightPlusBorderAndTitle,
 					FALSE))
 			goto call_error;
 		return;
