@@ -184,10 +184,13 @@ namespace EasyXPlus
 
 	HRGN RectClipRegion::createRgnFromRegion(const RectRegion& region)
 	{
+		//	in GDI, th lower and right edges of the specified rectangle are
+		//	not excluded from the clipping region, add 1 here to make it
+		//	excluded
 		HRGN ret = CreateRectRgn(region.getLeftTop().getX(),
 								 region.getLeftTop().getY(),
-								 region.getRightBottom().getX(),
-								 region.getRightBottom().getY());
+								 region.getRightBottom().getX() + 1,
+								 region.getRightBottom().getY() + 1);
 		if (ret == NULL)
 			throw EasyExcept("CreateRectRgn error");
 
