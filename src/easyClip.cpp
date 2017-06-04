@@ -31,6 +31,16 @@ namespace EasyXPlus
 		regionHandle = createRgnFromRegion(region);
 	}
 
+	RectClipRegion::~RectClipRegion()
+	{
+		if (regionHandle != NULL)
+		{
+			if (ERROR == SelectClipRgn(BaseWindow::getDefaultGeometryAttribute()->hdc, NULL))
+				throw EasyExcept("SelectClipRgn error");
+			DeleteObject((HGDIOBJ)regionHandle);
+		}
+	}
+
 	/////////////////////////////
 
 	void RectClipRegion::exclude(const RectRegion& region)
@@ -95,7 +105,7 @@ namespace EasyXPlus
 			case ClipType::Exclude:		excludeRegion(actionPair.second.region);	break;
 			case ClipType::Intersect:	intersectRegion(actionPair.second.region);	break;
 			case ClipType::Move:		moveRegion(actionPair.second.offsets);		break;
-			case ClipType::Union:		unionRegion(actionPair.second.region);	break;
+			case ClipType::Union:		unionRegion(actionPair.second.region);		break;
 			default:					throw EasyExcept("Not supported ClipType");
 			}
 		}
@@ -153,19 +163,21 @@ namespace EasyXPlus
 
 	void RectClipRegion::unionRegion(const RectRegion& region)
 	{
-		HRGN currentRegion;
+		HRGN currentRegion = createRgnFromRegion(region);
 		if (1 != GetClipRgn(BaseWindow::getDefaultGeometryAttribute()->hdc, currentRegion))
 			throw EasyExcept("GetClipRgn error");
 
 		HRGN paramRegion = createRgnFromRegion(region);
-		HRGN resultRegion;
+		HRGN resultRegion = createRgnFromRegion(region);
 		if (ERROR == CombineRgn(resultRegion, currentRegion, paramRegion, RGN_OR))
 			throw EasyExcept("CombineRgn error");
 
 		if (ERROR == SelectClipRgn(BaseWindow::getDefaultGeometryAttribute()->hdc, resultRegion))
 			throw EasyExcept("SelectClipRgn error");
 
+		DeleteObject((HGDIOBJ)currentRegion);
 		DeleteObject((HGDIOBJ)paramRegion);
+		DeleteObject((HGDIOBJ)resultRegion);
 	}
 
 	/////////////////////////////

@@ -17,6 +17,7 @@ namespace EasyXPlus
     {
     public:
         explicit RectClipRegion(const RectRegion& region);
+		~RectClipRegion();
 
         void exclude(const RectRegion& region);
         void intersect(const RectRegion& region);
@@ -36,7 +37,7 @@ namespace EasyXPlus
 		void moveRegion(int offsets[2]);
 		HRGN createRgnFromRegion(const RectRegion& region);
 
-    private:
+    protected:
 		enum class ClipType { Exclude, Intersect, Move, Union };
 		union ClipUnion {
 			explicit ClipUnion(const RectRegion& region);

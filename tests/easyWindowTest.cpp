@@ -156,6 +156,19 @@ void TryGetPressed_TwoKeyPressed_GetTwo();
 
 void PauseAll_PassZero_ThrowExcept();
 
+void Ctor_ByDefault_CreateRegionHandle();
+void Ctor_ByDefault_ZeroActions();
+void Exclude_ByDefault_AddOneAction();
+void Intersect_ByDefault_AddOneAction();
+void Union_ByDefault_AddOneAction();
+void Move_ByDefault_AddOneAction();
+void Clear_ByDefault_SetActionsAndHandleToNull();
+void Set_ByDefault_CreateNewRgnHandle();
+void AssociateToWindow_ByDefault_NotThrowExcept();
+void AssociateToWindow_AfterSet_NotThrowExcept();
+void AssociateToWindow_AfterClear_ThrowExcept();
+void CancelAssociation_AfterClear_ThrowExcept();
+
 //////////////////////////////////////////////////////////////////////
 
 int main(int argc, wchar_t* argv[])
@@ -240,11 +253,28 @@ int main(int argc, wchar_t* argv[])
 
 	PauseAll_PassZero_ThrowExcept();
 
+	/////////////////////		Clips		/////////////////////////
+
+	Ctor_ByDefault_CreateRegionHandle();
+	Ctor_ByDefault_ZeroActions();
+	Exclude_ByDefault_AddOneAction();
+	Intersect_ByDefault_AddOneAction();
+	Union_ByDefault_AddOneAction();
+	Move_ByDefault_AddOneAction();
+	Clear_ByDefault_SetActionsAndHandleToNull();
+	Set_ByDefault_CreateNewRgnHandle();
+	AssociateToWindow_ByDefault_NotThrowExcept();
+	AssociateToWindow_AfterSet_NotThrowExcept();
+	AssociateToWindow_AfterClear_ThrowExcept();
+	CancelAssociation_AfterClear_ThrowExcept();
+
+	/////////////////////		Drag-Drop test		///////////////////
+
 	MessageBoxW(NULL, L"All tests passed!", L"Succeed!", MB_OK);
 
 
 	//	drag-drop tests
-	Window::init(L"Shit是什么意思", 0, 0, 400, 400);
+	Window::init(L"Shit是什么意思", 200, 200, 400, 400);
 	int count = 0;
 	Text::setTextColor(Rgb::Grey());
 	
