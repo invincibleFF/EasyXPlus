@@ -169,6 +169,10 @@ void AssociateToWindow_AfterSet_NotThrowExcept();
 void AssociateToWindow_AfterClear_ThrowExcept();
 void CancelAssociation_AfterClear_ThrowExcept();
 
+void Ctor_ByDefault_InitMembers();
+void Getters_ByDefault_ReturnBitmapSize();
+void DrawThreeParam_PassAnyNoPositiveParam_ThrowExcept();
+
 //////////////////////////////////////////////////////////////////////
 
 int main(int argc, wchar_t* argv[])
@@ -267,6 +271,12 @@ int main(int argc, wchar_t* argv[])
 	AssociateToWindow_AfterSet_NotThrowExcept();
 	AssociateToWindow_AfterClear_ThrowExcept();
 	CancelAssociation_AfterClear_ThrowExcept();
+
+	////////////////////		Bitmap			///////////////////////
+
+	Ctor_ByDefault_InitMembers();
+	Getters_ByDefault_ReturnBitmapSize();
+	DrawThreeParam_PassAnyNoPositiveParam_ThrowExcept();
 
 	/////////////////////		Drag-Drop test		///////////////////
 

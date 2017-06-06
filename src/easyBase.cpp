@@ -39,14 +39,13 @@ int WINAPI wWinMain(
 DWORD WINAPI MainThread(LPVOID param)
 {
 	if (0 == SetThreadPriority(
-		GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN))
+			GetCurrentThread(), THREAD_MODE_BACKGROUND_BEGIN))
 		throw EasyExcept("Thread priority set error!");
 
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-	try	{ main(argc, argv); }
-	catch (EasyExcept except){	/*	do nothing	*/	};
+	main(argc, argv);
 
 	ExitProcess(0);
 }
