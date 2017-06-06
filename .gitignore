@@ -1,8 +1,20 @@
 # back up files
 ~*
 
-# Debug directory
-**/Debug
-
 # Precompiled header directory
 **/ipch
+
+# logs
+**/*.tlog
+**/*.log
+
+# hide folders
+**/.vs
+**/*.opendb
+
+# generated objects
+**/*.obj
+**/*.idb
+**/*.lib
+**/*.pdb
+**/*.db
