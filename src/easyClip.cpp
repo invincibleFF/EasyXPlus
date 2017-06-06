@@ -35,8 +35,7 @@ namespace EasyXPlus
 	{
 		if (regionHandle != NULL)
 		{
-			if (ERROR == SelectClipRgn(BaseWindow::getDefaultGeometryAttribute()->hdc, NULL))
-				throw EasyExcept("SelectClipRgn error");
+			SelectClipRgn(BaseWindow::getDefaultGeometryAttribute()->hdc, NULL);
 			DeleteObject((HGDIOBJ)regionHandle);
 		}
 	}
