@@ -160,6 +160,11 @@ namespace EasyXPlus
 			text.c_str(),
 			text.size());
 		if (ret == 0)	throw EasyExcept("System call error!");
+
+		//	it seems the last text output is not drawn until next call, 
+		//	call UpdateWindow to make it draw immediately
+		if (UpdateWindow(BaseWindow::getDefaultWindowHandle()) == 0)
+			throw EasyExcept("UpdateWindow call error!");
 	}
 
 #undef APPLY_ONE_FONT_ATTRIBUTE_FIELD_CHANGE

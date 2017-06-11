@@ -13,7 +13,7 @@ namespace EasyXPlus
 		: isVerticalFlip(false)
 		, isHorizontalFlip(false)
 	{
-		bitmapHandle = (HBITMAP)LoadImage(NULL, bitmapFilename.c_str(),
+		bitmapHandle = (HBITMAP)LoadImageW(NULL, bitmapFilename.c_str(),
 								 IMAGE_BITMAP,
 								 0, 0,
 								 LR_LOADFROMFILE);
