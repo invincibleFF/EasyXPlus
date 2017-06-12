@@ -12,7 +12,7 @@ There are two build templates using VS under the `builds` folder, users can use 
 Also, users can use any c++ develop environment to build using source files under `src` folder. Note to install a appropriate Windows SDK first！
 
 ## Guide to use
-1.	**Set the entry point to wWinMainCRTStartup**. We build the wWinMain function inside the library which possibly makes VS finding entry point automatically unpossible. Thus, we need to set it manually.
+1.	**Set the entry point to wWinMainCRTStartup** (if you are using VS, create a "Win32 Project"). I build the wWinMain function inside the library which possibly makes VS finding entry point automatically unpossible. Thus, we need to set it manually.
 2.	**Add library and header files** to you project (header files are under the `headers` folder).
 3.	**Use Unicode character set**(VS use this by default).
 

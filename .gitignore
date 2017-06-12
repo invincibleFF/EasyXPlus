@@ -18,3 +18,8 @@
 **/*.lib
 **/*.pdb
 **/*.db
+**/*.txt
+**/*.vcxproj.user
+**/*.exe
+**/*.iobj
+**/*.ipdb
