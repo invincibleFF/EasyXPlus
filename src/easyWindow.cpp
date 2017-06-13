@@ -393,6 +393,9 @@ namespace EasyXPlus
 
 		BaseWindow::getDefaultBaseWindow()->reposition(posX, posY);
 		BaseWindow::getDefaultBaseWindow()->resize(width, height);
+		//	if width and height is greater than the real init window size,
+		//	there will be a black area, call clearScreen() to make it black.
+		clearScreen(Rgb::Black());
 
 		assert(
 			SetWindowText(BaseWindow::getDefaultWindowHandle(), title.c_str()));
