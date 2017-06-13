@@ -10,6 +10,7 @@
 
 # hide folders
 **/.vs
+**/.vscode
 **/*.opendb
 
 # generated objects

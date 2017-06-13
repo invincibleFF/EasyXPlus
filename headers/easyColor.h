@@ -1,3 +1,10 @@
+///
+///	@file		Color module.
+///	@author		lgxZJ@outlook.com
+///	@date		2017/6/12
+///	@version	1.0
+///
+
 #ifndef EASY_COLOR_H
 #define EASY_COLOR_H
 
@@ -6,7 +13,12 @@
 
 namespace EasyXPlus
 {
-	//	Color Interface definition
+	///
+	///	@brief	An interface for color models.
+	///
+	///			EasyXPlus can support multiple color models, non-color related models
+	///			use this interface to access color functionlities.
+	///
 	class Colorable
 	{
 	public:
@@ -14,22 +26,53 @@ namespace EasyXPlus
 		virtual COLORREF toColorref() const = 0;
 	};
 
+	///
+	///	@brief	Colors represented in RGB color model.
+	///
 	class Rgb : public Colorable
 	{
 	public:
 		virtual ~Rgb()			{}
 		virtual COLORREF toColorref() const;
 
+		///
+		///	@brief	Create a color with the given red, green and blue values.
+		///	@note	The range of red, green and blue values is from 0 to 255.
+		///
 		Rgb(unsigned char R, unsigned char G, unsigned char B);
 		explicit Rgb(COLORREF colorValue);
 
+///	@{
+		///
+		///	@brief	Compare if two Rgb colors are equal. Two Rgb colors are equal if their
+		///			red, green and blue values are all equal.
+		///
 		bool operator == (const Rgb otherColor)const;
+		///
+		///	@sa	operator==()
+		///
 		bool operator != (const Rgb otherColor)const;
+///	@}
 
+///	@{
+		///
+		///	@brief	Get the red value of the Rgb color.
+		///
 		const unsigned char getR() const;
+		///
+		///	@brief	Get the green value of the Rgb color.
+		///
 		const unsigned char getG() const;
+		///
+		///	@brief	Get the blue value of the Rgb color.
+		///
 		const unsigned char getB() const;
+///	@}
 
+///
+///	@name	Static functions to create RGB colors.
+///
+///	@{
 		static Rgb Black()		{ return Rgb(0, 0, 0); }
 		static Rgb White()		{ return Rgb(255, 255, 255); }
 		static Rgb Blue()		{ return Rgb(0, 0, 255); }
@@ -71,6 +114,7 @@ namespace EasyXPlus
 		static Rgb DarkCyan()		{ return Rgb(0, 139, 139); }
 		static Rgb DarkMagenta()	{ return Rgb(139, 0, 139); }
 		static Rgb DarkRed()		{ return Rgb(139, 0, 0); }
+///	@}
 
 	protected:
 		COLORREF colorValue;
