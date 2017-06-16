@@ -24,3 +24,6 @@
 **/*.exe
 **/*.iobj
 **/*.ipdb
+
+# nuget generated files
+**/*.nupkg
