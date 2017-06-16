@@ -9,12 +9,13 @@ EasyXPlus is a simple graphic library **for C++ BEGINNERS** under Windows. It pr
 There are two build templates using VS under the `builds` folder, users can use these project templates to build with the right VS version installed.
 
 ### From source
-Also, users can use any c++ develop environment to build using source files under `src` folder. Note to install a appropriate Windows SDK first！
+Also, users can use any c++ develop environment which supports c++11 to build using source files under `src` folder. Note to install a appropriate Windows SDK first！
 
 ## Guide to use
 1.	**Set the entry point to wWinMainCRTStartup** (if you are using VS, create a "Win32 Project"). I build the wWinMain function inside the library which possibly makes VS finding entry point automatically unpossible. Thus, we need to set it manually.
-2.	**Add library and header files** to you project (header files are under the `headers` folder).
+2.	**Add library and header files(recommended to use NuGet)** to you project (header files are under the `headers` folder).
 3.	**Use Unicode character set**(VS use this by default).
+4.	**Use `int main(int argc, wchar_t* argv[])`** as your pseudo-main entry point.
 
 If you don't know how to set these configurations in you IDE, please google.
 
